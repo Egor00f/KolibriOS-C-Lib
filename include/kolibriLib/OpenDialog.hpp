@@ -11,12 +11,12 @@ namespace KolibriLib
 	/// @brief Диалог выбора файлов
 	/// @details это отдельная программа (если что)
 	/// Памяти требует эта штука много (около 9500 байт)
-	/// @warning На данный момент не завршено
+	/// @warning На данный момент не завершено
 	class OpenDialog
 	{	
 	public:
 
-		/// @brief Режим открытия OpenDialogа
+		/// @brief Режим открытия OpenDialog
 		enum class Mode
 		{
 			/// @brief Открыть файл
@@ -83,7 +83,7 @@ namespace KolibriLib
 		/// @return 
 		filesystem::path GetPath() const;
 
-		/// @brief Добавить еще фильров
+		/// @brief Добавить еще фильтров
 		void SetFilter(const std::vector<FilterElement> &f);
 
 		/// @brief деструктор

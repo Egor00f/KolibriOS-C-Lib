@@ -11,7 +11,6 @@
 #include <ostream>
 
 #include <vector>
-#include <memory>
 
 namespace KolibriLib
 {
@@ -109,132 +108,6 @@ namespace KolibriLib
 
 			class BaseButton;
 
-			/**
-			 * @brief Автоматическое присвоение ID для кнопок
-			 * @details Также сохраняет указатель на кнопку, которая запросила ID
-			 * @note Этот класс работает только с ID кнопок и ничего больше
-			 */
-			class ButtonsIDController
-			{
-			public:
-				/**
-				 * @brief Нода
-				 */
-				struct node
-				{
-					/**
-					 * @brief ID кнопок
-					 */
-					ButtonID id;
-
-					/**
-					 * @brief Указатели на кнопки, исползующие этот ID
-					 */
-					std::vector<std::weak_ptr<BaseButton>> pointers;
-
-					/**
-					 * @brief Конструктор
-					 * @param Id
-					 */
-					node(ButtonID Id);
-
-					/**
-					 * @brief Конструктор
-					 * @param Id
-					 * @param p
-					 */
-					node(ButtonID Id, std::weak_ptr<BaseButton> p);
-
-					node &operator=(const node &) = default;
-
-					/**
-					 * @brief оператор равенства
-					 * @param val с чем сравнивать
-					 * @return
-					 */
-					bool operator==(const node &val) const;
-
-					/**
-					 * @brief Оператор неравентсва
-					 * @param val
-					 * @return
-					 */
-					bool operator!=(const node &val) const;
-				};
-
-				/**
-				 * @brief Алиас для вектора с нодами
-				 */
-				using List = std::vector<node>;
-
-				/**
-				 * @brief Конвертировать List в список кнопок
-				 * @param list
-				 * @return
-				 */
-				static ButtonIDList ListoButtonIDList(const List &list);
-
-				/// @brief Получить свободный ID кнопки из списка
-				/// @return ID кнопки, который не занят
-				ButtonID GetFreeButtonID(std::weak_ptr<BaseButton> ptr);
-
-				/**
-				 * @brief Занять ID кнопки
-				 * @param id ID кнопки
-				 * @param ptr указатель на кнопку
-				 */
-				void TakeupButtonID(const ButtonID &id, std::weak_ptr<BaseButton> ptr);
-
-				/// @brief Освободить ID
-				/// @param id ID который нужно освободить
-				void FreeButtonID(const ButtonID &id);
-
-				/**
-				 * @brief Получить список всех занятых ID кнопок
-				 * @return указатель на вектор
-				 * @details Зачем указатель? копировать долго
-				 */
-				ButtonsIDController::List &GetButtonsIDList();
-
-				/**
-				 * @brief Получить список всех занятых ID кнопок
-				 * @return указатель на вектор
-				 * @details константная версия
-				 */
-				const ButtonsIDController::List &GetButtonsIDList() const;
-
-				/**
-				 * @brief Получить указатель на кнопку, которая запросила ID
-				 * @param ID ID кнопки
-				 * @return указатель на ту самую кнопку
-				 */
-				std::vector<std::weak_ptr<BaseButton>> GetPoinerToButton(const ButtonID &ID) const;
-
-				/**
-				 * @brief Убрать лишнее
-				 * @details Убирает лишние ID если они повторяются, и если нет ни одного действующего указателя
-				 */
-				void Sort();
-
-			private:
-				/**
-				 * @brief Список использованных id кнопок
-				 * @details По идее CloseButton тоже входить дожна в этот список, но не входит так как сразу начинаем со второго ID. Чисто немного оптимизация
-				 */
-				ButtonsIDController::List ButtonsIdList{/*CloseButton,*/ node(MinimizeButton)};
-
-				/**
-				 * @brief Стартовое значение ButtonsIDController::_top
-				 */
-				const unsigned StartTop = 2;
-
-				/**
-				 * @brief Типа вершина
-				 * @details чтобы по всему вектору не проходиться, отсчёт начинаем с top
-				 */
-				unsigned _top = StartTop;
-			};
-
 			/// @brief Стиль кнопок
 			enum class ButtonStyle
 			{
@@ -252,11 +125,11 @@ namespace KolibriLib
 
 			/**
 			 * @brief Освободить номер кнопки
-			 * @param id номер номер кнопки из списка ButtonsIdList
 			 * @param ButtonsIdList Указатель на список ID кнопок
+			 * @param id номер номер кнопки из списка ButtonsIdList
 			 * @return true если всё ок, иначе false
 			 */
-			bool FreeButtonId(const ButtonID &id, ButtonIDList &ButtonsIdList);
+			bool FreeButtonId(ButtonIDList &ButtonsIdList, const ButtonID &id);
 
 			/// \brief Создать кнопку, автоматически присвоить ей id
 			/// \param coords координаты
@@ -307,7 +180,7 @@ namespace KolibriLib
 			inline void DeleteButton(ButtonIDList &ButtonsIdList, ButtonID id)
 			{
 				_ksys_delete_button(id);
-				FreeButtonId(id, ButtonsIdList); // Кнопка удалена, теперь этот id не используется
+				FreeButtonId(ButtonsIdList, id); // Кнопка удалена, теперь этот id не используется
 			}
 
 			/// @brief проверить какая кнопка нажата
@@ -329,16 +202,6 @@ namespace KolibriLib
 
 	} // namespace UI
 
-	namespace Globals
-	{
-		/**
-		 * @brief Контроллер кнопок ID по умолчанию
-		 * @details Используется по умолчанию кнопками.
-		 * По умолчанию равен nullptr.
-		 * Устанавливается классом window::Window
-		 */
-		extern UI::buttons::ButtonsIDController *DefaultButtonsIDController;
-	}
 } // namespace KolibriLib
 
 inline std::ostream &operator<<(std::ostream &os, const KolibriLib::UI::buttons::ButtonID &id)

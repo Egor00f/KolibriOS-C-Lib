@@ -1,5 +1,6 @@
 #include <kolibriLib/UI/buttons/button.hpp>
 #include <kolibriLib/globals.hpp>
+#include <assert.h>
 
 using namespace KolibriLib;
 using namespace UI;
@@ -92,7 +93,7 @@ void KolibriLib::UI::buttons::BaseButton::SetId(const ButtonID &NewID)
 	if (_ButtonsIDController != nullptr)
 	{
 		std::shared_ptr<BaseButton> s_ptr(this);
-		_ButtonsIDController->TakeupButtonID(NewID, s_ptr);
+		_ButtonsIDController->TakeUpButtonID(NewID, s_ptr);
 	}
 }
 
@@ -116,5 +117,6 @@ void KolibriLib::UI::buttons::BaseButton::SetId()
 
 void BaseButton::Define(const Coord &coord, const Size &size, const Colors::Color &color) const
 {
+	assert(_id == ButtonIDNotSet || _id >= ButtonIDEnd && "Wrong button id!");
 	DefineButton(coord, size, _id, color);
 }

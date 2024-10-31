@@ -61,18 +61,38 @@ namespace KolibriLib
 		/// @return 
 		point &operator=(const point &p);
 
-		/// @brief Прибавить к обоим координатам значение
-		/// @param p значение
-		/// @return 
+		
+		/**
+		 * @brief Прибавить к обоим координатам значение
+		 * @param p значение
+		 * @return 
+		 * @details Прибавляет к обеим координатам p
+		 */
 		point &operator+=(const int &p);
 
-		/// @brief Вычесть из обоих координат значение
-		/// @param p значение
-		/// @return
+		
+		/**
+		 * @brief Вычесть из обоих координат значение
+		 * @param p значение  
+		 * @return 
+		 * @details Вычитает из обеих координат p
+		 */
 		point &operator-=(const int &p);
 
+		/**
+		 * @brief 
+		 * @param p 
+		 * @return 
+		 * @details Умножает обе координаты на p
+		 */
 		point &operator*=(const int &p);
 
+		/**
+		 * @brief 
+		 * @param p 
+		 * @return 
+		 * @details Делит обе координаты на p
+		 */
 		point &operator/=(const int &p);
 
 		/// @brief 
@@ -86,16 +106,27 @@ namespace KolibriLib
 		/// @return 
 		bool operator!=(const point &a) const;
 
+		/**
+		 * @brief 
+		 * @param obj 
+		 * @return 
+		 */
 		bool operator < (const point &obj) const;
+
+		/**
+		 * @brief 
+		 * @param obj 
+		 * @return 
+		 */
 		bool operator > (const point &obj) const;
 	};
 
 	
 	/// @brief Размер
-	typedef point Size;
+	using Size = point;
 
 	/// @brief Координаты
-	typedef point Coord;
+	using Coord = point;
 
 	/// @brief Координаты/Размеры для элементов UI
 	struct UDim

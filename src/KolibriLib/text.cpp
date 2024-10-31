@@ -43,7 +43,7 @@ void KolibriLib::UI::text::Txt::Delete(int i)
 	_data.erase(_data.begin() + i);
 }
 
-void KolibriLib::UI::text::Txt::Print(Coord pos, Size size, const Colors::Color &BackgroundColor) const
+void KolibriLib::UI::text::Txt::Print(Coord pos, const Size &size, const Colors::Color &BackgroundColor) const
 {
 	logger << microlog::LogLevel::Debug << "Print Txt" << std::endl;
 

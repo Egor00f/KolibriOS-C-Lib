@@ -11,7 +11,7 @@ namespace KolibriLib
 		namespace buttons
 		{
 			/// \brief Класс для работы с кнопками
-			class TextButton: public Button, public text::Txt
+			class TextButton : public Button, public text::Txt
 			{
 			public:
 				/// \brief Это конструктор
@@ -38,7 +38,7 @@ namespace KolibriLib
 				 * @param size размер
 				 * @param text текст
 				 */
-				TextButton(const UDim& coord, const UDim& size, const std::string& text);
+				TextButton(const UDim &coord, const UDim &size, const std::string &text);
 
 				/// @brief Конструктор копирования
 				/// @param copy Кнопка которую будут копировать
@@ -71,16 +71,20 @@ namespace KolibriLib
 				 * @param element с чем сравнивать
 				 * @return true или false
 				 */
-				bool operator != (const TextButton& element) const;
+				bool operator!=(const TextButton &element) const;
 
-
-				void swap(TextButton& a);
+				void swap(TextButton &a);
 
 			private:
-
 			};
 		}
 	}
+}
+inline std::ostream &operator<<(std::ostream &os, const KolibriLib::UI::buttons::TextButton &element)
+{
+	return os << "TextButton:" << std::endl
+			  << static_cast<KolibriLib::UI::buttons::Button>(element) << std::endl
+			  << static_cast<KolibriLib::UI::text::Txt>(element);
 }
 
 #endif // __TEXTBUTTON_HPP__

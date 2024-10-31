@@ -79,7 +79,7 @@ namespace KolibriLib
 			WindowSettings _settings = WindowSettings::WindowHaveTitle;
 
 			/// @brief Прозрачность окна
-			/// @warning Будет реализованно в будующем
+			/// @warning Будет реализованно в будущем
 			uint8_t _Transparency = 0;
 
 			/// @brief Окно пересовывается при перетаскивании
@@ -87,7 +87,7 @@ namespace KolibriLib
 		};
 
 		/// @brief Класс для работы с окном
-		/// @paragraph По простому: Окно остаётся привязаным к потоку, в которм бы вызван конструктор. Если вызывать методы из других потоков, то вести они себя будут неадекватно
+		/// @paragraph По простому: Окно остаётся привязанным к потоку, в котором бы вызван конструктор. Если вызывать методы из других потоков, то вести они себя будут неадекватно
 		class Window: public Window_t
 		{
 		public:
@@ -103,7 +103,7 @@ namespace KolibriLib
 			/// @brief Конструктор, необходим только для windowAttached
 			Window(const Window_t &wndw);
 
-			/// @brief Полная перересовка окна
+			/// @brief Полная перерисовка окна
 			void Redraw();
 
 			/// @brief Отрисовать окно
@@ -149,12 +149,12 @@ namespace KolibriLib
 			/// @param colorTable таблица цветов
 			void SetWindowColors(const Colors::ColorsTable &colorTable);
 
-			/// @brief Начать перересовку окна
-			/// @note Стирает всё что было нарисованно в окне
+			/// @brief Начать перерисовку окна
+			/// @note Стирает всё что было нарисовано в окне
 			/// @note Обязательно после должна быть вызвана функция #EndRedraw()
 			void StartRedraw() const;
 
-			/// @brief Закончить перересовку окна
+			/// @brief Закончить перерисовку окна
 			/// @note Обязательно после должна быть вызвана функция #StartRedraw()
 			void EndRedraw() const;
 
@@ -165,7 +165,7 @@ namespace KolibriLib
 
 			/// @brief Изменить заголовок окна
 			/// @param newTitle новый заголовок
-			void SetTilte(const std::string &newTitle);
+			void SetTitle(const std::string &newTitle);
 
 			/// @brief Обработчик окна
 			/// @return Ивент

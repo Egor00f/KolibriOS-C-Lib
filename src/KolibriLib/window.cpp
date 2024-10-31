@@ -94,9 +94,7 @@ KolibriLib::window::Window::Window(const Window_t &wndw)
 {
 
 	if (Globals::DefaultButtonsIDController == nullptr)
-	{
 		Globals::DefaultButtonsIDController = &_buttonsController;
-	}
 
 	window::CreateWindow(
 		DefaultWindowCoord,
@@ -188,7 +186,7 @@ void Window::ChangeWindow(const Coord &coord, const Size &size)
 	window::ChangeWindow(coord, size);
 }
 
-void Window::SetTilte(const std::string &newTitle)
+void Window::SetTitle(const std::string &newTitle)
 {
 	Window_t::SetTitle(newTitle);
 	_ksys_set_window_title(_title.c_str());
@@ -274,7 +272,7 @@ OS::Event Window::Handler()
 
 		try
 		{
-			s_ptr = _buttonsController.GetPoinerToButton(PressedButton).at(0).lock();
+			s_ptr = _buttonsController.GetPointerToButton(PressedButton).at(0).lock();
 		}
 		catch (...)
 		{

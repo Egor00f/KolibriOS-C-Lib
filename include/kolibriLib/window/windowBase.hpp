@@ -52,8 +52,8 @@ namespace KolibriLib
 				"a"(0),
 				"b"((coord.x << 16) | ((size.x - 1) & 0xFFFF)),
 				"c"((coord.y << 16) | ((size.y - 1) & 0xFFFF)),
-				"d"( ((static_cast<std::uint16_t>(settings) << 28)	| (static_cast<std::uint8_t>(style) << 24)) | (static_cast<ksys_color_t>(WorkColor) & 0xFFFFFF)),
-				"S"(  (static_cast<std::uint16_t>(settings) >> 8)	| (static_cast<ksys_color_t>(TitleColor) & 0xFFFFFF)),
+				"d"(((static_cast<std::uint16_t>(settings) << 28) | (static_cast<std::uint8_t>(style) << 24)) | (static_cast<ksys_color_t>(WorkColor) & 0xFFFFFF)),
+				"S"((static_cast<std::uint16_t>(settings) >> 8) | (static_cast<ksys_color_t>(TitleColor) & 0xFFFFFF)),
 				"D"(title.c_str())
 				: "memory");
 		}
@@ -87,31 +87,26 @@ namespace KolibriLib
 		{
 			Thread::Slot s;
 
-			asm_inline (
+			asm_inline(
 				"int $0x40"
 				: "=a"(s)
-				: "a"(18), "b"(7)
-			);
-			
+				: "a"(18), "b"(7));
+
 			return s;
 		}
 
 		/// @brief Свернуть окно (окно текущего потока)
 		inline void MinimizeWindow()
 		{
-			asm_inline (
-				"int $0x40" 
-				:: "a"(18), "b"(10)
-			);
+			asm_inline(
+				"int $0x40" ::"a"(18), "b"(10));
 		}
 
 		/// @brief Свернуть все окна
 		inline void MinimizeAllWindows()
 		{
-			asm_inline (
-				"int $0x40" 
-				:: "a"(18), "b"(23)
-			);
+			asm_inline(
+				"int $0x40" ::"a"(18), "b"(23));
 		}
 
 		/// @brief получить координаты окна
@@ -129,7 +124,7 @@ namespace KolibriLib
 		{
 			Pos a;
 
-			asm_inline (
+			asm_inline(
 				"int $0x40"
 				: "=a"(a)
 				: "a"(18), "b"(25), "c"(1));
@@ -146,7 +141,7 @@ namespace KolibriLib
 		{
 			bool ret;
 
-			asm_inline (
+			asm_inline(
 				"int $0x40"
 				: "=a"(ret)
 				: "a"(18), "b"(25), "c"(2), "d"(pid), "S"(pos));
@@ -158,7 +153,7 @@ namespace KolibriLib
 		/// @param coord новые координаты окна
 		/// @param size новый размер окна
 		/// @note работает для окна, которое было создано тем потоком, в котором эту функцию запускают
-		inline void ChangeWindow(const Coord& coord, const Size& size)
+		inline void ChangeWindow(const Coord &coord, const Size &size)
 		{
 			_ksys_change_window(coord.x, coord.y, size.x, size.y);
 		}
@@ -176,11 +171,10 @@ namespace KolibriLib
 		{
 			ksys_pos_t a, b;
 
-			asm_inline (
+			asm_inline(
 				"int $0x40"
 				: "=a"(a), "=b"(b)
-				: "a"(48), "b"(5)
-			);
+				: "a"(48), "b"(5));
 
 			return Size(a.y - a.x + 1, b.y - b.x + 1);
 		}

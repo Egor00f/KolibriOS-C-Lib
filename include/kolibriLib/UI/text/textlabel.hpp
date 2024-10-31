@@ -34,21 +34,21 @@ namespace KolibriLib
 
                 /// @brief Конструктор
                 /// @param coord координата
-                /// @param size Рамер элемента, игнорируется если TextScale = false
+                /// @param size Размер элемента, игнорируется если TextScale = false
                 /// @param text Текст текста
                 /// @param FontSize Размер текста
-                /// @param TextScale Маштабировать текст, чтобы он не выходил за границы элемента
+                /// @param TextScale Масштабировать текст, чтобы он не выходил за границы элемента
                 /// @param Margin Отступы от границ
                 TextLabel(const UDim& coord = point(0), const UDim& size = DefaultSize, const std::string& text = "TextLabel", const Size &CharSize = {8, 16}, bool TextScale = true, const Colors::Color& TextColor = Globals::SystemColors.work_text, const unsigned& Margin = 0);
              
                 /// @brief конструктор
-                /// @param coord коордирдинаты
+                /// @param coord координаты
                 /// @param size размер
                 /// @param text текст
                 TextLabel(const UDim &coord, const UDim &size = DefaultSize, const Txt &text = Txt());
 
                 /// @brief Конструктор копирования
-                /// @param copy объекто который будет копироваться
+                /// @param copy объект который будет копироваться
                 TextLabel(const TextLabel &copy);
 
                 /// @brief Отрисовать текстовую метку

@@ -68,11 +68,11 @@ namespace KolibriLib
 
 				/**
 				 * @brief Вывести текст
-				 * @param coord Координаты(левый верхний угол) текста
+				 * @param coord Координаты(левый верхний угол) текста (и да, то что тут не по константной ссылке передается, оно так и должно быть)
 				 * @param size Зона в котору вписывается текст
 				 * @param BackgroundColor Цвет фона
 				 */
-				void Print(Coord coord, Size size, const Colors::Color &BackgroundColor = Globals::SystemColors.work_area) const;
+				void Print(Coord coord, const Size &size, const Colors::Color &BackgroundColor = Globals::SystemColors.work_area) const;
 
 				/// @brief Изменить цвет текста для всех символов
 				/// @param Color
@@ -83,7 +83,7 @@ namespace KolibriLib
 				Colors::Color GetTextColor() const;
 
 				/// @brief Получить текст
-				/// @return
+				/// @return Текст
 				std::string GetText() const;
 
 				/// @brief Получить символ под номером i
@@ -97,11 +97,11 @@ namespace KolibriLib
 				std::size_t length() const;
 
 				/// @brief Получить длину текста в пикселях
-				/// @return
+				/// @return длинна текста
 				unsigned lenghtPX() const;
 
 				/// @brief Изменить текст
-				/// @param text
+				/// @param text новый текст
 				void SetText(const std::string &text);
 
 				/**
@@ -122,8 +122,8 @@ namespace KolibriLib
                 /// @param NewAlignment 
                 void SetAlign(Align NewAlignment);
 
-                /// @brief получить выравнивание
-                /// @return 
+                /// @brief Получить выравнивание
+                /// @return Выравнивание
                 Align GetAlign() const;
 
 				/// @brief 
@@ -138,7 +138,7 @@ namespace KolibriLib
 				bool operator==(const Txt &txt) const;
 
 				/**
-				 * @brief Оператор неравенства
+				 * @brief Оператор сравнения
 				 * @param txt с чем сравнивать
 				 * @return 
 				 */
@@ -171,9 +171,9 @@ namespace KolibriLib
 				 */
 				Colors::Color *SelectColor;
 
-				/*
+				/**
                  * @brief выровнено ли
-                 * @details Внутряння переменная для использования класса не нужно о ней фообще знать
+                 * @details Внутряння переменная, для использования класса вам не нужно о ней вообще знать
                  */
                 mutable bool _Aligned;
 
@@ -192,7 +192,36 @@ namespace KolibriLib
 		} // namespace text
 
 	} // namespace UI
+	
 } // namespace KolibriLib
 
+inline std::ostream &operator<<(std::ostream &os, const KolibriLib::UI::text::Txt::Align &val)
+{
+	switch (val)
+	{
+	case KolibriLib::UI::text::Txt::Align::Center:
+		os << "Center";
+		break;
+	case KolibriLib::UI::text::Txt::Align::Left:
+		os << "Left";
+		break;
+	case KolibriLib::UI::text::Txt::Align::Right:
+		os << "Right";
+		break;
+	default:
+		os << "idk:" << static_cast<int>(val);
+		break;
+	}
+
+    return os;
+}
+
+inline std::ostream &operator<<(std::ostream &os, const KolibriLib::UI::text::Txt &element)
+{
+	return os << "BaseButton:" << std::endl
+	          << "text: " << element.GetText() << std::endl
+			  << "Align:" << element.GetAlign() << std::endl
+			  << "TextColor:" << element.GetTextColor();
+}
 
 #endif // __TEXT_HPP__

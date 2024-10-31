@@ -2,7 +2,7 @@
 #define __BASEBUTTON_HPP__
 
 #include <kolibriLib/debug.hpp>
-#include "buttonsBase.hpp"
+#include "ButtonsIDController.hpp"
 
 namespace KolibriLib
 {
@@ -14,14 +14,13 @@ namespace KolibriLib
             class BaseButton
             {
             public:
-
                 /**
                  * @brief Конструктор по умолчанию
                  */
                 BaseButton();
 
-				/// @brief Конструтор
-				/// @param id ID кнопки
+                /// @brief Конструктор
+                /// @param id ID кнопки
                 BaseButton(ButtonID id);
 
                 /**
@@ -30,10 +29,10 @@ namespace KolibriLib
                  */
                 BaseButton(const BaseButton &button);
 
-				/// @brief Деструктор
+                /// @brief Деструктор
                 ~BaseButton();
 
-                /// @brief Получить сосояние кнопки на момент последней обработки
+                /// @brief Получить состояние кнопки на момент последней обработки
                 /// @return _status
                 bool GetStatus() const;
 
@@ -55,30 +54,29 @@ namespace KolibriLib
                 void SetId(const ButtonID &NewID);
 
                 /// @brief Изменить ID кнопки на какой-нибудь другой
-                /// @details просто запрашивает новый ID у ButtonsIDController (старый конешноже освобождает)
+                /// @details просто запрашивает новый ID у ButtonsIDController (старый конечно же освобождает)
                 void SetId();
 
                 /// @brief Проверить имеет ли кнопка ID
                 /// @return true если у кнопки есть ID
                 bool IsActive() const;
 
-				/// @brief Объявить кнопку
-				/// @param coord Координаты кнопки
-				/// @param size размер кнопки
-				/// @param color цвет кнокпи
+                /// @brief Объявить кнопку
+                /// @param coord Координаты кнопки
+                /// @param size размер кнопки
+                /// @param color цвет кнопки
                 void Define(const Coord &coord, const Size &size, const Colors::Color &color = Globals::SystemColors.work_button) const;
 
             protected:
-            
                 /// @brief ID кнопки
                 ButtonID _id = buttons::ButtonIDNotSet;
 
-			    /**
-			     * @brief Указатель на контроллер ID кнопок
-			     */
-			    ButtonsIDController *_ButtonsIDController = nullptr;
+                /**
+                 * @brief Указатель на контроллер ID кнопок
+                 */
+                ButtonsIDController *_ButtonsIDController = nullptr;
 
-                /// @brief Состояние кнопки(Нажата/Ненажата)
+                /// @brief Состояние кнопки(Нажата/Не нажата)
                 mutable bool _status;
 
             private:
@@ -94,10 +92,10 @@ namespace KolibriLib
 
 } // namespace KolibriLib
 
-
-inline std::ostream &operator<<(std::ostream &os, const KolibriLib::UI::buttons::BaseButton& element)
+inline std::ostream &operator<<(std::ostream &os, const KolibriLib::UI::buttons::BaseButton &element)
 {
-	return os << "BaseButton" << std::endl << "ID: " << element.GetId();
+    return os << "BaseButton:" << std::endl
+              << "ID: " << element.GetId();
 }
 
 #endif // __BUTTON_HPP__

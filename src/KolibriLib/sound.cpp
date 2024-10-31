@@ -1,4 +1,5 @@
 #include <kolibriLib/sound.hpp>
+#include <kolibriLib/debug.hpp>
 #include <cstdlib>
 
 KolibriLib::Sound::SoundLib KolibriLib::Sound::lib;
@@ -26,22 +27,26 @@ bool KolibriLib::Sound::PlayOnSpeaker(SpeakerSound data)
 	sound.h
 */
 
-KolibriLib::Sound::Error KolibriLib::Sound::initSound()
+KolibriLib::Sound::SoundLib::SoundLib()
 {
 	Error err;
 	int version = -1;
 
+	KolibriLib::logger << microlog::LogLevel::Debug << "Loading Sound: ";
+
 	err = InitSound(&version);
 
-	return err;
-}
-
-KolibriLib::Sound::SoundLib::SoundLib()
-{
-	if (int err = initSound() != 0 ||
-				  (SOUND_VERSION > (-1 & 0xFFFF)) ||
-				  (SOUND_VERSION < (-1 >> 16)))
+	if (err != 0 ||
+				  (SOUND_VERSION > (version & 0xFFFF)) ||
+				  (SOUND_VERSION < (version >> 16)))
+	{
+		KolibriLib::logger << microlog::LogLevel::Fatal << "Error loading Sound" << std::endl;
 		throw err;
+	}
+	else
+	{
+		KolibriLib::logger << "OK" << std::endl;
+	}
 }
 
 KolibriLib::Sound::Error KolibriLib::Sound::PlaySound(void *buffer, int buffer_size, SoundFormat snd_format)

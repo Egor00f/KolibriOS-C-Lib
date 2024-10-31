@@ -9,7 +9,7 @@
 #include <kolibriLib/types.hpp>
 #include <kolibriLib/color.hpp>
 #include <kolibriLib/system/os.hpp>
-#include <kolibriLib/UI/buttons/buttonsBase.hpp>
+#include <kolibriLib/UI/buttons/ButtonsIDController.hpp>
 #include <kolibriLib/globals.hpp>
 
 namespace KolibriLib
@@ -21,7 +21,7 @@ namespace KolibriLib
 	namespace UI
 	{
 
-		/// @brief Отступы поумолчанию
+		/// @brief Отступы по умолчанию
 		const unsigned DefaultMargin = 4;
 
 		/// @brief Размеры по умолчанию
@@ -151,7 +151,7 @@ namespace KolibriLib
 			Size GetAbsoluteSize() const override;
 
 			/// @brief Получить абсолютные координаты элемента
-			/// @return координаты левого верхнего угла этого элмента относительно левого верхнего угла родитесльского элемента
+			/// @return координаты левого верхнего угла этого элемента относительно левого верхнего угла родитесльского элемента
 			Coord GetAbsoluteCoord() const override;
 
 			/// @brief Получить координаты элемента

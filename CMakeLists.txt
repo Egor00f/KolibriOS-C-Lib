@@ -79,11 +79,12 @@ SET(SOURCES
 	${SRC_PATH}/image.cpp
 	${SRC_PATH}/text.cpp
 	${SRC_PATH}/textlabel.cpp
-	${SRC_PATH}/buttonsBase.cpp
-	${SRC_PATH}/BaseButton.cpp
-	${SRC_PATH}/Button.cpp
-	${SRC_PATH}/TextButton.cpp
-	${SRC_PATH}/ImageButton.cpp
+	${SRC_PATH}/UI/buttons/buttonsBase.cpp
+	${SRC_PATH}/UI/buttons/BaseButton.cpp
+	${SRC_PATH}/UI/buttons/ButtonsIDController.cpp
+	${SRC_PATH}/UI/buttons/Button.cpp
+	${SRC_PATH}/UI/buttons/TextButton.cpp
+	${SRC_PATH}/UI/buttons/ImageButton.cpp
 	${SRC_PATH}/checkbox.cpp
 	${SRC_PATH}/BaseEditor.cpp
 	#${SRC_PATH}/menu.cpp

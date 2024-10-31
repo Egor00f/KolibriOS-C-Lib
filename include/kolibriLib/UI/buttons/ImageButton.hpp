@@ -14,31 +14,29 @@ namespace KolibriLib
 			/**
 			 * @brief Кнопка-изображение
 			 */
-			class ImageButton: public Button, public Images::img
+			class ImageButton : public Button, public Images::img
 			{
 			public:
-
 				/// @brief Отрисовать изображение
 				void Render() const override;
 
-				ImageButton& operator=(const ImageButton&) = default;
+				ImageButton &operator=(const ImageButton &) = default;
 
 				/**
-				 * @brief 
-				 * @param val 
-				 * @return 
+				 * @brief
+				 * @param val
+				 * @return
 				 */
-				bool operator == (const ImageButton& val) const;
+				bool operator==(const ImageButton &val) const;
 
 				/**
-				 * @brief 
-				 * @param val 
-				 * @return 
+				 * @brief
+				 * @param val
+				 * @return
 				 */
-				bool operator != (const ImageButton& val) const;
+				bool operator!=(const ImageButton &val) const;
 
 			private:
-			
 			};
 		}
 	}

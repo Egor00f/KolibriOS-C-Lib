@@ -12,9 +12,9 @@ namespace KolibriLib
 		/// @brief Таблица систменых цветов
 		/// @details По умолчанию в этой переменной реально системные цвета, но вы можете это изменить ()
 		extern Colors::ColorsTable SystemColors;
+
 	} // namespace Globals
 	
 } // namespace KolibriLib
-
 
 #endif // __GLOBALS_HPP__
