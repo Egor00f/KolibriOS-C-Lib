@@ -17,14 +17,14 @@ extern rasterwoksLib rasterworksLibv;
 
 
 /// @brief Оболочка для Сишной версии
-/// @param canvas буффер, на котром будем рисовать
+/// @param canvas буфер, на котором будем рисовать
 /// @param coord координаты текста в буфере
 /// @param size размеры буфера
 /// @param text текст
 /// @param CharSize Размеры символов
 /// @param FontColor цвет текста
 /// @param flags флаги
-/// @param encoding кодировка тектса
+/// @param encoding кодировка текста
 /// @return буфер
 inline void *drawTextToBuff(const void *canvas, const KolibriLib::Coord &coord, const KolibriLib::Size &size, const std::string &text, const KolibriLib::Size &CharSize, const KolibriLib::Colors::Color &FontColor, const std::uint8_t &flags, const std::uint8_t encoding = RasterworksEncoding::Rasterworks_UTF8)
 {

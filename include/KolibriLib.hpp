@@ -13,29 +13,27 @@
 #include <KolibriLibUI.hpp>
 #include <kolibriLib/system/notify.hpp>
 
-
-
 /**
- * @brief Прастранство имён библиотеки KolibriLib
+ * @brief Пространство имён библиотеки KolibriLib
  * @author Egor00f
  */
 namespace KolibriLib
 {
 
-	// Тут всё из этой либы используется как KolibriLib::
+	// Тут всё из этой библиотеки используется как KolibriLib::
 
 	using KolibriLib::Colors::Color;
 	using KolibriLib::Colors::ColorsTable;
 
 	using KolibriLib::window::Window;
 
-	using KolibriLib::OS::Event;
-	using KolibriLib::OS::GetSystemColors;
-	using KolibriLib::OS::Exec;
-	using KolibriLib::OS::GetFreeMem;
 	using KolibriLib::OS::AllMem;
-	using KolibriLib::OS::SetEventMask;
+	using KolibriLib::OS::Event;
+	using KolibriLib::OS::Exec;
 	using KolibriLib::OS::GetEventMask;
+	using KolibriLib::OS::GetFreeMem;
+	using KolibriLib::OS::GetSystemColors;
+	using KolibriLib::OS::SetEventMask;
 
 	using graphic::DrawCircle;
 	using graphic::DrawCircleFill;
@@ -48,22 +46,21 @@ namespace KolibriLib
 	using graphic::ReadArea;
 	using graphic::ReadPoint;
 
-	using UI::buttons::DefineButton;
 	using UI::buttons::autoDefineButton;
+	using UI::buttons::DefineButton;
 	using UI::buttons::DeleteButton;
 
-	using mouse::GetMousePositionOnSreen;
-	using mouse::GetMousePositionInWindow;
-	using mouse::GetMouseEvents;
-	using mouse::GetMouseButtons;
 	using mouse::CenterCursor;
+	using mouse::GetMouseButtons;
+	using mouse::GetMouseEvents;
+	using mouse::GetMousePositionInWindow;
+	using mouse::GetMousePositionOnSreen;
 
-	using keyboard::Scancode;
-	using keyboard::KeyboardLayout;
 	using keyboard::CheckKeyboard;
+	using keyboard::KeyboardLayout;
+	using keyboard::Scancode;
 	using keyboard::SetKeyboardLayout;
 
 } // namespace KolibriLib
-
 
 #endif // __KOLIBRILIB_HPP__

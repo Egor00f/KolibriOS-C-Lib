@@ -20,6 +20,9 @@ class msgBox
 {
 public:
 
+	/**
+	 * @brief 
+	 */
 	using Callback = msgbox_callback;
 
 	/// @brief Конструктор
@@ -32,13 +35,23 @@ public:
 	~msgBox();
 
 	/// @brief Отправить MessageBox
-	/// @param funcs функции вызываемые при нажатии на кпопку
-	/// при нажатии на кпонку со вторым текстом (из вектора ButtonsText из конструктора) вызовется функция вторая функция из этого вектора
+	/// @param funcs функции вызываемые при нажатии на кнопку
+	/// при нажатии на кнопку со вторым текстом (из вектора ButtonsText из конструктора) вызовется функция вторая функция из этого вектора
 	void msg(const std::vector<msgBox::Callback> &funcs);
 
+	/**
+	 * @brief 
+	 */
 	void reinit();
 private:
+	/**
+	 * @brief 
+	 */
 	msgbox* _struct;
+
+	/**
+	 * @brief 
+	 */
 	msgBox::Callback* _funcs = nullptr;
 };
 

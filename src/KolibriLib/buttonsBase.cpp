@@ -12,24 +12,23 @@ ButtonID buttons::GetFreeButtonId(ButtonIDList &ButtonsIdList, std::uint32_t sta
 {
 	logger << microlog::LogLevel::Debug << "GetFreeButtonID" << std::endl;
 
-	for(ButtonID i = startID; i < buttons::ButtonIDEnd; i.value++)	// в wiki сказанно что id в промежутке (0, 0x8000)
-	{                                   	// CloseButton = 1, поэтому пропускаем и начинаем сразу с 2
-		if(std::find(ButtonsIdList.begin(), ButtonsIdList.end(), i) == ButtonsIdList.end())
+	for (ButtonID i = startID; i < buttons::ButtonIDEnd; i.value++) // в wiki сказано что id в промежутке (0, 0x8000)
+	{																// CloseButton = 1, поэтому пропускаем и начинаем сразу с 2
+		if (std::find(ButtonsIdList.begin(), ButtonsIdList.end(), i) == ButtonsIdList.end())
 		{
 			ButtonsIdList.push_back(i);
 			return i;
 		}
 	}
-	
+
 	return ButtonIDNotSet;
 }
-
 
 bool KolibriLib::UI::buttons::FreeButtonId(const ButtonID &id, ButtonIDList &ButtonsIdList)
 {
 	auto iter = std::find(ButtonsIdList.begin(), ButtonsIdList.end(), id);
-	
-	if(!(iter == ButtonsIdList.end()))
+
+	if (!(iter == ButtonsIdList.end()))
 	{
 		ButtonsIdList.erase(iter);
 		return true;
@@ -59,32 +58,31 @@ ButtonID buttons::ButtonsIDController::GetFreeButtonID(std::weak_ptr<BaseButton>
 
 	ButtonID ret;
 
-	for(std::int8_t i = 0; i < 2; i++) // пробуем 2 раза
-	{                                  // 3 раза уже нету смысла
+	for (std::int8_t i = 0; i < 2; i++) // пробуем 2 раза
+	{									// 3 раза уже нету смысла
 		ret = GetFreeButtonId(buttonsList, _top);
 
-		if(ret.CheckIsValid())
+		if (ret.CheckIsValid())
 		{
-			_top = ret.value + 1;	
+			_top = ret.value + 1;
 
 			ButtonsIDController::node n(buttonsList.back());
 
-			if(!ptr.expired())
+			if (!ptr.expired())
 				n.pointers.push_back(ptr);
 
 			ButtonsIdList.push_back(n);
 
 			break;
 		}
-		else // Если не удалось найти свободный ID 
-		{    // то начинаем с начала
+		else // Если не удалось найти свободный ID
+		{	 // то начинаем с начала
 			_top = StartTop;
 		}
 	};
 
 	return ret;
 }
-
 
 void buttons::ButtonsIDController::FreeButtonID(const ButtonID &id)
 {
@@ -94,12 +92,12 @@ void buttons::ButtonsIDController::FreeButtonID(const ButtonID &id)
 
 	auto iter = std::find(buttonslist.begin(), buttonslist.end(), id);
 
-	if(iter != buttonslist.end())
+	if (iter != buttonslist.end())
 	{
-		if(id.value == _top-1)
+		if (id.value == _top - 1)
 			_top--;
 
-		const std::size_t index =  std::distance(buttonslist.begin(), iter);
+		const std::size_t index = std::distance(buttonslist.begin(), iter);
 
 		ButtonsIdList.erase(ButtonsIdList.begin() + index);
 	}
@@ -107,15 +105,14 @@ void buttons::ButtonsIDController::FreeButtonID(const ButtonID &id)
 	{
 		logger << microlog::LogLevel::Warning << "ButtonID not found" << std::endl;
 	}
-
 }
 
-ButtonsIDController::List& buttons::ButtonsIDController::GetButtonsIDList()
+ButtonsIDController::List &buttons::ButtonsIDController::GetButtonsIDList()
 {
 	return ButtonsIdList;
 }
 
-const ButtonsIDController::List& buttons::ButtonsIDController::GetButtonsIDList() const
+const ButtonsIDController::List &buttons::ButtonsIDController::GetButtonsIDList() const
 {
 	return ButtonsIdList;
 }
@@ -125,25 +122,25 @@ std::vector<std::weak_ptr<BaseButton>> KolibriLib::UI::buttons::ButtonsIDControl
 	std::vector<std::weak_ptr<BaseButton>> ret;
 
 	std::find_if(ButtonsIdList.begin(), ButtonsIdList.end(),
-		[&ID, &ret](const ButtonsIDController::node& n){
-			if(n.id == ID)
-			{
-				ret = n.pointers;
-				return true;
-			}
-			return false;
-		}
-	);
+				 [&ID, &ret](const ButtonsIDController::node &n)
+				 {
+					 if (n.id == ID)
+					 {
+						 ret = n.pointers;
+						 return true;
+					 }
+					 return false;
+				 });
 
 	return ret;
 }
 
-ButtonIDList KolibriLib::UI::buttons::ButtonsIDController::ListoButtonIDList(const List& list)
+ButtonIDList KolibriLib::UI::buttons::ButtonsIDController::ListoButtonIDList(const List &list)
 {
 	ButtonIDList ret;
 	ret.reserve(list.size());
 
-	for(ButtonsIDController::node i : list)
+	for (ButtonsIDController::node i : list)
 	{
 		ret.push_back(i.id);
 	}
@@ -159,7 +156,7 @@ void KolibriLib::UI::buttons::ButtonsIDController::TakeupButtonID(const ButtonID
 
 	auto it = std::find(buttonslist.begin(), buttonslist.end(), id);
 
-	if(it == buttonslist.end())
+	if (it == buttonslist.end())
 	{
 		ButtonsIdList.push_back(node(id, ptr));
 	}
@@ -176,21 +173,20 @@ void KolibriLib::UI::buttons::ButtonsIDController::Sort()
 
 	IDList.reserve(ButtonsIdList.size());
 
-	for(auto i : ButtonsIdList)
+	for (auto i : ButtonsIdList)
 	{
 		std::size_t expired = 0;
-		for(auto j : i.pointers)
+		for (auto j : i.pointers)
 		{
-			if(j.expired())
+			if (j.expired())
 			{
 				expired++;
 				break;
 			}
 		}
 
-		if(expired == i.pointers.size())
+		if (expired == i.pointers.size())
 		{
-
 		}
 	}
 }
@@ -200,13 +196,13 @@ void KolibriLib::UI::buttons::ButtonsIDController::Sort()
 */
 
 KolibriLib::UI::buttons::ButtonsIDController::node::node(ButtonID Id)
-	:	id(Id)
+	: id(Id)
 {
 }
 
 KolibriLib::UI::buttons::ButtonsIDController::node::node(ButtonID Id, std::weak_ptr<BaseButton> p)
-	:	id(Id),
-		pointers({p})
+	: id(Id),
+	  pointers({p})
 {
 }
 
@@ -220,12 +216,12 @@ bool KolibriLib::UI::buttons::ButtonsIDController::node::operator!=(const node &
 	return id != val.id;
 }
 
-/* 
-	ButtonID 
+/*
+	ButtonID
 */
 
 KolibriLib::UI::buttons::ButtonID::ButtonID(unsigned val)
-	:	value(val)
+	: value(val)
 {
 }
 

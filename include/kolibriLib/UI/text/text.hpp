@@ -29,11 +29,11 @@ namespace KolibriLib
 				/// @brief Выравнивание текста в метке
                 enum class Align
                 {
-                    /// @brief Выравнивание по правому ккраю
+                    /// @brief Выравнивание по правому краю
                     /// @details текст прижимается к правой стороне
                     Right,
 
-                    /// @brief Выравнивание по левому ккраю
+                    /// @brief Выравнивание по левому краю
                     /// @details Текст прижат к левой стороне
                     Left,
 
@@ -63,7 +63,7 @@ namespace KolibriLib
 				void insert(const std::string &txt, int i);
 
 				/// @brief Удалить Char из текста
-				/// @param i Номер удаляемого Charа
+				/// @param i Номер удаляемого символа
 				void Delete(int i);
 
 				/**
@@ -89,14 +89,14 @@ namespace KolibriLib
 				/// @brief Получить символ под номером i
 				/// @param i номер
 				/// @return _data.at(i)
-				/// @throw std::string::at(std::size_t) можеть сгенерировать исключение
+				/// @throw std::string::at(std::size_t) может сгенерировать исключение
 				char GetChar(std::size_t i) const;
 
 				/// @brief Получить длину текста
 				/// @return длина текста
 				std::size_t length() const;
 
-				/// @brief Получить длинну текста в пикселях
+				/// @brief Получить длину текста в пикселях
 				/// @return
 				unsigned lenghtPX() const;
 
@@ -105,7 +105,7 @@ namespace KolibriLib
 				void SetText(const std::string &text);
 
 				/**
-				 * @brief 
+				 * @brief Изменить размеры текста
 				 * @param NewTextCharSize 
 				 */
 				void SetTextSize(const Size &NewTextCharSize);
@@ -115,16 +115,16 @@ namespace KolibriLib
                 void SetScale(bool scale);
                 
                 /// @brief Получить состояние переменной _TextScale
-                /// @ return значение переменной _TextScale
+                /// @return значение переменной _TextScale
                 bool GetScale() const; 
 
                 /// @brief Изменить выравнивание
-                /// @param aling 
-                void SetAling(Align aling);
+                /// @param NewAlignment 
+                void SetAlign(Align NewAlignment);
 
                 /// @brief получить выравнивание
                 /// @return 
-                Align GetAling() const;
+                Align GetAlign() const;
 
 				/// @brief 
 				/// @return 
@@ -171,7 +171,7 @@ namespace KolibriLib
 				 */
 				Colors::Color *SelectColor;
 
-				/**
+				/*
                  * @brief выровнено ли
                  * @details Внутряння переменная для использования класса не нужно о ней фообще знать
                  */

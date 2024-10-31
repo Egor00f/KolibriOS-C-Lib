@@ -7,12 +7,11 @@ using namespace FreeType;
 
 Library FreeType::_lib;
 
-
 Error::operator std::string() const
 {
 	std::string ret;
-	
-	switch(val)
+
+	switch (val)
 	{
 	case FT_Err_Ok:
 		ret = "Ok";
@@ -54,10 +53,9 @@ Error::operator bool() const
 Error::Error(FT_Error v)
 	: val(v)
 {
-	
 }
 
-Error& Error::operator=(const  FT_Error& v)
+Error &Error::operator=(const FT_Error &v)
 {
 	val = v;
 
@@ -76,8 +74,8 @@ Library::Library()
 	lib = 0;
 
 	Error err = FT_Init_FreeType(&lib);
-	
-	if(err)
+
+	if (err)
 	{
 		KolibriLib::logger << microlog::LogLevel::Error << "Error init FreeType lib, Error: " << err << std::endl;
 
@@ -91,7 +89,7 @@ FreeType::Library::~Library()
 
 	FT_Error err = FT_Done_FreeType(lib);
 
-	if(err)
+	if (err)
 	{
 		KolibriLib::logger << microlog::LogLevel::Error << "Error done FreeType Lib, Error: " << err << std::endl;
 
@@ -105,7 +103,7 @@ FreeType::Library::operator FT_Library() const
 }
 
 FreeType::Face::Face()
-	:	face(0)
+	: face(0)
 {
 	KolibriLib::logger << microlog::LogLevel::Debug << "Face constructor (face=0)\nFace constructor done" << std::endl;
 }
@@ -122,12 +120,11 @@ FreeType::Face::Face(const char *file)
 
 	face = 0;
 
-	FT_Error err = FT_New_Face (
-		_lib, 
-		file, 
-		0, 
-		&face
-	);
+	FT_Error err = FT_New_Face(
+		_lib,
+		file,
+		0,
+		&face);
 
 	if (err)
 	{
@@ -136,7 +133,7 @@ FreeType::Face::Face(const char *file)
 		throw err;
 	}
 
-	KolibriLib::logger << microlog::LogLevel::Debug << "Face constructor done" << std::endl;	// На всякий случай
+	KolibriLib::logger << microlog::LogLevel::Debug << "Face constructor done" << std::endl; // На всякий случай
 }
 
 FreeType::Face::~Face()
@@ -145,13 +142,13 @@ FreeType::Face::~Face()
 
 	Error err = FT_Done_Face(face);
 
-	if(err)
+	if (err)
 	{
 		KolibriLib::logger << microlog::LogLevel::Error << "Error done FreeType face, Error: " << err << std::endl;
 
 		throw err;
 	}
-	
+
 	KolibriLib::logger << microlog::LogLevel::Debug << "Face destructor done" << std::endl;
 }
 
@@ -159,12 +156,12 @@ Error FreeType::Face::OpenFile(const char *file)
 {
 	Error err = 0;
 
-	if(face)
+	if (face)
 	{
 		err = FT_Done_Face(face);
 	}
 
-	if(err)
+	if (err)
 	{
 		err = FT_New_Face(_lib, file, 0, &face);
 	}
@@ -181,22 +178,20 @@ FT_Error FreeType::Face::SetCharSize(const KolibriLib::Size &NewCharSize)
 {
 	const KolibriLib::Size ScreenSize = KolibriLib::GetScreenSize();
 
-	return FT_Set_Char_Size (
+	return FT_Set_Char_Size(
 		face,
 		NewCharSize.x * 64,
 		NewCharSize.y * 64,
 		ScreenSize.x,
-		ScreenSize.y
-	);
+		ScreenSize.y);
 }
 
 FT_Error FreeType::Face::SetCharSizePixels(const KolibriLib::Size &NewCharSize)
 {
-	return FT_Set_Pixel_Sizes (
+	return FT_Set_Pixel_Sizes(
 		face,
 		NewCharSize.x,
-		NewCharSize.y
-	);
+		NewCharSize.y);
 }
 
 FT_UInt FreeType::Face::GetGlyphIndex(const CharCode &charCode)
@@ -206,11 +201,10 @@ FT_UInt FreeType::Face::GetGlyphIndex(const CharCode &charCode)
 
 FT_Error FreeType::Face::LoadGlyph(FT_UInt GlyphIndex, FT_Int LoadFlags)
 {
-	return FT_Load_Glyph (
+	return FT_Load_Glyph(
 		face,
 		GlyphIndex,
-		LoadFlags
-	);
+		LoadFlags);
 }
 
 FT_Error FreeType::Face::LoadChar(const CharCode &charCode, FT_Int LoadFlags)
@@ -231,10 +225,9 @@ FT_Error FreeType::Face::SelectCharmap(FT_Encoding encoding)
 void FreeType::Face::SetTransform(FT_Matrix *matrix, FT_Vector *delta)
 {
 	FT_Set_Transform(
-		face, 
+		face,
 		matrix,
-		delta
-	);
+		delta);
 }
 
 FT_Vector Face::GetKerning(CharCode leftCharCode, CharCode rightCharCode, FT_Kerning_Mode KerningMode)
@@ -243,7 +236,7 @@ FT_Vector Face::GetKerning(CharCode leftCharCode, CharCode rightCharCode, FT_Ker
 
 	FT_Error err = FT_Get_Kerning(face, GetGlyphIndex(leftCharCode), GetGlyphIndex(rightCharCode), KerningMode, &delta);
 
-	if(err)
+	if (err)
 		throw err;
 
 	return delta;
@@ -255,10 +248,10 @@ FT_Glyph Face::GetGlyph()
 
 	FT_Error err = FT_Get_Glyph(face->glyph, &ret);
 
-	if(err)
+	if (err)
 	{
 		KolibriLib::logger << microlog::LogLevel::Error << "Error Get GLyph, Error: " << err << std::endl;
-		
+
 		throw err;
 	}
 
@@ -269,7 +262,7 @@ Stroker::Stroker()
 {
 	Error err = FT_Stroker_New(_lib, &stroker);
 
-	if(err)
+	if (err)
 	{
 		KolibriLib::logger << "Error init FreeType Stroker, Error: " << err << std::endl;
 
@@ -314,9 +307,8 @@ FT_BitmapGlyph FreeType::Glyph::GetBitmapGlyph(FT_Render_Mode renderMode, FT_Vec
 }
 
 FreeType::Glyph::Glyph(FT_Glyph glyph)
-	:	_glyph(glyph)
+	: _glyph(glyph)
 {
-	
 }
 
 FreeType::Glyph::Glyph(const Glyph &glyph)
@@ -329,7 +321,7 @@ Glyph FreeType::Glyph::Clone() const
 	Glyph ret;
 	Error err = FT_Glyph_Copy(_glyph, &ret._glyph);
 
-	if(err)
+	if (err)
 	{
 		throw err;
 	}
@@ -346,19 +338,18 @@ void FreeType::DrawText(const KolibriLib::Coord &coord, const std::string text, 
 {
 	KolibriLib::logger << microlog::LogLevel::Debug << "Draw Text" << std::endl;
 
-	for(std::size_t i = 0; i < text.size(); i++)
+	for (std::size_t i = 0; i < text.size(); i++)
 	{
 		KolibriLib::logger << microlog::LogLevel::Debug << "Render char:" << text[i] << std::endl;
-		
+
 		face.LoadGlyph(face.GetGlyphIndex(text[i]), FT_RENDER_MODE_LCD);
 
 		FT_Bitmap bitmap = ((FT_Face)face)->glyph->bitmap;
 		FT_Glyph_Metrics metrics = ((FT_Face)face)->glyph->metrics;
 
 		uint32_t colStartPos = metrics.horiBearingX / 64;
-    	uint32_t rowStartPos = metrics.horiBearingY / 64;
+		uint32_t rowStartPos = metrics.horiBearingY / 64;
 
-		
 		KolibriLib::UI::Images::img image(KolibriLib::Colors::Color(0xFFFFFF), {bitmap.width, bitmap.rows});
 
 		for (uint32_t y = 0; y < bitmap.rows; y++)
@@ -370,12 +361,11 @@ void FreeType::DrawText(const KolibriLib::Coord &coord, const std::string text, 
 				uint8_t r = bitmap.buffer[y * bitmap.pitch + x * 3];
 				uint8_t g = bitmap.buffer[y * bitmap.pitch + x * 3 + 1];
 				uint8_t b = bitmap.buffer[y * bitmap.pitch + x * 3 + 2];
-				
+
 				image.SetPixel({x, y}, KolibriLib::Colors::Color(r, g, b, 0));
 			}
 		}
-		
+
 		image.Draw(coord);
 	}
-
 }

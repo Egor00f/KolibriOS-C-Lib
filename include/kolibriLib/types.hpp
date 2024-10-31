@@ -61,12 +61,12 @@ namespace KolibriLib
 		/// @return 
 		point &operator=(const point &p);
 
-		/// @brief Прибавить к обоим кординатам значение
+		/// @brief Прибавить к обоим координатам значение
 		/// @param p значение
 		/// @return 
 		point &operator+=(const int &p);
 
-		/// @brief Вычесть из обоих кординат значение
+		/// @brief Вычесть из обоих координат значение
 		/// @param p значение
 		/// @return
 		point &operator-=(const int &p);
@@ -110,13 +110,13 @@ namespace KolibriLib
 			int Offset;
 
 			/// @brief Конструктор
-			/// @param scale
-			/// @param offset
+			/// @param scale 
+			/// @param offset смещение в пикселях
 			Axis(float scale = 0, int offset = 0);
 
 			Axis& operator=(const Axis&) = default;
 
-			/// @brief оперватор сравнения
+			/// @brief оператор сравнения
 			/// @param axis с чем сравнивать
 			/// @note сравнивает с точностью до тысячных ибо зачем очень большая точность для gui
 			/// @return 
@@ -135,10 +135,10 @@ namespace KolibriLib
 		UDim::Axis Y;
 
 		/// @brief Конструктор
-		/// @param XScale
-		/// @param XOffset
-		/// @param YScale
-		/// @param YOffset
+		/// @param XScale Относительный размер по оси X
+		/// @param XOffset смещение по оси X
+		/// @param YScale Относительный размер по оси Y
+		/// @param YOffset смещение по оси
 		UDim(float XScale, int XOffset, float YScale, int YOffset);
 
 		/// @brief Конструктор
@@ -147,6 +147,11 @@ namespace KolibriLib
 		/// @details только смещение
 		UDim(int x = 0, int y = 0);
 
+		/**
+		 * @brief Конструктор
+		 * @param x 
+		 * @param y 
+		 */
 		UDim(const Axis& x, const Axis& y);
 
 		/// @brief Конструктор
@@ -160,13 +165,24 @@ namespace KolibriLib
 		UDim(const point &p);
 
 		/// @brief получить абсолютные значения(в пикселях) относительно окна
-		/// @param Parent координаты/размер того откносительно чего раситывается
+		/// @param Parent координаты/размер того относительно чего рассчитывается
 		/// @return абсолютные координаты/размер
 		point GetAbsolute(const point &Parent) const;
 
 		UDim& operator=(const UDim&) = default;
 
+		/**
+		 * @brief Оператор сравнения
+		 * @param obj с чем сравнивать
+		 * @return 
+		 */
 		bool operator==(const UDim &obj) const;
+
+		/**
+		 * @brief Оператор сравнения
+		 * @param obj с чем сравнивать
+		 * @return 
+		 */
 		bool operator!=(const UDim &obj) const;
 	};
 

@@ -1,7 +1,7 @@
 #include <C_Layer/buf2d.hpp>
 #include <kolibriLib/debug.hpp>
 
-buf2d::Loader buf2dLoader;
+buf2d::Loader buf2d::buf2dLoader;
 
 buf2d::Loader::Loader()
 {
@@ -11,7 +11,7 @@ buf2d::Loader::Loader()
 
 	if (err == -1)
 	{
-		KolibriLib::logger<< microlog::LogLevel::Fatal << "Error";
+		KolibriLib::logger << microlog::LogLevel::Fatal << "Error" << std::endl;
 		throw err;
 	}
 	else
@@ -36,22 +36,22 @@ buf2d::buffer::buffer(BPP bpp)
 	Create(this, {32, 32}, 0xFFFFFF, bpp);
 }
 
-buf2d::buffer::buffer(const KolibriLib::Size& size, BPP bpp)
+buf2d::buffer::buffer(const KolibriLib::Size &size, BPP bpp)
 {
 	Create(this, size, 0xFFFFFF, bpp);
 }
 
-buf2d::buffer::buffer(const KolibriLib::Size& size, KolibriLib::Colors::rgb color)
+buf2d::buffer::buffer(const KolibriLib::Size &size, KolibriLib::Colors::rgb color)
 {
 	Create(this, size, color, BPP::RGB);
 }
 
-buf2d::buffer::buffer(const KolibriLib::Size& size, KolibriLib::Colors::Color color)
+buf2d::buffer::buffer(const KolibriLib::Size &size, KolibriLib::Colors::Color color)
 {
 	Create(this, size, color, BPP::RGBA);
 }
 
-buf2d::buffer::buffer(const buf2d_struct* buff)
+buf2d::buffer::buffer(const buf2d_struct *buff)
 {
 	buf2d_copy(buff, this);
 }
@@ -68,7 +68,7 @@ buf2d::buffer::operator buf2d_struct *()
 
 void buf2d::buffer::swap(buffer &buff)
 {
-	unsigned int* _buff_p = buf_pointer;
+	unsigned int *_buff_p = buf_pointer;
 
 	unsigned int _buff = bgcolor;
 

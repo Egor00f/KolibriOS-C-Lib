@@ -28,8 +28,16 @@ namespace KolibriLib
 				/// @brief Значение
 				std::uint32_t value;
 
+				/**
+				 * @brief Конструктор по умолчанию
+				 */
 				ButtonID() = default;
-				ButtonID(const ButtonID&) = default;
+
+				/**
+				 * @brief Конструктор копирования
+				 * @param
+				 */
+				ButtonID(const ButtonID &) = default;
 
 				/**
 				 * @brief Конструктор
@@ -37,38 +45,43 @@ namespace KolibriLib
 				 */
 				ButtonID(unsigned val);
 
-				/// @brief является ли этот ID пригодным
-				/// @details ID кнопок могут быть только от 0 до 0x8000 (исключая сами числа)
+				/// @brief является ли этот ID рабочим
+				/// @details ID кнопок могут быть только в промежутке (0; 0x8000)
 				bool CheckIsValid() const;
-				
-				ButtonID &operator = (const ButtonID&) = default;
 
 				/**
-				 * @brief Оператор присваинвания
+				 * @brief
+				 * @param
+				 * @return
+				 */
+				ButtonID &operator=(const ButtonID &) = default;
+
+				/**
+				 * @brief Оператор присваивания
 				 * @param val значение
-				 * @return 
+				 * @return
 				 * @details Просто берёт значение val и запихивает в ButtonID::value
 				 */
 				ButtonID operator=(const unsigned &val);
 
 				/**
-				 * @brief 
-				 * @param val 
-				 * @return 
+				 * @brief
+				 * @param val
+				 * @return
 				 */
-				bool operator == (const ButtonID& val) const;
+				bool operator==(const ButtonID &val) const;
 
 				/**
-				 * @brief 
-				 * @param val 
-				 * @return 
+				 * @brief
+				 * @param val
+				 * @return
 				 */
-				bool operator != (const ButtonID& val) const;
+				bool operator!=(const ButtonID &val) const;
 
 				/// @brief
 				operator std::uint32_t() const;
 
-				void swap(ButtonID& val);
+				void swap(ButtonID &val);
 			};
 
 			/**
@@ -76,10 +89,13 @@ namespace KolibriLib
 			 */
 			const ButtonID ButtonIDNotSet = 0;
 
-			/// @brief Самый большой ID. Дальше низя
+			/// @brief Конец спика ID кнопок
 			const ButtonID ButtonIDEnd = 0x8000;
 
-			/// @brief Id кнопки закрытия окна
+			/**
+			 * @brief Id кнопки закрытия окна
+			 * @details Эта кнопка создаётся только если окно объявлено со скином
+			 */
 			const ButtonID CloseButton = 1;
 
 			/// @brief Id кнопки минимизации окна
@@ -87,7 +103,7 @@ namespace KolibriLib
 
 			/**
 			 * @brief Список ID кнопок
-			 * @details алиас чтобы не писать ручками многа букав
+			 * @details много писать неохота
 			 */
 			using ButtonIDList = std::vector<ButtonID>;
 
@@ -101,7 +117,6 @@ namespace KolibriLib
 			class ButtonsIDController
 			{
 			public:
-
 				/**
 				 * @brief Нода
 				 */
@@ -119,45 +134,45 @@ namespace KolibriLib
 
 					/**
 					 * @brief Конструктор
-					 * @param Id 
+					 * @param Id
 					 */
 					node(ButtonID Id);
 
 					/**
 					 * @brief Конструктор
-					 * @param Id 
-					 * @param p 
+					 * @param Id
+					 * @param p
 					 */
 					node(ButtonID Id, std::weak_ptr<BaseButton> p);
 
-					node& operator = (const node&) = default;
+					node &operator=(const node &) = default;
 
 					/**
 					 * @brief оператор равенства
 					 * @param val с чем сравнивать
-					 * @return 
+					 * @return
 					 */
-					bool operator == (const node& val) const;
+					bool operator==(const node &val) const;
 
 					/**
 					 * @brief Оператор неравентсва
-					 * @param val 
-					 * @return 
+					 * @param val
+					 * @return
 					 */
-					bool operator != (const node& val) const;
+					bool operator!=(const node &val) const;
 				};
 
 				/**
 				 * @brief Алиас для вектора с нодами
 				 */
 				using List = std::vector<node>;
-				
+
 				/**
 				 * @brief Конвертировать List в список кнопок
-				 * @param list 
-				 * @return 
+				 * @param list
+				 * @return
 				 */
-				static ButtonIDList ListoButtonIDList(const List& list);
+				static ButtonIDList ListoButtonIDList(const List &list);
 
 				/// @brief Получить свободный ID кнопки из списка
 				/// @return ID кнопки, который не занят
@@ -168,7 +183,7 @@ namespace KolibriLib
 				 * @param id ID кнопки
 				 * @param ptr указатель на кнопку
 				 */
-				void TakeupButtonID(const ButtonID& id, std::weak_ptr<BaseButton> ptr);
+				void TakeupButtonID(const ButtonID &id, std::weak_ptr<BaseButton> ptr);
 
 				/// @brief Освободить ID
 				/// @param id ID который нужно освободить
@@ -193,16 +208,15 @@ namespace KolibriLib
 				 * @param ID ID кнопки
 				 * @return указатель на ту самую кнопку
 				 */
-				std::vector<std::weak_ptr<BaseButton>> GetPoinerToButton(const ButtonID& ID) const;
+				std::vector<std::weak_ptr<BaseButton>> GetPoinerToButton(const ButtonID &ID) const;
 
 				/**
 				 * @brief Убрать лишнее
-				 * @details Убирает лишние ID если они повторяются, и если нет ни одного дейсвующего указателя
+				 * @details Убирает лишние ID если они повторяются, и если нет ни одного действующего указателя
 				 */
 				void Sort();
 
 			private:
-
 				/**
 				 * @brief Список использованных id кнопок
 				 * @details По идее CloseButton тоже входить дожна в этот список, но не входит так как сразу начинаем со второго ID. Чисто немного оптимизация
@@ -215,7 +229,7 @@ namespace KolibriLib
 				const unsigned StartTop = 2;
 
 				/**
-				 * @brief типо вершина
+				 * @brief Типа вершина
 				 * @details чтобы по всему вектору не проходиться, отсчёт начинаем с top
 				 */
 				unsigned _top = StartTop;
@@ -227,7 +241,7 @@ namespace KolibriLib
 				/// @brief Плоские кнопки
 				flat = 0,
 
-				/// @brief Объёмные кнокпи
+				/// @brief Объёмные кнопки
 				volumetric = 1
 			};
 
@@ -259,12 +273,12 @@ namespace KolibriLib
 			inline void DefineButton(const Coord &coord, const Size &size, const ButtonID &id, Colors::Color color = Globals::SystemColors.work_button)
 			{
 				_ksys_define_button(
-					static_cast<std::uint32_t>	(coord.x),
-					static_cast<std::uint32_t>	(coord.y),
-					static_cast<std::uint32_t>	(size.x),
-					static_cast<std::uint32_t>	(size.y),
-					static_cast<std::uint32_t>	(id),
-					static_cast<ksys_color_t>	(color));
+					static_cast<std::uint32_t>(coord.x),
+					static_cast<std::uint32_t>(coord.y),
+					static_cast<std::uint32_t>(size.x),
+					static_cast<std::uint32_t>(size.y),
+					static_cast<std::uint32_t>(id),
+					static_cast<ksys_color_t>(color));
 			}
 
 			/**
@@ -314,7 +328,7 @@ namespace KolibriLib
 		} // namespace buttons
 
 	} // namespace UI
-	
+
 	namespace Globals
 	{
 		/**
@@ -327,7 +341,7 @@ namespace KolibriLib
 	}
 } // namespace KolibriLib
 
-inline std::ostream &operator<<(std::ostream &os, const KolibriLib::UI::buttons::ButtonID& id)
+inline std::ostream &operator<<(std::ostream &os, const KolibriLib::UI::buttons::ButtonID &id)
 {
 	return os << id.value;
 }

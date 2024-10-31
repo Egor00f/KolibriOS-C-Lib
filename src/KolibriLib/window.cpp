@@ -9,7 +9,7 @@ KolibriLib::window::Window_t::Window_t(const std::string &Title, const KolibriLi
 	  _Transparency(Transparency)
 {
 	logger << microlog::LogLevel::Debug << "Window:" << std::endl;
-	
+
 	if (Resize)
 	{
 		logger << microlog::LogLevel::Debug << "- with skin" << std::endl;
@@ -37,10 +37,10 @@ KolibriLib::window::Window_t::Window_t(const std::string &Title, const KolibriLi
 }
 
 KolibriLib::window::Window_t::Window_t(const std::string &Title, const Colors::ColorsTable &colors, WindowStyle style, WindowSettings WindowSettings)
-	:	_title(Title),
-		_colors(colors),
-		_style(style),
-		_settings(WindowSettings)
+	: _title(Title),
+	  _colors(colors),
+	  _style(style),
+	  _settings(WindowSettings)
 {
 }
 
@@ -64,8 +64,8 @@ void KolibriLib::window::Window_t::SetTitle(const std::string &NewTitle)
 */
 
 KolibriLib::window::Window::Window(const std::string &Title, const Size &size, const Coord &coord, const Colors::ColorsTable &colors, bool Resize, bool RealtimeRedraw, bool Gradient, unsigned Transparency, Pos position, const unsigned &Margin)
-	:	Window_t(Title, colors, Resize, RealtimeRedraw, Gradient, Transparency, Margin)
-		
+	: Window_t(Title, colors, Resize, RealtimeRedraw, Gradient, Transparency, Margin)
+
 {
 	logger << microlog::LogLevel::Debug << "Window constructor" << std::endl;
 
@@ -167,9 +167,9 @@ inline void Window::SetSize(const UDim &NewSize)
 
 inline Coord Window::GetAbsoluteCoord() const
 {
-	if(_updated) // Если было событие перерисовки. значит возможно размер окна изменился
+	if (_updated) // Если было событие перерисовки. значит возможно размер окна изменился
 		Update();
-	
+
 	return _coord;
 }
 
@@ -210,9 +210,9 @@ void Window::Render()
 	StartRedraw();
 	window::CreateWindow({0, 0}, {0, 0}, _title, _colors.work_area, _colors.grab_text, _style, _settings);
 
-	KolibriLib::graphic::DrawRectangleFill (
-		{0, static_cast<int>(window::GetSkinHeight())}, 
-		GetAbsoluteSize() - static_cast<int>(GetMargin()), 
+	KolibriLib::graphic::DrawRectangleFill(
+		{0, static_cast<int>(window::GetSkinHeight())},
+		GetAbsoluteSize() - static_cast<int>(GetMargin()),
 		_colors.work_area);
 
 	RenderAllElements();
@@ -255,39 +255,36 @@ OS::Event Window::Handler()
 
 	case OS::Event::Button:
 
+	{
+		UI::buttons::ButtonID PressedButton = UI::buttons::GetPressedButton();
+
+		if (PressedButton == UI::buttons::CloseButton) // Если нажата кнопка X
 		{
-			UI::buttons::ButtonID PressedButton = UI::buttons::GetPressedButton();
-
-			if (PressedButton == UI::buttons::CloseButton) // Если нажата кнопка X
+			_lastEvent = OS::Event::Exit;
+		}
+		else
+		{
+			for (auto it : _Elements)
 			{
-				_lastEvent = OS::Event::Exit;
+				it->OnButtonEvent(PressedButton);
 			}
-			else
-			{
-				for (auto it : _Elements)
-				{
-					it->OnButtonEvent(PressedButton);
-				}
-
-			}
-
-			std::shared_ptr<UI::buttons::BaseButton> s_ptr;
-
-			try
-			{
-				s_ptr = _buttonsController.GetPoinerToButton(PressedButton).at(0).lock();
-			}
-			catch(...)
-			{
-				logger << microlog::LogLevel::Error << "Error Get s_ptr" << std::endl;
-			}
-
-			_PressedButton = s_ptr;
-
-
 		}
 
-		break;
+		std::shared_ptr<UI::buttons::BaseButton> s_ptr;
+
+		try
+		{
+			s_ptr = _buttonsController.GetPoinerToButton(PressedButton).at(0).lock();
+		}
+		catch (...)
+		{
+			logger << microlog::LogLevel::Error << "Error Get s_ptr" << std::endl;
+		}
+
+		_PressedButton = s_ptr;
+	}
+
+	break;
 
 	case OS::Event::Key:
 
@@ -350,13 +347,12 @@ OS::Event Window::Handler()
 		}
 	}
 
-
 	return _lastEvent;
 }
 
 UI::buttons::ButtonID Window::GetPressedButtonID() const
 {
-	if(_PressedButton)
+	if (_PressedButton)
 		return _PressedButton.get()->GetId();
 	else
 		return UI::buttons::ButtonIDNotSet;
@@ -412,7 +408,7 @@ void KolibriLib::window::Window::AddElementNoCopy(UIElement *element)
 
 void KolibriLib::window::Window::Update() const
 {
-	if(!_updated)
+	if (!_updated)
 	{
 		const Thread::ThreadInfo info = Thread::GetThreadInfo();
 

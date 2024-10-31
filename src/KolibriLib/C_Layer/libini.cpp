@@ -1,7 +1,7 @@
 #include <C_Layer/libini.hpp>
 #include <kolibriLib/debug.hpp>
 
-libini::Loader _libiniLib;
+libini::Loader libini::_libiniLoader;
 
 libini::Loader::Loader()
 {
@@ -11,7 +11,7 @@ libini::Loader::Loader()
 
 	if (err == -1)
 	{
-		KolibriLib::logger << microlog::LogLevel::Fatal << "Error";
+		KolibriLib::logger << microlog::LogLevel::Fatal << "Error" << std::endl;
 		throw err;
 	}
 	else
@@ -23,7 +23,7 @@ libini::Loader::Loader()
 }
 
 libini::iniFile::iniFile(const KolibriLib::filesystem::path &file)
-	:	_file(file)
+	: _file(file)
 {
 }
 
@@ -37,14 +37,14 @@ bool libini::iniFile::EnumKeys(const std::string &section, LIBINI_enum_keys_func
 	return LIBINI_enum_keys(_file.c_str(), section.c_str(), func);
 }
 
-KolibriLib::Colors::Color libini::iniFile::GetColor(const std::string &section, const std::string &key, Error& ec) const
+KolibriLib::Colors::Color libini::iniFile::GetColor(const std::string &section, const std::string &key, Error &ec) const
 {
 	LIBINI_get_color(_file.c_str(), section.c_str(), key.c_str(), static_cast<uint32_t>(Error::Error));
 
-	return ;
+	return;
 }
 
-const libini::iniFile* usingIniFile;
+const libini::iniFile *usingIniFile;
 
 std::vector<libini::iniFile::Section> sections;
 
@@ -68,14 +68,12 @@ std::vector<libini::iniFile::Section> libini::iniFile::GetAllSection() const
 
 std::vector<libini::iniFile::Key> keys;
 
-void EnumKeys(const char *fileName, const char *sectionName, const char* keyName, const char* value)
+void EnumKeys(const char *fileName, const char *sectionName, const char *keyName, const char *value)
 {
-
 }
 
 std::vector<libini::iniFile::Key> libini::iniFile::Section::GetAllKeys() const
 {
-	
 
 	LIBINI_enum_keys(_file._file.c_str(), _name.c_str(), &::EnumKeys);
 

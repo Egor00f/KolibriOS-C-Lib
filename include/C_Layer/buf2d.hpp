@@ -15,7 +15,7 @@ namespace buf2d
 {
 	/**
 	 * @brief Загрузчик либы
-	 * @details Автоматически загружет билиотеку
+	 * @details Автоматически загружает библиотеку
 	 */
 	class Loader final
 	{
@@ -27,7 +27,7 @@ namespace buf2d
 	};
 
 	/**
-	 * @brief Экземпляр загрузщика
+	 * @brief Экземпляр загрузчика
 	 */
 	extern Loader buf2dLoader;
 
@@ -120,9 +120,9 @@ namespace buf2d
 
 	/**
 	 * @brief Изменить пиксель
-	 * @param buff 
+	 * @param buff указатель на буфер
 	 * @param coord координаты пикселя
-	 * @param color 
+	 * @param color Новый цвет пикселя
 	 */
 	inline void SetPixel(buf2d_struct* buff, const KolibriLib::Coord& coord, KolibriLib::Colors::Color color)
 	{
@@ -229,7 +229,7 @@ namespace buf2d
 	 * @param dst буфер на котором рисуется (RGB)
 	 * @param src буфер на который рисуется (RGB или RGBA)
 	 * @param coord Координаты src на dst. Координаты для вывода изображения, определяют положение рисуемой картинки в buf_0
-	 * @details Рисует в буфере изображение из другого буфера в указанных координатах. Буфер в котором рисут (приемник) должен быть 24 битным, а тот который рисуется (источник) 24 или 32 битным. Если буфер источник 32 битный, то его прозрачность при рисовании не учитывается, для учета прозрачности используется функция ApplyTrasparency
+	 * @details Рисует в буфере изображение из другого буфера в указанных координатах. Буфер в котором рисуют (приемник) должен быть 24 битным, а тот который рисуется (источник) 24 или 32 битным. Если буфер источник 32 битный, то его прозрачность при рисовании не учитывается, для учета прозрачности используется функция ApplyTrasparency
 	 */
 	inline void BitBlt(buf2d_struct* dst, const buf2d_struct* src, const KolibriLib::Coord& coord = {0,0})
 	{
@@ -245,7 +245,7 @@ namespace buf2d
 
 	/**
 	 * @brief Нарисовать круг
-	 * @param buff буффер
+	 * @param buff буфер
 	 * @param coord 
 	 * @param Radius 
 	 * @param color 
@@ -273,7 +273,7 @@ namespace buf2d
 
 	/**
 	 * @brief Нарисовать линию
-	 * @param buff буффер
+	 * @param buff буфер
 	 * @param p1 точка
 	 * @param p2 точка
 	 * @param color цвет линии
@@ -291,7 +291,7 @@ namespace buf2d
 
 	/**
 	 * @brief Нарисовать сглаженную линию
-	 * @param buff буффер
+	 * @param buff буфер
 	 * @param p1 точка
 	 * @param p2 точка
 	 * @param color цвет линии
@@ -324,7 +324,7 @@ namespace buf2d
 
 		/**
 		 * @brief Конструктор
-		 * @param bpp глубина увета
+		 * @param bpp глубина цвета
 		 */
 		buffer(BPP bpp);
 
@@ -353,7 +353,7 @@ namespace buf2d
 
 		/**
 		 * @brief Конструктор копирования
-		 * @param buff указатель на буффер
+		 * @param buff указатель на буфер
 		 */
 		buffer(const buf2d_struct* buff);
 
@@ -364,7 +364,7 @@ namespace buf2d
 
 		/**
 		 * @brief Оператор
-		 * @details по сути эта структура таже что и buf2d_struct, только с конструкторм и деструктором
+		 * @details по сути эта структура та же что и buf2d_struct, только с конструктором и деструктором
 		 */
 		operator buf2d_struct* ();
 

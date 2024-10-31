@@ -78,12 +78,12 @@ namespace KolibriLib
             };
 
             /// @brief Конструктор
-            /// @param t 
-            ThreadInfo(const ksys_thread_t& t);
+            /// @param t
+            ThreadInfo(const ksys_thread_t &t);
 
-            ThreadInfo& operator=(const ThreadInfo&) = default;
+            ThreadInfo &operator=(const ThreadInfo &) = default;
 
-            /// @brief 
+            /// @brief
             /// @warning недоделан
             operator ksys_thread_t() const;
 
@@ -121,7 +121,7 @@ namespace KolibriLib
             /// @brief идентификатор (PID/TID)
             PID pid;
 
-            /// @brief 
+            /// @brief
             SlotState slot_state;
 
             /// @brief Позиция окна в оконном стеке
@@ -138,7 +138,6 @@ namespace KolibriLib
             keyboard::InputMode key_input_mode;
         };
 
-        
         /// @brief Значение PID текущего процесса.
         /// @details Нужно для функций
         const PID ThisThread = KSYS_THIS_SLOT;
@@ -159,7 +158,7 @@ namespace KolibriLib
         inline PID CreateThread(T ThreadEntry, std::size_t ThreadStackSize = 8192)
         {
             static_assert(::std::is_pointer<T>::value, "Only pointers!");
-            return CreateThread_(reinterpret_cast<void*>(ThreadEntry), ThreadStackSize);
+            return CreateThread_(reinterpret_cast<void *>(ThreadEntry), ThreadStackSize);
         }
 
         /// @brief Завершить процесс/поток
@@ -170,7 +169,7 @@ namespace KolibriLib
         {
             int ret;
 
-            asm_inline (
+            asm_inline(
                 "int $0x40"
                 : "=a"(ret)
                 : "a"(18), "b"(18), "c"(pid));
@@ -186,7 +185,6 @@ namespace KolibriLib
             return false; // 'no return statement in function returning non-void [-Wreturn-type]' очень бесит
         }
 
-        
         /// @brief Поличть информацию о потоке
         /// @param thread слот потока
         /// @return информация о потоке
@@ -243,19 +241,23 @@ namespace KolibriLib
             }
             void waitPoint()
             {
-                while(_locked)
+                while (_locked)
                 {
                     Wait();
                 }
             }
+
         private:
             bool _locked = false;
         };
 
     } // namespace Thread
-    
+
 } // namespace KolibriLib
 
-template<> struct is_flag<KolibriLib::Thread::ThreadInfo::WindowStatus> : std::true_type {};
+template <>
+struct is_flag<KolibriLib::Thread::ThreadInfo::WindowStatus> : std::true_type
+{
+};
 
 #endif // __THREAD_HPP__

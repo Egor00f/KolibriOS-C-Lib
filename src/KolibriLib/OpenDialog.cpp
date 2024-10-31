@@ -8,23 +8,23 @@ KolibriLib::OpenDialog::OpenDialog(OpenDialog::Mode mode, Size winSize, Coord wi
 {
 	_opendialog = static_cast<open_dialog *>(malloc(sizeof(open_dialog)));
 
-	_opendialog	->	mode	= static_cast<open_dialog_mode>(mode);
-	_opendialog	->	x_size	= static_cast<unsigned short>(winSize.x);
-	_opendialog	->	y_size	= static_cast<unsigned short>(winSize.x);
-	_opendialog	->	x_start	= static_cast<unsigned short>(winCoord.x);
-	_opendialog	->	y_start	= static_cast<unsigned short>(winCoord.y);
-	_opendialog	->	status	= 0;
-	_opendialog	->	com_area	= 0;
-	_opendialog	->	procinfo	= new char[1024];
-	_opendialog	->	start_path	= const_cast<char*>(sz_start_path);
-	_opendialog	->	filter_area	= FilterArea::Create(filter);
-	_opendialog	->	draw_window	= &fake_on_redraw;
-	_opendialog	->	opendir_path	= new char[4096];
-	_opendialog	->	openfile_path	= new char[4096];
-	_opendialog	->	filename_area	= new char[256];
-	_opendialog	->	com_area_name	= const_cast<char*>(sz_com_area_name);
-	_opendialog	->	dir_default_path	= new char[static_cast<std::string>(defaultPath).size()];
-	
+	_opendialog->mode = static_cast<open_dialog_mode>(mode);
+	_opendialog->x_size = static_cast<unsigned short>(winSize.x);
+	_opendialog->y_size = static_cast<unsigned short>(winSize.x);
+	_opendialog->x_start = static_cast<unsigned short>(winCoord.x);
+	_opendialog->y_start = static_cast<unsigned short>(winCoord.y);
+	_opendialog->status = 0;
+	_opendialog->com_area = 0;
+	_opendialog->procinfo = new char[1024];
+	_opendialog->start_path = const_cast<char *>(sz_start_path);
+	_opendialog->filter_area = FilterArea::Create(filter);
+	_opendialog->draw_window = &fake_on_redraw;
+	_opendialog->opendir_path = new char[4096];
+	_opendialog->openfile_path = new char[4096];
+	_opendialog->filename_area = new char[256];
+	_opendialog->com_area_name = const_cast<char *>(sz_com_area_name);
+	_opendialog->dir_default_path = new char[static_cast<std::string>(defaultPath).size()];
+
 	for (std::size_t i = 0; i < defaultPath.length(); i++)
 	{
 		_opendialog->dir_default_path[i] = defaultPath.operator std::string()[i];
@@ -52,7 +52,7 @@ KolibriLib::OpenDialog::Status KolibriLib::OpenDialog::Open()
 
 filesystem::Path KolibriLib::OpenDialog::GetPath() const
 {
-	if( static_cast<OpenDialog::Status>(_opendialog->status) == Status::Opened)
+	if (static_cast<OpenDialog::Status>(_opendialog->status) == Status::Opened)
 	{
 		if (static_cast<OpenDialog::Mode>(_opendialog->mode) == Mode::OpenFile || static_cast<OpenDialog::Mode>(_opendialog->mode) == Mode::Save)
 		{
@@ -90,7 +90,7 @@ KolibriLib::OpenDialog::FilterArea::~FilterArea()
 	free(area);
 }
 
-od_filter* KolibriLib::OpenDialog::FilterArea::Create(const std::vector<FilterElement> &elements)
+od_filter *KolibriLib::OpenDialog::FilterArea::Create(const std::vector<FilterElement> &elements)
 {
 	/* наверно фильтры добавляются как то так
 
@@ -115,7 +115,7 @@ od_filter* KolibriLib::OpenDialog::FilterArea::Create(const std::vector<FilterEl
 
 	*/
 
-	od_filter* a;
+	od_filter *a;
 
 	if (elements.size() > 0)
 	{

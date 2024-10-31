@@ -1,7 +1,6 @@
 #include <kolibriLib/UI/buttons/button.hpp>
 #include <kolibriLib/globals.hpp>
 
-
 using namespace KolibriLib;
 using namespace UI;
 using namespace buttons;
@@ -29,8 +28,8 @@ BaseButton::BaseButton(ButtonID id)
 }
 
 KolibriLib::UI::buttons::BaseButton::BaseButton(const BaseButton &button)
-	:	_ButtonsIDController(button._ButtonsIDController),
-		_type(button._type)
+	: _ButtonsIDController(button._ButtonsIDController),
+	  _type(button._type)
 {
 	SetId(button._id);
 }
@@ -44,7 +43,7 @@ void BaseButton::BaseButton::Deactivate()
 {
 	if (IsActive())
 	{
-		if(_ButtonsIDController != nullptr)
+		if (_ButtonsIDController != nullptr)
 		{
 			_ButtonsIDController->FreeButtonID(_id);
 		}
@@ -87,10 +86,10 @@ buttons::ButtonID buttons::BaseButton::GetId() const
 void KolibriLib::UI::buttons::BaseButton::SetId(const ButtonID &NewID)
 {
 	logger << microlog::LogLevel::Debug << "SetId(ButtonID)" << std::endl;
-	
+
 	_id = NewID;
 
-	if(_ButtonsIDController != nullptr)
+	if (_ButtonsIDController != nullptr)
 	{
 		std::shared_ptr<BaseButton> s_ptr(this);
 		_ButtonsIDController->TakeupButtonID(NewID, s_ptr);
@@ -101,13 +100,17 @@ void KolibriLib::UI::buttons::BaseButton::SetId()
 {
 	logger << microlog::LogLevel::Debug << "SetId()" << std::endl;
 
-	if(_ButtonsIDController != nullptr)
+	if (_ButtonsIDController != nullptr)
 	{
-		if(IsActive())
+		if (IsActive())
 			_ButtonsIDController->FreeButtonID(_id);
 
 		std::shared_ptr<BaseButton> s_ptr(this);
 		_id = _ButtonsIDController->GetFreeButtonID(s_ptr);
+	}
+	else
+	{
+		_id = ButtonIDNotSet;
 	}
 }
 

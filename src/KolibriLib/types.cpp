@@ -4,32 +4,32 @@
 using namespace KolibriLib;
 
 KolibriLib::point::point()
-	:	x(0), 
-		y(0)
+	: x(0),
+	  y(0)
 {
 }
 
 KolibriLib::point::point(int X, int Y)
-	:	x(X),
-		y(Y)
+	: x(X),
+	  y(Y)
 {
 }
 
-KolibriLib::point::point(const point & p)
-	:	x(p.x),
-		y(p.y)
+KolibriLib::point::point(const point &p)
+	: x(p.x),
+	  y(p.y)
 {
 }
 
-KolibriLib::point::point(const ksys_pos_t & pos)
-	:	x(pos.x),
-		y(pos.y)
+KolibriLib::point::point(const ksys_pos_t &pos)
+	: x(pos.x),
+	  y(pos.y)
 {
 }
 
 KolibriLib::point::point(int Number)
-	:	x(Number),
-		y(Number)
+	: x(Number),
+	  y(Number)
 {
 }
 
@@ -136,10 +136,9 @@ KolibriLib::UDim::Axis::Axis(float scale, int offset)
 }
 
 KolibriLib::UDim::UDim(float XScale, int XOffset, float YScale, int YOffset)
-	:	X(XScale, XOffset), 
-		Y(YScale, YOffset)
+	: X(XScale, XOffset),
+	  Y(YScale, YOffset)
 {
-
 }
 
 KolibriLib::UDim::UDim(int x, int y)
@@ -151,6 +150,12 @@ KolibriLib::UDim::UDim(int x, int y)
 KolibriLib::UDim::UDim(float x, float y)
 	: X(x, 0),
 	  Y(y, 0)
+{
+}
+
+KolibriLib::UDim::UDim(const Axis &x, const Axis &y)
+	: X(x),
+	  Y(y)
 {
 }
 

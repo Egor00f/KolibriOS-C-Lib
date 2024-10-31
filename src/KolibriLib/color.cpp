@@ -11,9 +11,9 @@ using namespace Colors;
 
 KolibriLib::Colors::rgb::rgb(rgb_t val)
 {
-	red 	= val.red;
-	green	= val.green;
-	blue	= val.blue;
+	red = val.red;
+	green = val.green;
+	blue = val.blue;
 }
 
 KolibriLib::Colors::rgb::rgb(ksys_color_t val)
@@ -23,9 +23,9 @@ KolibriLib::Colors::rgb::rgb(ksys_color_t val)
 
 KolibriLib::Colors::rgb::rgb(std::uint8_t r, std::uint8_t g, std::uint8_t b)
 {
-	red 	= r;
-	green	= g;
-	blue	= b;
+	red = r;
+	green = g;
+	blue = b;
 }
 
 KolibriLib::Colors::rgb::operator ksys_color_t() const
@@ -35,7 +35,7 @@ KolibriLib::Colors::rgb::operator ksys_color_t() const
 
 std::uint32_t KolibriLib::Colors::rgb::BBGGRR() const
 {
-	return ((blue << 16) | (green << 8) | red );
+	return ((blue << 16) | (green << 8) | red);
 }
 
 std::uint32_t KolibriLib::Colors::rgb::BBGGRR00() const
@@ -45,7 +45,7 @@ std::uint32_t KolibriLib::Colors::rgb::BBGGRR00() const
 
 std::uint32_t KolibriLib::Colors::rgb::RRGGBB() const
 {
-	return ((red << 16) | (green << 8) | blue );
+	return ((red << 16) | (green << 8) | blue);
 }
 
 std::uint32_t KolibriLib::Colors::rgb::RRGGBB00() const
@@ -55,7 +55,7 @@ std::uint32_t KolibriLib::Colors::rgb::RRGGBB00() const
 
 std::uint32_t KolibriLib::Colors::rgb::ZeroRRGGBB() const
 {
-	return ((red << 16) | (green << 8) | blue ) | 0;
+	return ((red << 16) | (green << 8) | blue) | 0;
 }
 
 /*
@@ -63,24 +63,23 @@ std::uint32_t KolibriLib::Colors::rgb::ZeroRRGGBB() const
 */
 
 KolibriLib::Colors::Color::Color(const ksys_color_t &a)
-	:	val(a)
+	: val(a)
 {
 }
 
 KolibriLib::Colors::Color::Color(const rgb_t &color)
-	:	_a(0xFF),
-		red(color.red),
-		green(color.green),
-		blue(color.blue)
+	: _a(0xFF),
+	  red(color.red),
+	  green(color.green),
+	  blue(color.blue)
 {
-
 }
 
 KolibriLib::Colors::Color::Color(uint8_t R, uint8_t G, uint8_t B, uint8_t A)
-	:	red(R),
-		green(G),
-		blue(B),
-		_a(A)
+	: red(R),
+	  green(G),
+	  blue(B),
+	  _a(A)
 {
 }
 
@@ -139,10 +138,10 @@ KolibriLib::Colors::Color KolibriLib::Colors::BlendColors(const KolibriLib::Colo
 	// буффер
 	KolibriLib::Colors::Color buff;
 
-	buff._a		= static_cast<uint8_t>( (a._a    * k) + (b._a    * (1.0f - k)) );
-	buff.red	= static_cast<uint8_t>( (a.red   * k) + (b.red   * (1.0f - k)) );
-	buff.green	= static_cast<uint8_t>( (a.green * k) + (b.green * (1.0f - k)) );
-	buff.blue	= static_cast<uint8_t>( (a.blue  * k) + (b.blue  * (1.0f - k)) );
+	buff._a = static_cast<uint8_t>((a._a * k) + (b._a * (1.0f - k)));
+	buff.red = static_cast<uint8_t>((a.red * k) + (b.red * (1.0f - k)));
+	buff.green = static_cast<uint8_t>((a.green * k) + (b.green * (1.0f - k)));
+	buff.blue = static_cast<uint8_t>((a.blue * k) + (b.blue * (1.0f - k)));
 
 	return buff;
 }
@@ -150,11 +149,11 @@ KolibriLib::Colors::Color KolibriLib::Colors::BlendColors(const KolibriLib::Colo
 rgb_t KolibriLib::Colors::UINT32toRGB(const uint32_t &color)
 {
 	rgb_t ret;
-	
-	ret.blue	= ((Color)color).blue;
-	ret.red 	= ((Color)color).red;
-	ret.green	= ((Color)color).green;
-	
+
+	ret.blue = ((Color)color).blue;
+	ret.red = ((Color)color).red;
+	ret.green = ((Color)color).green;
+
 	return ret;
 }
 
@@ -178,7 +177,7 @@ KolibriLib::Colors::ColorsTable::ColorsTable(Color frameArea, Color grabBar, Col
 	frame_area = frameArea;
 	grab_bar = grabBar;
 	grab_bar_button = grabBarButton;
-	grab_text = grabText; 
+	grab_text = grabText;
 	work_area = workArea;
 	work_button = workButton;
 	work_button_text = workButtonText;

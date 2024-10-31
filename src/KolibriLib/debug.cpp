@@ -4,5 +4,4 @@
 
 using namespace KolibriLib;
 
-
-microlog::logger KolibriLib::logger(filesystem::temp_directory_path() / LogFileName);
+microlog::logger KolibriLib::logger(filesystem::temp_directory_path() / "debug.log");

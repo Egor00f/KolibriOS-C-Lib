@@ -9,12 +9,12 @@
 #include <vector>
 
 /**
- * @brief Оболока для Libini
+ * @brief Оболочка для Libini
  */
 namespace libini
 {
 	/**
-	 * @brief Загрузщик библиотеки Libini
+	 * @brief Загрузчик библиотеки Libini
 	 */
 	class Loader final
 	{
@@ -26,7 +26,7 @@ namespace libini
 	};
 
 	/**
-	 * @brief Экхемпляр загрузщика
+	 * @brief Экземпляр загрузчика
 	 */
 	extern libini::Loader _libiniLoader;
 

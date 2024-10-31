@@ -38,9 +38,9 @@ KolibriLib::Sound::Error KolibriLib::Sound::initSound()
 
 KolibriLib::Sound::SoundLib::SoundLib()
 {
-	if(int err = initSound() != 0 ||
-		(SOUND_VERSION > (-1 & 0xFFFF)) ||
-		(SOUND_VERSION < (-1 >> 16)))
+	if (int err = initSound() != 0 ||
+				  (SOUND_VERSION > (-1 & 0xFFFF)) ||
+				  (SOUND_VERSION < (-1 >> 16)))
 		throw err;
 }
 

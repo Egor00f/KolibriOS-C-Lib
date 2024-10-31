@@ -6,45 +6,44 @@ using namespace KolibriLib;
 using namespace UI;
 using namespace Images;
 
-/* 
+/*
 	Constructors
 */
 
 KolibriLib::UI::Images::img::img(img::BPP bpp)
-	:	_buff(new buf2d::buffer(bpp))
+	: _buff(new buf2d::buffer(bpp))
 {
-	
 }
 
 KolibriLib::UI::Images::img::img(const img &val)
-	:	_buff(new buf2d::buffer(val._buff.get()))
+	: _buff(new buf2d::buffer(val._buff.get()))
 {
 }
 
 KolibriLib::UI::Images::img::img(const Size &size, BPP bpp)
-	:	_buff(new buf2d::buffer(size, bpp))
+	: _buff(new buf2d::buffer(size, bpp))
 {
 }
 
 KolibriLib::UI::Images::img::img(const Colors::rgb &color, const Size &size)
-	:	_buff(new buf2d::buffer(size, color))
+	: _buff(new buf2d::buffer(size, color))
 {
 }
 
 KolibriLib::UI::Images::img::img(const Colors::Color &color, const Size &size)
-	:	_buff(new buf2d::buffer(size, color))
+	: _buff(new buf2d::buffer(size, color))
 {
 }
 
-/* 
-	Functions 
+/*
+	Functions
 */
 
 void KolibriLib::UI::Images::img::Draw() const
 {
 	logger << microlog::LogLevel::Debug << "Draw img" << std::endl;
 
-	if(static_cast<BPP>(_buff->color_bit) == BPP::RGBA)
+	if (static_cast<BPP>(_buff->color_bit) == BPP::RGBA)
 	{
 		buf2d::buffer image(GetSize(), BPP::RGB);
 		buf2d::ApplyTransparency(_buff.get(), image);
@@ -58,15 +57,15 @@ void KolibriLib::UI::Images::img::Draw() const
 
 void KolibriLib::UI::Images::img::Draw(const Coord &coord) const
 {
-	_buff.get()->left	= coord.x;
-	_buff.get()->top	= coord.y;
+	_buff.get()->left = coord.x;
+	_buff.get()->top = coord.y;
 
 	Draw();
 }
 
 void KolibriLib::UI::Images::img::Draw(const Coord &coord, const Size &size) const
 {
-	if(_buff->width == size.x && _buff->height == size.y)
+	if (_buff->width == size.x && _buff->height == size.y)
 	{
 		Draw(coord);
 	}
@@ -78,7 +77,7 @@ void KolibriLib::UI::Images::img::Draw(const Coord &coord, const Size &size) con
 	}
 }
 
-void KolibriLib::UI::Images::img::SetPixel(const Coord& coord,const Colors::Color& color)
+void KolibriLib::UI::Images::img::SetPixel(const Coord &coord, const Colors::Color &color)
 {
 	buf2d::SetPixel(_buff.get(), coord, color);
 }
@@ -90,7 +89,7 @@ Colors::Color KolibriLib::UI::Images::img::GetPixel(const Coord &coord) const
 
 void KolibriLib::UI::Images::img::Rotate(RotateEnum val)
 {
-	if(val != RotateEnum::rotate_270)
+	if (val != RotateEnum::rotate_270)
 		buf2d_rotate(_buff.get(), static_cast<unsigned int>(val));
 	else
 	{
@@ -109,7 +108,7 @@ img::BPP KolibriLib::UI::Images::img::GetBPP() const
 	return static_cast<BPP>(_buff->color_bit);
 }
 
-void KolibriLib::UI::Images::img::Resize(const Size& NewSize, bool resize)
+void KolibriLib::UI::Images::img::Resize(const Size &NewSize, bool resize)
 {
 	buf2d::Resize(_buff.get(), NewSize, resize);
 }
@@ -129,7 +128,7 @@ void KolibriLib::UI::Images::img::CurveBezier(Coord points[3], Colors::Color col
 	buf2d::DrawBezierCurver(_buff.get(), points, color);
 }
 
-/* 
+/*
 	Operators
 */
 

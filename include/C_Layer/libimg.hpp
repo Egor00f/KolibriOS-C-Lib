@@ -3,7 +3,7 @@
 
 #include <C_Layer/INCLUDE/kolibri_libimg.h>
 
-class libimgLib
+class libimgLib final
 {
 public:
 	libimgLib();

@@ -5,18 +5,18 @@ using namespace KolibriLib;
 using namespace UI;
 
 CheckBox::CheckBox(const UDim &coord, const UDim &size, const style &Style, const Colors::Color &CheckBoxBorderColor, const Colors::Color &BackgroundColor, const unsigned &Margin)
-	:	Button(coord, size, Margin, BackgroundColor), 
-		_BorderColor(CheckBoxBorderColor),
-		_style(Style)
+	: Button(coord, size, Margin, BackgroundColor),
+	  _BorderColor(CheckBoxBorderColor),
+	  _style(Style)
 {
 	logger << microlog::LogLevel::Debug << "CheckBox Constructor" << std::endl;
 }
 
 KolibriLib::UI::CheckBox::CheckBox(const CheckBox &a)
-	:	Button(a),
-		_BorderColor(a._BorderColor),
-		_style(a._style),
-		checked(a.checked)
+	: Button(a),
+	  _BorderColor(a._BorderColor),
+	  _style(a._style),
+	  checked(a.checked)
 {
 	logger << microlog::LogLevel::Debug << "CheckBox constructor(copy)" << std::endl;
 }
@@ -52,7 +52,7 @@ bool KolibriLib::UI::CheckBox::OnButtonEvent(buttons::ButtonID PressedButtonID)
 {
 	bool ret = Button::OnButtonEvent(PressedButtonID);
 
-	if(_status)
+	if (_status)
 		checked = !checked;
 
 	return ret;
@@ -60,7 +60,7 @@ bool KolibriLib::UI::CheckBox::OnButtonEvent(buttons::ButtonID PressedButtonID)
 
 void CheckBox::Render() const
 {
-	if(Visible)
+	if (Visible)
 	{
 		logger << microlog::LogLevel::Debug << "Render Checkbox" << std::endl;
 
@@ -72,7 +72,7 @@ void CheckBox::Render() const
 		if (checked)
 		{
 			logger << microlog::LogLevel::Debug << "CHECKOBOS IS CHECKED" << std::endl;
-			
+
 			switch (_style)
 			{
 			case CheckBox::style::Default:
@@ -123,13 +123,13 @@ void KolibriLib::UI::CheckBox::swap(CheckBox &a)
 bool KolibriLib::UI::CheckBox::operator==(const CheckBox &c) const
 {
 	return static_cast<buttons::Button>(*this) == static_cast<buttons::Button>(c) &&
-	       (_BorderColor == c._BorderColor) &&
+		   (_BorderColor == c._BorderColor) &&
 		   (_style == c._style);
 }
 
 bool KolibriLib::UI::CheckBox::operator!=(const CheckBox &c) const
 {
 	return static_cast<buttons::Button>(*this) != static_cast<buttons::Button>(c) ||
-	       (_BorderColor != c._BorderColor) ||
+		   (_BorderColor != c._BorderColor) ||
 		   (_style != c._style);
 }

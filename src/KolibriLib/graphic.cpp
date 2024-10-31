@@ -35,7 +35,7 @@ void graphic::DrawCircle(const Coord &coord, unsigned Radius, const Colors::Colo
 
 void graphic::DrawCircleFill(const Coord &coord, const unsigned &Radius, const Colors::Color &color)
 {
-	// хаспде какой всратый алгоритм
+	// хоспаде какой всратый алгоритм
 
 	graphic::DrawCircle(coord, Radius, color);
 

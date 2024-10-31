@@ -15,9 +15,9 @@ project(
 set(CUSTOM_TOOCLAIN_PATH	OFF)
 set(KOLIBRIOS_REPO	${CMAKE_CURRENT_SOURCE_DIR}/../kolibrios)#Репозиторий нужен только для libc, libstdc++-v3 и C_Layer, можете указать свой если очень хочется
 
-option(KolibriLib_BUILD_EXAMPLES "Build KolibriLib examples" ON)
-option(KolibriLib_BUILD_DOCS "Build KolibriLib documantation" ON)
-option(KolibriLib_BUILD_TESTS "Build KolibriLib test" ON)
+option(KolibriLib_BUILD_EXAMPLES "Build KolibriLib examples"      ON)
+option(KolibriLib_BUILD_DOCS     "Build KolibriLib documantation" ON)
+option(KolibriLib_BUILD_TESTS    "Build KolibriLib test"          ON)
 #
 #################################################
 
@@ -55,13 +55,6 @@ SET(SDK_DIR "${KOLIBRIOS_REPO}/contrib/sdk")
 include(CMakeDetermineKOS32Compiler)
 include(CMakeTestKOS32Compiler)
 
-
-set(CMAKE_C_FLAGS_DEBUG "-Wall -Wextra -Wcast-align -Wcast-qual -Wconversion -Wenum-compare -Wfloat-equal -Wredundant-decls -Wsign-conversion -DDEBUG -Og")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wctor-dtor-privacy -Wnon-virtual-dtor -Wsign-promo -Wold-style-cast -Woverloaded-virtual")
-
-set(CMAKE_C_FLAGS_RELEASE "-O2")
-set(CMAKE_CXX_FLAGS_RELEASE ${CMAKE_C_FLAGS_RELEASE})
-
 # PATH TO KOLIBRILIB SOURCES
 set(KolibriLib_INCLUDE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/include)
 SET(SRC_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src/KolibriLib)
@@ -69,6 +62,11 @@ SET(HEADERS_PATH ${KolibriLib_INCLUDE_PATH}/kolibriLib)
 SET(C_LAYER_HEADERS ${KolibriLib_INCLUDE_PATH}/C_Layer/INCLUDE)
 
 SET(SOURCES
+	${SRC_PATH}/C_Layer/rasterworks.cpp
+	${SRC_PATH}/C_Layer/buf2d.cpp
+	${SRC_PATH}/C_Layer/libimg.cpp
+	${SRC_PATH}/C_Layer/opendialog.cpp
+	${SRC_PATH}/C_Layer/msgbox.cpp
 	${SRC_PATH}/color.cpp
 	${SRC_PATH}/os.cpp
 	${SRC_PATH}/system/notify.cpp
@@ -101,15 +99,6 @@ SET(SOURCES
 	${SRC_PATH}/ProgressBar.cpp
 	${SRC_PATH}/filesystem/filesystem.cpp
 	${SRC_PATH}/filesystem/file_type.cpp
-	${SRC_PATH}/C_Layer/kolibri_buf2d.c
-	${SRC_PATH}/C_Layer/kolibri_libimg.c
-	${SRC_PATH}/C_Layer/kolibri_rasterworks.c
-	${SRC_PATH}/C_Layer/kolibri_opendialog.c
-	${SRC_PATH}/C_Layer/rasterworks.cpp
-	${SRC_PATH}/C_Layer/buf2d.cpp
-	${SRC_PATH}/C_Layer/libimg.cpp
-	${SRC_PATH}/C_Layer/opendialog.cpp
-	${SRC_PATH}/C_Layer/msgbox.cpp
 )
 
 # CONFIGURED C_Layer ASM
@@ -118,7 +107,7 @@ set(C_Layer_SRC_PATH ${C_Layer_Path}/ASM)
 
 #LOADERS THAT LOAD SHARED LIBS
 ADD_LIBRARY(
-	C_LAYER_LOADERS STATIC 
+	C_LAYER_LOADERS OBJECT 
 	${C_Layer_SRC_PATH}/loadlibimg.asm
 	${C_Layer_SRC_PATH}/loadrasterworks.asm
 	${C_Layer_SRC_PATH}/loadbuf2d.asm
@@ -131,38 +120,73 @@ target_include_directories(
 )
 
 
+add_library(
+	C_LAYER STATIC
+	$<TARGET_OBJECTS:C_LAYER_LOADERS>
+	${SRC_PATH}/C_Layer/kolibri_buf2d.c
+	${SRC_PATH}/C_Layer/kolibri_libimg.c
+	${SRC_PATH}/C_Layer/kolibri_rasterworks.c
+	${SRC_PATH}/C_Layer/kolibri_opendialog.c
+)
+
+target_compile_options(
+	C_LAYER
+	PRIVATE -D__MakeStaticLib__
+	PUBLIC -fno-ident -fomit-frame-pointer -U__WIN32__ -U_Win32 -U_WIN32 -U__MINGW32__ -UWIN32
+	PUBLIC $<$<CONFIG:DEBUG>:-Wall -Wextra -Wcast-align -Wcast-qual -Wconversion -Wenum-compare -Wredundant-decls -Wfloat-equal -Wsign-conversion -DDEBUG -Og>
+)
+
+target_include_directories(
+	C_LAYER
+	PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+	PUBLIC ${LIBC_DIR}/include
+)
+
 
 # ТА САМАЯ ЛИБА ИЗ_ЗА КОТОРОЙ ВСЁ ЭТО
 ADD_LIBRARY(KolibriLib STATIC 
 	${SOURCES}
-	$<TARGET_OBJECTS:C_LAYER_LOADERS>
+	$<TARGET_OBJECTS:C_LAYER>
 	$<TARGET_OBJECTS:microlog>
+)
+
+target_link_libraries(
+	KolibriLib 
+	PUBLIC C_LAYER
 )
 
 target_compile_options(
 	KolibriLib
 	PRIVATE -D__MakeStaticLib__
-	PUBLIC -U__WIN32__ -U_Win32 -U_WIN32 -U__MINGW32__ -UWIN32
+	PUBLIC $<$<CONFIG:DEBUG>:-Wctor-dtor-privacy -Wnon-virtual-dtor -Wsign-promo -Wold-style-cast -Woverloaded-virtual>
 )
 
 target_include_directories(
 	KolibriLib
 	PUBLIC ${LIBSTDCPP_DIR}/include
-	PUBLIC ${LIBC_DIR}/include
-	PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 	PUBLIC ${KOLIBRIOS_REPO}/contrib/sdk/sources/freetype/include
 	PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/microlog/include
 )
-
 
 
 #GENERATE DOXYGEN ONLY THIS PROJECT ISNT SUBPROECT
 if(KolibriLib_BUILD_DOCS)
 	message("-- Build KolibriLib Docs")
 
-	include(Doxygen)
+	FIND_PACKAGE(Doxygen)
 
-	ADD_DOCUMENTATION(doc)
+	if(DOXYGEN_FOUND)
+		set(DOXYGEN_GENERATE_HTML YES)
+		set(DOXYGEN_PROJECT_NUMBER ${PROJECT_NUMBER})
+		set(DOXYGEN_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Docs)
+		set(DOXYGEN_IMAGE_PATH ${DOXYGEN_OUTPUT_DIRECTORY}/media)
+		set(DOXYGEN_USE_MDFILE_AS_MAINPAGE ${CMAKE_CURRENT_SOURCE_DIR}/Readme.md)
+		
+		doxygen_add_docs(doc ${CMAKE_SOURCE_DIR} )
+
+	else(DOXYGEN_FOUND)
+		message(STATUS "Doxygen not found. Documentation will not be generated")
+	endif(DOXYGEN_FOUND)
 
 endif()
 

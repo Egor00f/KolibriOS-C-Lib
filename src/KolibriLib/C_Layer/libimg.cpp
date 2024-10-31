@@ -10,7 +10,7 @@ libimgLib::libimgLib()
 	int err = kolibri_libimg_init();
 	if (err == -1)
 	{
-		KolibriLib::logger << microlog::LogLevel::Fatal << "Error";
+		KolibriLib::logger << microlog::LogLevel::Fatal << "Error" << std::endl;
 		throw err;
 	}
 	else

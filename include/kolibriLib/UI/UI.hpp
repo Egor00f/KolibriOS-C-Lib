@@ -31,8 +31,7 @@ namespace KolibriLib
 		class GuiObject
 		{
 		public:
-
-        	virtual ~GuiObject() = default;
+			virtual ~GuiObject() = default;
 
 			/// @brief Получить размер элемента
 			/// @return Функция возвращает _size
@@ -67,23 +66,23 @@ namespace KolibriLib
 			virtual Coord GetAbsoluteCoord() const = 0;
 
 			/**
-			 * @brief 
-			 * @return 
+			 * @brief
+			 * @return
 			 */
-			virtual buttons::ButtonsIDController* GetButtonIDController() const = 0;
+			virtual buttons::ButtonsIDController *GetButtonIDController() const = 0;
 
 			/**
-			 * @brief 
-			 * @param buttonsIDController 
+			 * @brief
+			 * @param buttonsIDController
 			 */
-			virtual void SetButtonIDController(const buttons::ButtonsIDController* buttonsIDController) = 0;
+			virtual void SetButtonIDController(const buttons::ButtonsIDController *buttonsIDController) = 0;
 
 			/// @brief Получить отступы
 			/// @return Функция возвращает _Margin
 			unsigned GetMargin() const;
 
-			/// @brief 
-			/// @param NewMargin 
+			/// @brief
+			/// @param NewMargin
 			void SetMargin(unsigned NewMargin);
 
 		protected:
@@ -93,7 +92,7 @@ namespace KolibriLib
 
 		///@brief Элемент интерфейса
 		/// @note Используется как шаблон для других классов
-		class UIElement: public GuiObject
+		class UIElement : public GuiObject
 		{
 		public:
 			/// @brief Конструктор
@@ -111,21 +110,21 @@ namespace KolibriLib
 			/// @brief Изменить родительский элемент
 			/// @param Parent Указатель на родительский элемент
 			/// @details почему этот метод константный? Да потому что по сути не изменяет состояние класса, элементы не очень то и зависят от родительского элемента
-			void SetParent(const UIElement* NewParent) const;
+			void SetParent(const UIElement *NewParent) const;
 
 			/**
-			 * @brief 
+			 * @brief
 			 * @param ptr Указатель на родительский элемент
 			 */
 			void SetParent(std::weak_ptr<UIElement> ptr) const;
 
 			/// @brief Сделать окно родительским элементом
 			/// @param Указатель на окно
-			void WindowAsParent(const GuiObject * window) const;
+			void WindowAsParent(const GuiObject *window) const;
 
 			/// @brief Получить указатель на родительский элемент
 			/// @return Указатель на родительский элемент
-			const GuiObject* GetParent() const;
+			const GuiObject *GetParent() const;
 
 			/// @brief Получить размер элемента
 			/// @return Функция возвращает _size
@@ -133,7 +132,7 @@ namespace KolibriLib
 
 			/// @brief Изменить размер элемента
 			/// @param NewSize новый размер
-			void SetSize(const UDim& NewSize) override;
+			void SetSize(const UDim &NewSize) override;
 
 			/// @brief изменить координаты
 			/// @param NewCoord новые координаты
@@ -161,13 +160,13 @@ namespace KolibriLib
 
 			/// @brief
 			/// @return
-			buttons::ButtonsIDController* GetButtonIDController() const override;
+			buttons::ButtonsIDController *GetButtonIDController() const override;
 
 			/**
-			 * @brief 
-			 * @param buttonsIDController 
+			 * @brief
+			 * @param buttonsIDController
 			 */
-			void SetButtonIDController(const buttons::ButtonsIDController* buttonsIDController) override;
+			void SetButtonIDController(const buttons::ButtonsIDController *buttonsIDController) override;
 
 			/// @brief Получить осносной цвет элемента
 			/// @return Функция возвращает _MainColor
@@ -175,7 +174,7 @@ namespace KolibriLib
 
 			/// @brief Изменить цвет
 			/// @param NewColor новый цвет
-			void SetColor(const Colors::Color& NewColor);
+			void SetColor(const Colors::Color &NewColor);
 
 			/// @brief Повернуть элемент
 			/// @param NewAngle Новый угол наклона
@@ -190,7 +189,7 @@ namespace KolibriLib
 			bool Hover() const;
 
 			/// @brief Обработчик
-			/// @return 
+			/// @return
 			virtual int Handler(OS::Event event);
 
 			/**
@@ -212,34 +211,33 @@ namespace KolibriLib
 
 			/// @brief Получить список всех элементов, для которых этот является родительсим
 			/// @return указатель на вектор указателей
-			std::vector<std::weak_ptr<UIElement>>& GetChildren();
+			std::vector<std::weak_ptr<UIElement>> &GetChildren();
 
 			/// @brief Получить список всех элементов, для которых этот является родительсим
 			/// @details Более медленная версия(в сравнении с неконстантной), т.к. копирует вектор
 			/// @return вектор указателей
 			std::vector<std::weak_ptr<UIElement>> GetChildren() const;
 
-			/// @brief 
-			/// @param Element 
-			/// @return 
-			UIElement& operator = (const UIElement& Element);
+			/// @brief
+			/// @param Element
+			/// @return
+			UIElement &operator=(const UIElement &Element);
 
-			/// @brief 
-			/// @param Element 
-			/// @return 
-			bool operator == (const UIElement& Element) const;
+			/// @brief
+			/// @param Element
+			/// @return
+			bool operator==(const UIElement &Element) const;
 
-			/// @brief 
-			/// @param Element 
-			/// @return 
-			bool operator != (const UIElement &Element) const;
+			/// @brief
+			/// @param Element
+			/// @return
+			bool operator!=(const UIElement &Element) const;
 
-			/// @brief Заменить 
-			/// @param e 
+			/// @brief Заменить
+			/// @param e
 			void swap(UIElement &e);
 
 		protected:
-
 			/// @brief Координаты
 			UDim _coord;
 
@@ -268,17 +266,17 @@ namespace KolibriLib
 			void AddChildren(const UIElement *child) const;
 
 			/// @brief Удалить
-			void DeleteChildren(const UIElement* child) const;
+			void DeleteChildren(const UIElement *child) const;
 		};
 	}
 }
 
-inline std::ostream &operator<<(std::ostream &os, const KolibriLib::UI::UIElement& element)
+inline std::ostream &operator<<(std::ostream &os, const KolibriLib::UI::UIElement &element)
 {
-	return os << "UIElement" << std::endl \
-		<< "Coord: " << element.GetCoord() << std::endl \
-		<< "Size: " << element.GetSize() << std::endl \
-		<< "MainColor" << element.GetColor() << std::endl;
+	return os << "UIElement" << std::endl
+			  << "Coord: " << element.GetCoord() << std::endl
+			  << "Size: " << element.GetSize() << std::endl
+			  << "MainColor" << element.GetColor() << std::endl;
 }
 
 #endif // __UI_HPP__

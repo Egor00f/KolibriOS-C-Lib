@@ -6,14 +6,13 @@ using namespace KolibriLib;
 using namespace UI;
 using namespace text;
 
-
 /*
-	Contructors
+	Constructors
 */
 
 Txt::Txt(const std::string &text, const Colors::Color &TextColor)
-	:	_data	(text),
-		_TextColor	(TextColor)
+	: _data(text),
+	  _TextColor(TextColor)
 {
 	logger << microlog::LogLevel::Debug << "Txt constructor" << std::endl;
 
@@ -48,8 +47,7 @@ void KolibriLib::UI::text::Txt::Print(Coord pos, Size size, const Colors::Color 
 {
 	logger << microlog::LogLevel::Debug << "Print Txt" << std::endl;
 
-	/*if(_data.length() > 0)	// Если текста не то и выводить нечего
-	{
+	/*
 		uint8_t flags = 0;
 
 		if (Italic)
@@ -62,33 +60,36 @@ void KolibriLib::UI::text::Txt::Print(Coord pos, Size size, const Colors::Color 
 			flags |= RasterworksParams::StrikeThrough;
 
 		drawtext(coord, buff, _data, _CharSize, _TextColor, BackgroundColor, flags);
-	}*/
+	*/
 
-	switch (_Align)
+	if (_data.size())
 	{
-	case Txt::Align::Center:
+		switch (_Align)
+		{
+		case Txt::Align::Center:
 
-		pos.x += (size.x - static_cast<int>(lenghtPX())) / 2;
-		pos.y += size.y / 2;
+			pos.x += (size.x - static_cast<int>(lenghtPX())) / 2;
+			pos.y += size.y / 2;
 
-		break;
-	case Txt::Align::Left:
+			break;
+		case Txt::Align::Left:
 
-		pos.y += size.y / 2;
+			pos.y += size.y / 2;
 
-		break;
+			break;
 
-	case Txt::Align::Right:
+		case Txt::Align::Right:
 
-		pos.x += size.x - static_cast<int>(lenghtPX());
-		pos.y += size.y / 2;
+			pos.x += size.x - static_cast<int>(lenghtPX());
+			pos.y += size.y / 2;
 
-		break;
-	default:
-		_ksys_debug_puts("Unklown value of Txt::_Align");
+			break;
+		default:
+			logger << microlog::LogLevel::Error << "Unknown value of Txt::_Align" << std::endl;
+		}
+
+		DrawText(_data, pos, _TextColor, TextEncoding::UTF8, _CharSize.x / 16);
 	}
-
-	DrawText(_data, pos, _TextColor, TextEncoding::UTF8, _CharSize.x / 16);
 }
 
 /*void KolibriLib::UI::text::Txt::SetFont(const Fonts::Font &Font)
@@ -120,8 +121,8 @@ unsigned KolibriLib::UI::text::Txt::lenghtPX() const
 	return _data.length() * _CharSize.x;
 }
 
-void KolibriLib::UI::text::Txt::SetText(const std::string& text)
-{	
+void KolibriLib::UI::text::Txt::SetText(const std::string &text)
+{
 	_data = text;
 }
 
@@ -150,12 +151,12 @@ bool Txt::GetScale() const
 	return _TextScale;
 }
 
-void KolibriLib::UI::text::Txt::SetAling(Txt::Align NewAlignment)
+void KolibriLib::UI::text::Txt::SetAlign(Txt::Align NewAlignment)
 {
 	_Align = NewAlignment;
 }
 
-Txt::Align KolibriLib::UI::text::Txt::GetAling() const
+Txt::Align KolibriLib::UI::text::Txt::GetAlign() const
 {
 	return _Align;
 }
@@ -167,11 +168,11 @@ Txt::Align KolibriLib::UI::text::Txt::GetAling() const
 bool KolibriLib::UI::text::Txt::operator==(const KolibriLib::UI::text::Txt &txt) const
 {
 	return _data == txt._data &&
-	       _TextColor == txt._TextColor;
+		   _TextColor == txt._TextColor;
 }
 
 bool KolibriLib::UI::text::Txt::operator!=(const Txt &txt) const
 {
 	return _data != txt._data ||
-	       _TextColor != txt._TextColor;
+		   _TextColor != txt._TextColor;
 }

@@ -9,9 +9,9 @@ Scancode keyboard::GetScancodeByASCII(char ascii, KeyboardLayoutMode mode)
 {
 	KeyboardLayout layout = GetKeyboardLayout(mode);
 
-	for(uint8_t i = 0; i < sizeof(KeyboardLayout); i++)
+	for (uint8_t i = 0; i < sizeof(KeyboardLayout); i++)
 	{
-		if(layout[i] == ascii)
+		if (layout[i] == ascii)
 		{
 			return Scancode(i);
 		}
@@ -24,11 +24,11 @@ Scancode keyboard::GetScancodeByASCII(char ascii)
 {
 	Scancode a = GetScancodeByASCII(ascii, KeyboardLayoutMode::Normal);
 
-	if(a == Scancode(Scancodes::ANY))
+	if (a == Scancode(Scancodes::ANY))
 	{
 		a = GetScancodeByASCII(ascii, KeyboardLayoutMode::Shift);
 
-		if(a == Scancode(Scancodes::ANY)) // Вероятность того что до этого дойдёт довольно низка
+		if (a == Scancode(Scancodes::ANY)) // Вероятность того что до этого дойдёт довольно низка
 		{
 			a = GetScancodeByASCII(ascii, KeyboardLayoutMode::Alt);
 		}
@@ -46,7 +46,6 @@ Scancode::Scancode(char c)
 KolibriLib::keyboard::Scancode::Scancode(Scancodes v)
 	: val(v)
 {
-
 }
 
 Scancode::operator char() const
@@ -75,7 +74,7 @@ bool KolibriLib::keyboard::Scancode::operator!=(const Scancode &val)
 	return val.val != val;
 }
 
-char & KeyboardLayout::operator[](uint8_t i)
+char &KeyboardLayout::operator[](uint8_t i)
 {
 	return table[i];
 }

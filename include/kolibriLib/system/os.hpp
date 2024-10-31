@@ -13,14 +13,14 @@ namespace KolibriLib
 	namespace OS
 	{
 
-		/// @brief Перечисление всех ивнтов
+		/// @brief Перечисление всех ивентов
 		enum class Event
 		{
-			/// @brief Ивента небыло
-			/// @details Имеет смысол для функций Event WaitEvent(TimeOut) и CheckEvent()
+			/// @brief Ивента не было
+			/// @details Имеет смысл для функций Event WaitEvent(TimeOut) и CheckEvent()
 			None = KSYS_EVENT_NONE,
 
-			/// @brief Перересовка окна
+			/// @brief Перерисовка окна
 			Redraw = KSYS_EVENT_REDRAW,
 
 			/// @brief Активность со стороны клавиатуры
@@ -77,27 +77,27 @@ namespace KolibriLib
 		enum Mask
 		{
 			/**
-			 * @brief 
+			 * @brief
 			 */
 			RedrawEvent = KSYS_EVM_REDRAW,
 
 			/**
-			 * @brief 
+			 * @brief
 			 */
 			KeyEvent = KSYS_EVM_KEY,
 
 			/**
-			 * @brief 
+			 * @brief
 			 */
 			ButtonEvent = KSYS_EVM_BUTTON,
 
 			/**
-			 * @brief 
+			 * @brief
 			 */
 			MouseEvent = KSYS_EVM_MOUSE,
 
 			/**
-			 * @brief 
+			 * @brief
 			 */
 			DescktopEvent = KSYS_EVM_BACKGROUND,
 
@@ -108,7 +108,7 @@ namespace KolibriLib
 			MouseCursorInWindow = KSYS_EVM_CURSOR_FILTER,
 
 			/**
-			 * @brief 
+			 * @brief
 			 */
 			AllMouseEvents = (MouseEvent | MouseEventInInactiveWindow | MouseCursorInWindow),
 
@@ -116,8 +116,6 @@ namespace KolibriLib
 			/// @details разрешены ивенты перерисовки, клавиатуры и кнопок
 			DefaultEventMask = 0b111
 		};
-
-		
 
 		/// @brief Версия ядра
 		struct CoreVersion
@@ -138,23 +136,22 @@ namespace KolibriLib
 			/// @brief Ревизия
 			std::uint16_t Rev;
 
-			CoreVersion& operator=(const CoreVersion&) = default;
+			CoreVersion &operator=(const CoreVersion &) = default;
 
 			/**
 			 * @brief оператор сравнения
 			 * @param ver с чем сравнивать
 			 * @return true если равны, иначе false
 			 */
-			bool operator == (const CoreVersion& ver) const;
+			bool operator==(const CoreVersion &ver) const;
 
 			/**
 			 * @brief оператор сравнения
 			 * @param ver с чем сравнивать
 			 * @return false если равны, иначе true
 			 */
-			bool operator != (const CoreVersion& ver) const;
+			bool operator!=(const CoreVersion &ver) const;
 		};
-		
 
 		/// @brief Получить системные цвета
 		/// @return Таблица системных цветов
@@ -167,14 +164,12 @@ namespace KolibriLib
 			return a;
 		}
 
-		/// @brief Именить системыне цвета
+		/// @brief Изменить системные цвета
 		/// @param Указатель на таблицу системных цветов
 		inline void SetSystemColors(Colors::ColorsTable *table)
 		{
-			asm_inline (
-				"int $0x40"
-				::"a"(48), "b"(2), "c"(table), "d"(sizeof(Colors::ColorsTable))
-			);
+			asm_inline(
+				"int $0x40" ::"a"(48), "b"(2), "c"(table), "d"(sizeof(Colors::ColorsTable)));
 		}
 
 		/// \brief Ждать ивента
@@ -208,7 +203,7 @@ namespace KolibriLib
 		}
 
 		/// @brief Получить маску ивентов
-		/// @return 
+		/// @return
 		inline uint32_t GetEventMask()
 		{
 			uint32_t ret = SetEventMask(0);
@@ -247,26 +242,24 @@ namespace KolibriLib
 		{
 			SetTimeOrDate ret = SetTimeOrDate::Successfully;
 
-			asm_inline (
-				"int $0x40" 
+			asm_inline(
+				"int $0x40"
 				: "=a"(ret)
-				: "a"(22), "b"(0), "c"(NewTime)
-			);
+				: "a"(22), "b"(0), "c"(NewTime));
 
 			return ret;
 		}
 
-		/// @brief Установитьсистемную  дату
+		/// @brief Установить системную  дату
 		/// @param NewData Дата что будет установленна
 		inline SetTimeOrDate SetDate(ksys_date_bcd_t NewDate)
 		{
 			SetTimeOrDate ret = SetTimeOrDate::Successfully;
 
-			asm_inline (
+			asm_inline(
 				"int $0x40"
 				: "=a"(ret)
-				: "a"(22), "b"(1), "c"(NewDate)
-			);
+				: "a"(22), "b"(1), "c"(NewDate));
 
 			return ret;
 		}
@@ -278,29 +271,27 @@ namespace KolibriLib
 		{
 			SetTimeOrDate ret = SetTimeOrDate::Successfully;
 
-			asm_inline (
-				"int $0x40" 
+			asm_inline(
+				"int $0x40"
 				: "=a"(ret)
-				: "a"(22), "b"(2), "c"(NewDayOfWeek)
-			);
+				: "a"(22), "b"(2), "c"(NewDayOfWeek));
 
 			return ret;
 		}
 
 		/// @brief Установить будильник
 		/// @param AlarmTime Время будильника
-		/// @paragraph Будильник можно установить на срабатывание в заданное время каждые сутки. При этом отключить его существующими системными функциями нельзя.
-		/// @paragraph Срабатывание будильника заключается в генерации IRQ8.
-		/// @paragraph Будильник - глобальный системный ресурс; установка будильника автоматически отменяет предыдущую установку 
+		/// @details Будильник можно установить на срабатывание в заданное время каждые сутки. При этом отключить его существующими системными функциями нельзя.
+		/// @details Срабатывание будильника заключается в генерации IRQ8.
+		/// @details Будильник - глобальный системный ресурс; установка будильника автоматически отменяет предыдущую установку
 		inline SetTimeOrDate SetAlarm(ksys_time_bcd_t AlarmTime)
 		{
 			SetTimeOrDate ret = SetTimeOrDate::Successfully;
 
-			asm_inline (
-				"int $0x40" 
+			asm_inline(
+				"int $0x40"
 				: "=a"(ret)
-				: "a"(22), "b"(3), "c"(AlarmTime)
-			);
+				: "a"(22), "b"(3), "c"(AlarmTime));
 
 			return ret;
 		}
@@ -311,11 +302,10 @@ namespace KolibriLib
 		{
 			std::size_t a;
 
-			asm_inline (
+			asm_inline(
 				"int $0x40"
 				: "=a"(a)
-				: "a"(18), "b"(16)
-			);
+				: "a"(18), "b"(16));
 
 			return a;
 		}
@@ -326,17 +316,16 @@ namespace KolibriLib
 		{
 			std::size_t a;
 
-			asm_inline (
+			asm_inline(
 				"int $0x40"
 				: "=a"(a)
-				: "a"(18), "b"(17)
-			);
+				: "a"(18), "b"(17));
 
 			return a;
 		}
 
 		/// @brief Получить язык системы
-		/// @return Занечение из списка lang
+		/// @return Значение из списка lang
 		inline lang GetLang()
 		{
 			int a;
@@ -344,8 +333,7 @@ namespace KolibriLib
 			asm_inline(
 				"int $0x40"
 				: "=a"(a)
-				: "a"(26), "b"(5)
-			);
+				: "a"(26), "b"(5));
 
 			return static_cast<lang>(a);
 		}
@@ -355,11 +343,8 @@ namespace KolibriLib
 		inline void SetLang(lang l)
 		{
 			asm_inline(
-				"int $0x40"
-				:: "a"(21), "b"(5), "c"(l)
-			);
+				"int $0x40" ::"a"(21), "b"(5), "c"(l));
 		}
-
 
 		/// @brief Получить версию ядра
 		/// @return Указатель на структуру версии ядра
@@ -371,29 +356,27 @@ namespace KolibriLib
 		{
 			return _ksys_get_cpu_clock();
 		}
-		
+
 		/**
 		 * @brief получить значение высокоточного счётчика времени
 		 * @note функция использует счётчик HPET, если HPET не доступен используется счётчик PIT. В этом случае точность будет уменьшена до 10 000 00 наносекунд.
-		 * @return число наносекунд с момента загрузки ядра 
+		 * @return число наносекунд с момента загрузки ядра
 		 * @details Сомнительно использовать это. Используйте лучше функции из станартной библиотеки Си
 		 */
-		inline uint64_t GetHighPrecisionTimerCount()
+		inline std::uint64_t GetHighPrecisionTimerCount()
 		{
-			uint32_t a, b;
+			std::uint32_t a, b;
 
-			asm_inline (
+			asm_inline(
 				"int $0x40"
 				: "=a"(a), "=d"(b)
-				: "a"(26), "b"(10)
-			);
+				: "a"(26), "b"(10));
 
-			return static_cast<uint64_t>((b << 31) || a);
+			return static_cast<std::uint64_t>((b << 31) | a);
 		}
 
 	} // namespace OS
 
 } // namespace KolibriLib
-
 
 #endif // __OS_H__
