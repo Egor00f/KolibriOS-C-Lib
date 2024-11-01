@@ -9,34 +9,69 @@ UI::buttons::ButtonsIDController *Globals::DefaultButtonsIDController = nullptr;
 
 ButtonID buttons::ButtonsIDController::GetFreeButtonID(std::weak_ptr<BaseButton> ptr)
 {
-	logger << microlog::LogLevel::Debug << "ButtonsController::GetFreeButtonID" << std::endl;
+	#ifndef NO_LOGS
+	logger << microlog::LogLevel::Debug << "ButtonsController::GetFreeButtonID";
+	#endif
 
 	ButtonID ret = ButtonIDNotSet;
 
-	for (ButtonID i = _top; i < ButtonIDEnd; i.value++)
+	/*
+		В общем че происходит:
+		проходимся по всем возможным ID кнопок с _top до конца. Если находим соответствие, то возвращаем id
+		иначе повторяем всё ещё раз, но начиная с начала списка.
+		можно оптимизировать чтобы полностью по всем элементам _ButtonsIdList не проходиться
+	*/
+
+	for (std::uint8_t a = 0; a < 2; a++)
 	{
-		for (auto j : _ButtonsIdList)
+		for (ButtonID i = _top; i < ButtonIDEnd; i.value++)
 		{
-			if (j.id != i)
+			for (auto j : _ButtonsIdList)
 			{
-				return i;
+				if (j.id != i)
+				{
+					_ButtonsIdList.push_back(node(i, ptr));
+
+					#ifndef NO_LOGS
+					#ifdef VERBOSE
+					logger << ": OK";
+					#endif
+					logger << std::endl;
+					#endif
+
+					return i;
+				}
 			}
 		}
+
+		_top = _StartTop;
 	}
+
+	logger << microlog::LogLevel::Warning << "Free ID not found in ButtonsIDList" << std::endl;
 
 	return ret;
 }
 
 void buttons::ButtonsIDController::FreeButtonID(const ButtonID &id)
 {
+	#ifndef NO_LOGS
 	logger << microlog::LogLevel::Debug << "ButtonsController::FreeButtonID";
+	#endif
 
 	for (std::size_t i = 0; i < _ButtonsIdList.size(); i++)
 	{
 		if (_ButtonsIdList[i].id == id)
 		{
 			_ButtonsIdList.erase(std::next(_ButtonsIdList.begin(), i));
+
+			#ifndef NO_LOGS
+			#ifdef VERBOSE
+			logger << ": OK";
+			#endif
+
 			logger << std::endl;
+			#endif
+
 			return;
 		}
 	}
@@ -87,7 +122,9 @@ ButtonIDList KolibriLib::UI::buttons::ButtonsIDController::ListToButtonIDList(co
 
 void KolibriLib::UI::buttons::ButtonsIDController::TakeUpButtonID(const ButtonID &id, std::weak_ptr<BaseButton> ptr)
 {
+	#ifndef NO_LOGS
 	logger << microlog::LogLevel::Debug << "TakeUpButtonID" << std::endl;
+	#endif
 
 	for (auto i : _ButtonsIdList)
 	{
@@ -103,6 +140,11 @@ void KolibriLib::UI::buttons::ButtonsIDController::TakeUpButtonID(const ButtonID
 
 void KolibriLib::UI::buttons::ButtonsIDController::Sort()
 {
+	std::sort(_ButtonsIdList.begin(), _ButtonsIdList.end(),
+			  [](node a, node b)
+			  {
+				  return a.id > b.id;
+			  });
 }
 
 /*

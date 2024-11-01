@@ -1,10 +1,12 @@
 #ifndef __INCLUDE_KSYS_H_H__
 #define __INCLUDE_KSYS_H_H__
 
-/*
-	Почему?
-	С включенным флагами для с++ компилятор выдаёт тонну предупреждений
+/** 
+ * @brief Подключить sys/ksys.h
+ * @details Почему?
+ * С включенным флагами для с++ компилятор выдаёт тонну предупреждений
 */
+
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wold-style-cast"

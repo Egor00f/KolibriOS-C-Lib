@@ -6,6 +6,9 @@
 
 namespace KolibriLib
 {
+    /**
+     * @brief Работа с клавиатурой
+     */
     namespace keyboard
     {
         /// @brief Режим ввода

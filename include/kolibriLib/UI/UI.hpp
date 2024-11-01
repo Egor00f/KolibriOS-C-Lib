@@ -268,6 +268,12 @@ namespace KolibriLib
 			/// @brief Удалить
 			void DeleteChildren(const UIElement *child) const;
 		};
+
+
+		/**
+		 * @brief Фрейм
+		 */
+		using Frame = UIElement;
 	}
 }
 

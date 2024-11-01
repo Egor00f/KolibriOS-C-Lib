@@ -13,7 +13,9 @@
 
 namespace KolibriLib
 {
-	// Графика
+	/**
+	 * @brief Графика
+	 */
 	namespace graphic
 	{
 		/// @brief Нарисовать линию
@@ -34,17 +36,17 @@ namespace KolibriLib
 
 		/// @brief Нарисовать линию
 		/// @param coord Координата от которой рисуется линия
-		/// @param lenght Длина линии
+		/// @param length Длина линии
 		/// @param angle Угол
 		/// @param color Цвет линии
 		/// @note Конечная точка также рисуется.
-		inline void DrawLine(const Coord &coord, unsigned lenght, unsigned short angle, const Colors::rgb &color = Globals::SystemColors.work_graph)
+		inline void DrawLine(const Coord &coord, unsigned length, unsigned short angle, const Colors::rgb &color = Globals::SystemColors.work_graph)
 		{
 			_ksys_draw_line (
 				coord.x, 
 				coord.y,
-				coord.x + lround(lenght * std::cos(angle)),
-				coord.y + lround(lenght * std::sin(angle)),
+				coord.x + lround(length * std::cos(angle)),
+				coord.y + lround(length * std::sin(angle)),
 				color.ZeroRRGGBB()
 			);
 		}
@@ -64,7 +66,7 @@ namespace KolibriLib
 		/// @brief Нарисовать окружность
 		/// @param coord Координаты центра
 		/// @param Radius радиус окружности
-		/// @param detalization Детализация прорисовки окружности (то на сколько круг круглый)
+		/// @param details Детализация прорисовки окружности (то на сколько круг круглый)
 		/// @param color Цвет
 		/// @paragraph Круг рисуется по detalization линий. Да-да если Детализация = 4, то круг это квадрат.
 		void DrawCircle(const Coord& coord, unsigned Radius, const Colors::Color& color = Globals::SystemColors.work_graph);

@@ -8,28 +8,44 @@ KolibriLib::window::Window_t::Window_t(const std::string &Title, const KolibriLi
 	  _colors(colors),
 	  _Transparency(Transparency)
 {
+
+#ifndef NO_LOGS
 	logger << microlog::LogLevel::Debug << "Window:" << std::endl;
+#endif
 
 	if (Resize)
 	{
+
+#ifndef NO_LOGS
 		logger << microlog::LogLevel::Debug << "- with skin" << std::endl;
+#endif
 		_style = WindowStyle::withSkin;
 	}
 	else
 	{
+
+#ifndef NO_LOGS
 		logger << microlog::LogLevel::Debug << "- with skin and fixed size" << std::endl;
+#endif
 		_style = WindowStyle::FixSizeWithSkin;
 	}
 
 	if (Title != "")
 	{
+
+#ifndef NO_LOGS
 		logger << microlog::LogLevel::Debug << "- Have title" << std::endl;
+#endif
+
 		_settings |= WindowSettings::WindowHaveTitle;
 	}
 
 	if (Gradient)
 	{
+
+#ifndef NO_LOGS
 		logger << microlog::LogLevel::Debug << "- Gradient workspace" << std::endl;
+#endif
 		_settings |= WindowSettings::GradientDraw;
 	}
 
@@ -67,7 +83,10 @@ KolibriLib::window::Window::Window(const std::string &Title, const Size &size, c
 	: Window_t(Title, colors, Resize, RealtimeRedraw, Gradient, Transparency, Margin)
 
 {
+
+#ifndef NO_LOGS
 	logger << microlog::LogLevel::Debug << "Window constructor" << std::endl;
+#endif
 
 	_coord = coord;
 	_size = size;
@@ -76,7 +95,11 @@ KolibriLib::window::Window::Window(const std::string &Title, const Size &size, c
 
 	if (Globals::DefaultButtonsIDController == nullptr)
 	{
+
+#ifndef NO_LOGS
 		logger << microlog::LogLevel::Debug << "Set DefaultButtonsIDController" << std::endl;
+#endif
+
 		Globals::DefaultButtonsIDController = &_buttonsController;
 	}
 
@@ -108,7 +131,10 @@ KolibriLib::window::Window::Window(const Window_t &wndw)
 
 void Window::RenderAllElements() const
 {
+
+#ifndef NO_LOGS
 	logger << microlog::LogLevel::Debug << "RenderAllElements:" << std::endl;
+#endif
 
 	for (auto i : _Elements)
 	{
@@ -276,7 +302,10 @@ OS::Event Window::Handler()
 		}
 		catch (...)
 		{
+
+#ifndef NO_LOGS
 			logger << microlog::LogLevel::Error << "Error Get s_ptr" << std::endl;
+#endif
 		}
 
 		_PressedButton = s_ptr;

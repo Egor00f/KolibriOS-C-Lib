@@ -2,14 +2,13 @@
 #define __BUTTONSBASE_HPP__
 
 #include <include_ksys.h>
-
+#include <assert.h>
 #include <kolibriLib/types.hpp>
 #include <kolibriLib/color.hpp>
 #include <kolibriLib/system/os.hpp>
 #include <kolibriLib/debug.hpp>
 #include <kolibriLib/globals.hpp>
 #include <ostream>
-
 #include <vector>
 
 namespace KolibriLib
@@ -138,13 +137,17 @@ namespace KolibriLib
 			/// \return id созданной кнопки
 			ButtonID autoDefineButton(ButtonIDList &ButtonsIdList, const Coord &coords, const Size &size, const Colors::Color &color = Globals::SystemColors.work_button);
 
-			/// \brief Создать кнопку, вручную
-			/// \param coords координаты
-			/// \param size размер
-			/// \param id idшник кнопки
-			/// \param color цвет
+			/**
+			 * \brief Создать кнопку, вручную
+			 * \param coords координаты
+			 * \param size размер
+			 * \param id idшник кнопки
+			 * \param color цвет
+			 */
 			inline void DefineButton(const Coord &coord, const Size &size, const ButtonID &id, Colors::Color color = Globals::SystemColors.work_button)
 			{
+				assert(id == ButtonIDNotSet || id >= ButtonIDEnd && "Wrong button id!");
+
 				_ksys_define_button(
 					static_cast<std::uint32_t>(coord.x),
 					static_cast<std::uint32_t>(coord.y),

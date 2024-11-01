@@ -8,11 +8,14 @@
 
 #include <ostream>
 
-#define X_Y(x, y)(((x) << 16) | (y))
+/**
+ * @brief 
+ */
+#define X_Y(x, y) (((x) << 16) | (y))
 
 namespace KolibriLib
 {
-	
+
 	/// @brief Просто точка
 	struct point
 	{
@@ -27,20 +30,20 @@ namespace KolibriLib
 		point();
 
 		/// @brief Конструктор
-		/// @param X 
-		/// @param Y 
+		/// @param X
+		/// @param Y
 		point(int X, int Y);
 
 		/// @brief Конструктор
-		/// @param Number 
+		/// @param Number
 		point(int Number);
 
 		/// @brief Конструктор
-		/// @param pos 
+		/// @param pos
 		point(const ksys_pos_t &pos);
 
 		/// @brief Конструктор копирования
-		/// @param p 
+		/// @param p
 		point(const point &p);
 
 		ksys_pos_t GetKsysPost() const;
@@ -48,80 +51,76 @@ namespace KolibriLib
 		operator ksys_pos_t() const;
 
 		/// @details прибавляет к x и y значения из a (к x прибавляется a.x, к y прибавляется a.y)
-		point& operator+=(const point &a);
+		point &operator+=(const point &a);
 
 		/// @details уменьшает x и y на значения из a (из x вычитается a.x, из y вычитается a.y)
-		point& operator-=(const point &a);
+		point &operator-=(const point &a);
 
 		point operator+(const point &a) const;
 		point operator-(const point &a) const;
 
-		/// @brief 
-		/// @param p 
-		/// @return 
+		/// @brief
+		/// @param p
+		/// @return
 		point &operator=(const point &p);
 
-		
 		/**
 		 * @brief Прибавить к обоим координатам значение
 		 * @param p значение
-		 * @return 
+		 * @return
 		 * @details Прибавляет к обеим координатам p
 		 */
 		point &operator+=(const int &p);
 
-		
 		/**
 		 * @brief Вычесть из обоих координат значение
-		 * @param p значение  
-		 * @return 
+		 * @param p значение
+		 * @return
 		 * @details Вычитает из обеих координат p
 		 */
 		point &operator-=(const int &p);
 
 		/**
-		 * @brief 
-		 * @param p 
-		 * @return 
+		 * @brief
+		 * @param p
+		 * @return
 		 * @details Умножает обе координаты на p
 		 */
 		point &operator*=(const int &p);
 
 		/**
-		 * @brief 
-		 * @param p 
-		 * @return 
+		 * @brief
+		 * @param p
+		 * @return
 		 * @details Делит обе координаты на p
 		 */
 		point &operator/=(const int &p);
 
-		/// @brief 
-		/// @param a 
-		/// @return 
+		/// @brief
+		/// @param a
+		/// @return
 		bool operator==(const point &a) const;
-		
 
-		/// @brief 
-		/// @param a 
-		/// @return 
+		/// @brief
+		/// @param a
+		/// @return
 		bool operator!=(const point &a) const;
 
 		/**
-		 * @brief 
-		 * @param obj 
-		 * @return 
+		 * @brief
+		 * @param obj
+		 * @return
 		 */
-		bool operator < (const point &obj) const;
+		bool operator<(const point &obj) const;
 
 		/**
-		 * @brief 
-		 * @param obj 
-		 * @return 
+		 * @brief
+		 * @param obj
+		 * @return
 		 */
-		bool operator > (const point &obj) const;
+		bool operator>(const point &obj) const;
 	};
 
-	
 	/// @brief Размер
 	using Size = point;
 
@@ -141,21 +140,21 @@ namespace KolibriLib
 			int Offset;
 
 			/// @brief Конструктор
-			/// @param scale 
+			/// @param scale
 			/// @param offset смещение в пикселях
 			Axis(float scale = 0, int offset = 0);
 
-			Axis& operator=(const Axis&) = default;
+			Axis &operator=(const Axis &) = default;
 
 			/// @brief оператор сравнения
 			/// @param axis с чем сравнивать
 			/// @note сравнивает с точностью до тысячных ибо зачем очень большая точность для gui
-			/// @return 
+			/// @return
 			bool operator==(const Axis &axis) const;
 
-			/// @brief 
+			/// @brief
 			/// @param axis с чем сравнивать
-			/// @return 
+			/// @return
 			bool operator!=(const Axis &axis) const;
 		};
 
@@ -180,10 +179,10 @@ namespace KolibriLib
 
 		/**
 		 * @brief Конструктор
-		 * @param x 
-		 * @param y 
+		 * @param x
+		 * @param y
 		 */
-		UDim(const Axis& x, const Axis& y);
+		UDim(const Axis &x, const Axis &y);
 
 		/// @brief Конструктор
 		/// @param x Относительный размер по x
@@ -200,41 +199,40 @@ namespace KolibriLib
 		/// @return абсолютные координаты/размер
 		point GetAbsolute(const point &Parent) const;
 
-		UDim& operator=(const UDim&) = default;
+		UDim &operator=(const UDim &) = default;
 
 		/**
 		 * @brief Оператор сравнения
 		 * @param obj с чем сравнивать
-		 * @return 
+		 * @return
 		 */
 		bool operator==(const UDim &obj) const;
 
 		/**
 		 * @brief Оператор сравнения
 		 * @param obj с чем сравнивать
-		 * @return 
+		 * @return
 		 */
 		bool operator!=(const UDim &obj) const;
 	};
 
-//==================================================================================================
+	//==================================================================================================
 
 } // namespace KolibriLib
 
-inline std::ostream &operator<<(std::ostream &os, const KolibriLib::point& p)
+inline std::ostream &operator<<(std::ostream &os, const KolibriLib::point &p)
 {
 	return os << "X: " << p.x << " Y: " << p.y;
 }
 
-inline std::ostream &operator<<(std::ostream &os, const KolibriLib::UDim::Axis& p)
+inline std::ostream &operator<<(std::ostream &os, const KolibriLib::UDim::Axis &p)
 {
 	return os << "Scale: " << p.Scale << " Offset: " << p.Offset;
 }
 
-inline std::ostream &operator<<(std::ostream &os, const KolibriLib::UDim& p)
+inline std::ostream &operator<<(std::ostream &os, const KolibriLib::UDim &p)
 {
 	return os << "X: " << p.X << " Y: " << p.Y;
 }
-
 
 #endif // __TYPES_HPP__

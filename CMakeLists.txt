@@ -134,7 +134,8 @@ target_compile_options(
 	C_LAYER
 	PRIVATE -D__MakeStaticLib__
 	PUBLIC -fno-ident -fomit-frame-pointer -U__WIN32__ -U_Win32 -U_WIN32 -U__MINGW32__ -UWIN32
-	PUBLIC $<$<CONFIG:DEBUG>:-Wall -Wextra -Wcast-align -Wcast-qual -Wconversion -Wenum-compare -Wredundant-decls -Wfloat-equal -Wsign-conversion -DDEBUG -Og>
+	PUBLIC $<$<CONFIG:DEBUG>:-Wall -Wextra -Wcast-align -Wcast-qual -Wconversion -Wenum-compare -Wredundant-decls -Wfloat-equal -Wsign-conversion -DDEBUG -DVERBOSE -Og>
+	PUBLIC $<$<CONFIG:RELEASE>:-DNO_LOGS -DNDEBUG>
 )
 
 target_include_directories(

@@ -75,8 +75,12 @@ namespace KolibriLib
 				 */
 				static ButtonIDList ListToButtonIDList(const List &list);
 
-				/// @brief Получить свободный ID кнопки из списка
-				/// @return ID кнопки, который не занят
+								/**
+				 * @brief Получить свободный ID кнопки из списка
+				 * @param ptr Указатель на кнопку, которая получает ID. Можно nullptr
+				 * @return ID кнопки, который не занят
+				 * @todo Надо оптимизировать алгоритм поиска, а то он кривой и медленный
+				 */
 				ButtonID GetFreeButtonID(std::weak_ptr<BaseButton> ptr);
 
 				/**
@@ -86,8 +90,11 @@ namespace KolibriLib
 				 */
 				void TakeUpButtonID(const ButtonID &id, std::weak_ptr<BaseButton> ptr);
 
-				/// @brief Освободить ID
-				/// @param id ID который нужно освободить
+				/**
+				 * @brief Освободить ID
+				 * @param id ID который нужно освободить
+				 * @todo Надо оптимизировать алгоритм поиска, а то он кривой и медленный
+				 */
 				void FreeButtonID(const ButtonID &id);
 
 				/**

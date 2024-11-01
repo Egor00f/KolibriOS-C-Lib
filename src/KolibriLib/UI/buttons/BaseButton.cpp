@@ -1,6 +1,5 @@
 #include <kolibriLib/UI/buttons/button.hpp>
 #include <kolibriLib/globals.hpp>
-#include <assert.h>
 
 using namespace KolibriLib;
 using namespace UI;
@@ -8,6 +7,10 @@ using namespace buttons;
 
 BaseButton::BaseButton()
 {
+	#ifndef NO_LOGS
+	logger << microlog::LogLevel::Debug << "BaseButton Constructor" << std::endl;
+	#endif
+
 	if (KolibriLib::Globals::DefaultButtonsIDController != nullptr)
 	{
 		_ButtonsIDController = KolibriLib::Globals::DefaultButtonsIDController;
@@ -20,6 +23,10 @@ BaseButton::BaseButton()
 
 BaseButton::BaseButton(ButtonID id)
 {
+	#ifndef NO_LOGS
+	logger << microlog::LogLevel::Debug << "BaseButton Constructor" << std::endl;
+	#endif
+
 	if (KolibriLib::Globals::DefaultButtonsIDController != nullptr)
 	{
 		_ButtonsIDController = KolibriLib::Globals::DefaultButtonsIDController;
@@ -32,6 +39,10 @@ KolibriLib::UI::buttons::BaseButton::BaseButton(const BaseButton &button)
 	: _ButtonsIDController(button._ButtonsIDController),
 	  _type(button._type)
 {
+	#ifndef NO_LOGS
+	logger << microlog::LogLevel::Debug << "BaseButton Constructor" << std::endl;
+	#endif
+
 	SetId(button._id);
 }
 
@@ -53,7 +64,9 @@ void BaseButton::BaseButton::Deactivate()
 	}
 	else
 	{
+		#ifndef NO_LOGS
 		logger << microlog::LogLevel::Warning << "BaseButton already not active" << std::endl;
+		#endif
 	}
 }
 
@@ -65,7 +78,9 @@ void BaseButton::BaseButton::Activate()
 	}
 	else
 	{
+		#ifndef NO_LOGS
 		logger << microlog::LogLevel::Warning << "BaseButton already active" << std::endl;
+		#endif
 	}
 }
 
@@ -86,7 +101,9 @@ buttons::ButtonID buttons::BaseButton::GetId() const
 
 void KolibriLib::UI::buttons::BaseButton::SetId(const ButtonID &NewID)
 {
+	#ifndef NO_LOGS
 	logger << microlog::LogLevel::Debug << "SetId(ButtonID)" << std::endl;
+	#endif
 
 	_id = NewID;
 
@@ -99,8 +116,11 @@ void KolibriLib::UI::buttons::BaseButton::SetId(const ButtonID &NewID)
 
 void KolibriLib::UI::buttons::BaseButton::SetId()
 {
+	#ifndef NO_LOGS
 	logger << microlog::LogLevel::Debug << "SetId()" << std::endl;
+	#endif
 
+	
 	if (_ButtonsIDController != nullptr)
 	{
 		if (IsActive())
@@ -117,6 +137,5 @@ void KolibriLib::UI::buttons::BaseButton::SetId()
 
 void BaseButton::Define(const Coord &coord, const Size &size, const Colors::Color &color) const
 {
-	assert(_id == ButtonIDNotSet || _id >= ButtonIDEnd && "Wrong button id!");
 	DefineButton(coord, size, _id, color);
 }

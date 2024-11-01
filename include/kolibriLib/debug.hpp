@@ -5,11 +5,13 @@
 
 namespace KolibriLib
 {
+	
 	/**
 	 * @brief Логгер
 	 * @details Используется для вывода отладочной информации. 
 	 */
 	extern microlog::logger logger;
+
 } // namespace KolibriLib
 
 #endif // __DEBUG_HPP__

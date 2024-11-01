@@ -1,5 +1,5 @@
-#ifndef __TIME_H__
-#define __TIME_H__
+#ifndef __TIME_HPP__
+#define __TIME_HPP__
 
 #include <ctime>
 #include <include_ksys.h>
@@ -16,4 +16,4 @@ namespace KolibriLib
 } // namespace KolibriLib
 
 
-#endif // __TIME_H__
+#endif // __TIME_HPP__

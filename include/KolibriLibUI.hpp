@@ -1,5 +1,5 @@
-#ifndef __UI_H_INCLUDE__
-#define __UI_H_INCLUDE__
+#ifndef __UI_HPP_INCLUDE__
+#define __UI_HPP_INCLUDE__
 
 
 #include <kolibriLib/UI/UI.hpp>
@@ -18,9 +18,7 @@
 
 namespace KolibriLib
 {
-	// чтоб не ипаться с этими намспейсами
-
-	using UI::UIElement;
+	using UI::Frame;
 	using KolibriLib::UI::Images::img;
 	using KolibriLib::UI::text::TextLabel;
 	
@@ -40,4 +38,4 @@ namespace KolibriLib
 	
 } // namespace KolibriLib
 
-#endif // __UI_H_INCLUDE__
+#endif // __UI_HPP_INCLUDE__

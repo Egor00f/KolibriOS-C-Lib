@@ -11,8 +11,8 @@ Button::Button()
 	logger << microlog::LogLevel::Debug << "Button constructor" << std::endl;
 }
 
-Button::Button(UDim coord, UDim size, unsigned Margin, Colors::Color backgrouncolor)
-	:	UIElement(coord, size, backgrouncolor, Margin),
+Button::Button(UDim coord, UDim size, unsigned Margin, Colors::Color backGroundColor)
+	:	UIElement(coord, size, backGroundColor, Margin),
 		BaseButton()
 {
 	logger << microlog::LogLevel::Debug << "Button constructor" << std::endl;

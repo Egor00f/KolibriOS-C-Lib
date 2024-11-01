@@ -75,7 +75,9 @@ void KolibriLib::UI::UIElement::SetCoord(const UDim &NewCoord)
 
 Size KolibriLib::UI::UIElement::GetAbsoluteSize() const
 {
+	#ifndef NO_LOG
 	logger << microlog::LogLevel::Debug << "Get Absolute Size" << std::endl;
+	#endif
 
 	Size ret;
 
