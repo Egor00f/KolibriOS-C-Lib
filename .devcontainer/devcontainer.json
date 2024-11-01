@@ -1,0 +1,29 @@
+{
+	"name": "Egor00fs config",
+  
+	"description": "this is configuration",
+	"image": "mcr.microsoft.com/devcontainers/cpp:debian-12",
+	
+	"features": {
+		
+	},
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-vscode.cmake-tools",
+				"ms-vscode.cpptools-themes",
+				"ms-vscode.cpptools",
+				"usernamehw.errorlens",
+				"streetsidesoftware.code-spell-checker",
+				"streetsidesoftware.code-spell-checker-russian",
+				"christian-kohler.path-intellisense",
+				"ibm.output-colorizer"
+			]
+		}
+	},
+
+	"postCreateCommand": "apt update && apt install fasm p7zip-full wget && git clone https://github.com/Egor00f/kolibrios-gcc-toolchain.git && kolibrios-gcc-toolchain/./install",
+
+
+}
