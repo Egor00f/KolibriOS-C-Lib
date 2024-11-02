@@ -419,18 +419,16 @@ void KolibriLib::window::Window::SetButtonIDController(const UI::buttons::Button
 {
 }
 
-void KolibriLib::window::Window::AddElementNoCopy(UIElement *element)
+void KolibriLib::window::Window::AddElementNoCopy(UI::UIElement *element)
 {
 	logger << microlog::LogLevel::Debug << "Add element" << std::endl;
 
 	if (element->GetParent() == nullptr)
-	{
 		element->WindowAsParent(this);
-	}
 
 	element->SetButtonIDController(&_buttonsController);
 
-	_Elements.push_back(std::shared_ptr<UIElement>(element));
+	_Elements.push_back(std::shared_ptr<UI::UIElement>(element));
 }
 
 void KolibriLib::window::Window::Update() const

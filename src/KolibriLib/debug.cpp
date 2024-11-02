@@ -6,4 +6,4 @@
 using namespace KolibriLib;
 
 
-microlog::logger KolibriLib::logger(filesystem::temp_directory_path() / Thread::GetThreadInfo().name.operator+=(".log"));
+microlog::logger KolibriLib::logger(filesystem::temp_directory_path() / (Thread::GetThreadInfo().name += ".log"));

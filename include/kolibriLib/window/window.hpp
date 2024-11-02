@@ -189,7 +189,7 @@ namespace KolibriLib
 			/// @details Зачем добавлять в окно элементы ui? Да чтоб при перерисовке окна не нужнобыло отрисовывать все ручками
 			/// Отличается от AddElement только тем что не создаёт указатель и копирует, а сразу использует указатель из аргумента
 			/// @return указатель на элемент(новый)
-			void AddElementNoCopy(UIElement *element);
+			void AddElementNoCopy(UI::UIElement *element);
 
 			template <class T>
 			/// @brief Добавить UI элемент
@@ -200,7 +200,7 @@ namespace KolibriLib
 
 			/// @brief Удалить элемент из окна
 			template <class T >
-			bool DeleteElement (std::shared_ptr<UIElement> element);
+			bool DeleteElement (std::shared_ptr<UI::UIElement> element);
 
 			/// @brief Снять фокус с этого окна
 			void Unfocus () const;
@@ -233,7 +233,7 @@ namespace KolibriLib
 		private:
 
 			/// @brief Список всех кнопок этого окна
-			std::vector<std::shared_ptr<UIElement>> _Elements;
+			std::vector<std::shared_ptr<UI::UIElement>> _Elements;
 
 			/**
 			 * @brief 
@@ -247,7 +247,7 @@ namespace KolibriLib
 			mutable bool _Redraw = false;
 
 			/**
-			 * @brief Обновленно ли окно
+			 * @brief Обновлено ли окно
 			 */
 			mutable bool _updated = false;
 		};
@@ -259,7 +259,7 @@ namespace KolibriLib
 		template <class T>
 		T* KolibriLib::window::Window::AddElement(const T &element)
 		{
-			static_assert(std::is_base_of<UIElement, T>::value, "Ты че сюда пихаешь!?! думаешь раз шаблон то можно любой тип сюда запихнуть, а вот и нет! Иди кури документацию");
+			static_assert(std::is_base_of<UI::UIElement, T>::value, "Ты че сюда пихаешь!?! думаешь раз шаблон то можно любой тип сюда запихнуть, а вот и нет! Иди кури документацию");
 
 			logger << microlog::LogLevel::Debug << "Add element" << std::endl;
 
@@ -270,7 +270,7 @@ namespace KolibriLib
 
 			p->SetButtonIDController(&_buttonsController);
 
-			std::shared_ptr<UIElement> s_ptr(static_cast<UIElement*>(p));
+			std::shared_ptr<UI::UIElement> s_ptr(static_cast<UI::UIElement*>(p));
 
 			_Elements.push_back(s_ptr);
 
@@ -278,7 +278,7 @@ namespace KolibriLib
 		}
 
 		template <class T>
-		bool KolibriLib::window::Window::DeleteElement(std::shared_ptr<UIElement> element)
+		bool KolibriLib::window::Window::DeleteElement(std::shared_ptr<UI::UIElement> element)
 		{
 			auto i = std::find(_Elements.begin(), _Elements.end(), element);
 

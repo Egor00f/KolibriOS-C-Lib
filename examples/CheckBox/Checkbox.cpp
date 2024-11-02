@@ -6,7 +6,7 @@ int main()
 {
 	Window window("Checkbox example");
 
-	auto frame = window.AddElement(UIElement(
+	auto frame = window.AddElement(Frame(
 		UDim(0.2f, 0.2f), 
 		UDim(0.6f, 0.4f)));
 	frame->SetColor(Globals::SystemColors.work_area);

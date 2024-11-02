@@ -76,10 +76,11 @@
     
 
     "cmake.configureSettings": {
-        "CMAKE_TOOLCHAIN_FILE": "${workspaceFolder}/cmake/toolchain.cmake",
+        "CMAKE_TOOLCHAIN_FILE": "${workspaceFolder}/KolibriOS-toolchain-file/toolchain.cmake",
         "microlog_BUILD_EXAMPLES":false,
         "microlog_BUILD_TESTS":false,
-        "microlog_BUILD_DOCS":false
+        "microlog_BUILD_DOCS":false,
+        "KOLIBRIOS_REPO":"${workspaceFolder}/../kolibrios"
     },
     "cSpell.words": [
         "kolibrios",
@@ -90,6 +91,7 @@
         "msgbox",
         "rasterwoks",
         "Egor",
-        "CMOS"
+        "CMOS",
+        "fasm"
     ],
 }

@@ -13,7 +13,6 @@ project(
 #################################################
 #
 set(CUSTOM_TOOCLAIN_PATH	OFF)
-set(KOLIBRIOS_REPO	${CMAKE_CURRENT_SOURCE_DIR}/../kolibrios)#Репозиторий нужен только для libc, libstdc++-v3 и C_Layer, можете указать свой если очень хочется
 
 option(KolibriLib_BUILD_EXAMPLES "Build KolibriLib examples"      ON)
 option(KolibriLib_BUILD_DOCS     "Build KolibriLib documantation" ON)
@@ -51,9 +50,6 @@ endif()
 SET(SDK_DIR "${KOLIBRIOS_REPO}/contrib/sdk")
 
 
-
-include(CMakeDetermineKOS32Compiler)
-include(CMakeTestKOS32Compiler)
 
 # PATH TO KOLIBRILIB SOURCES
 set(KolibriLib_INCLUDE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -133,7 +129,6 @@ add_library(
 target_compile_options(
 	C_LAYER
 	PRIVATE -D__MakeStaticLib__
-	PUBLIC -fno-ident -fomit-frame-pointer -U__WIN32__ -U_Win32 -U_WIN32 -U__MINGW32__ -UWIN32
 	PUBLIC $<$<CONFIG:DEBUG>:-Wall -Wextra -Wcast-align -Wcast-qual -Wconversion -Wenum-compare -Wredundant-decls -Wfloat-equal -Wsign-conversion -DDEBUG -DVERBOSE -Og>
 	PUBLIC $<$<CONFIG:RELEASE>:-DNO_LOGS -DNDEBUG>
 )
@@ -141,7 +136,6 @@ target_compile_options(
 target_include_directories(
 	C_LAYER
 	PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
-	PUBLIC ${LIBC_DIR}/include
 )
 
 
@@ -165,7 +159,6 @@ target_compile_options(
 
 target_include_directories(
 	KolibriLib
-	PUBLIC ${LIBSTDCPP_DIR}/include
 	PUBLIC ${KOLIBRIOS_REPO}/contrib/sdk/sources/freetype/include
 	PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/microlog/include
 )
@@ -173,7 +166,7 @@ target_include_directories(
 
 #GENERATE DOXYGEN ONLY THIS PROJECT ISNT SUBPROECT
 if(KolibriLib_BUILD_DOCS)
-	message("-- Build KolibriLib Docs")
+	message(STATUS "Build KolibriLib Docs")
 
 	FIND_PACKAGE(Doxygen)
 
@@ -194,14 +187,14 @@ endif()
 
 if(KolibriLib_BUILD_EXAMPLES)
 
-	message("-- Build KolibriLib Examples")
+	message(STATUS "Build KolibriLib Examples")
 
 	add_subdirectory(examples)
 
 endif()
 
 if(KolibriLib_BUILD_TESTS)
-	message("-- Build KolibriLib tests")
+	message(STATUS "Build KolibriLib tests")
 
 	add_subdirectory(tests)
 endif()

@@ -2,3 +2,6 @@
 	path = microlog
 	url = https://github.com/Egor00f/microlog.git
 	branch = kolibrios
+[submodule "KolibriOS-toolchain-file"]
+	path = KolibriOS-toolchain-file
+	url = https://github.com/Egor00f/KolibriOS-toolchain-file.git
