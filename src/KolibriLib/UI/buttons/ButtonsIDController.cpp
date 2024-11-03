@@ -9,9 +9,9 @@ UI::buttons::ButtonsIDController *Globals::DefaultButtonsIDController = nullptr;
 
 ButtonID buttons::ButtonsIDController::GetFreeButtonID(std::weak_ptr<BaseButton> ptr)
 {
-	#ifndef NO_LOGS
+#ifndef NO_LOGS
 	logger << microlog::LogLevel::Debug << "ButtonsController::GetFreeButtonID";
-	#endif
+#endif
 
 	ButtonID ret = ButtonIDNotSet;
 
@@ -32,12 +32,12 @@ ButtonID buttons::ButtonsIDController::GetFreeButtonID(std::weak_ptr<BaseButton>
 				{
 					_ButtonsIdList.push_back(node(i, ptr));
 
-					#ifndef NO_LOGS
-					#ifdef VERBOSE
+#ifndef NO_LOGS
+#ifdef VERBOSE
 					logger << ": OK";
-					#endif
+#endif
 					logger << std::endl;
-					#endif
+#endif
 
 					return i;
 				}
@@ -54,29 +54,36 @@ ButtonID buttons::ButtonsIDController::GetFreeButtonID(std::weak_ptr<BaseButton>
 
 void buttons::ButtonsIDController::FreeButtonID(const ButtonID &id)
 {
-	#ifndef NO_LOGS
-	logger << microlog::LogLevel::Debug << "ButtonsController::FreeButtonID";
-	#endif
-
-	for (std::size_t i = 0; i < _ButtonsIdList.size(); i++)
+	if (id.CheckIsValid())
 	{
-		if (_ButtonsIdList[i].id == id)
+#ifndef NO_LOGS
+		logger << microlog::LogLevel::Debug << "ButtonsController::FreeButtonID";
+#endif
+
+		for (std::size_t i = 0; i < _ButtonsIdList.size(); i++)
 		{
-			_ButtonsIdList.erase(std::next(_ButtonsIdList.begin(), i));
+			if (_ButtonsIdList[i].id == id)
+			{
+				_ButtonsIdList.erase(std::next(_ButtonsIdList.begin(), i));
 
-			#ifndef NO_LOGS
-			#ifdef VERBOSE
-			logger << ": OK";
-			#endif
+#ifndef NO_LOGS
+#ifdef VERBOSE
+				logger << ": OK";
+#endif
 
-			logger << std::endl;
-			#endif
+				logger << std::endl;
+#endif
 
-			return;
+				return;
+			}
 		}
-	}
 
-	logger << microlog::LogLevel::Warning << "ID not found in ButtonsIDList" << std::endl;
+		logger << microlog::LogLevel::Warning << "ID not found in ButtonsIDList" << std::endl;
+	}
+	else
+	{
+		logger << microlog::LogLevel::Warning << "ID is not valid" << std::endl;
+	}
 }
 
 ButtonsIDController::List &buttons::ButtonsIDController::GetButtonsIDList()
@@ -122,9 +129,9 @@ ButtonIDList KolibriLib::UI::buttons::ButtonsIDController::ListToButtonIDList(co
 
 void KolibriLib::UI::buttons::ButtonsIDController::TakeUpButtonID(const ButtonID &id, std::weak_ptr<BaseButton> ptr)
 {
-	#ifndef NO_LOGS
+#ifndef NO_LOGS
 	logger << microlog::LogLevel::Debug << "TakeUpButtonID" << std::endl;
-	#endif
+#endif
 
 	for (auto i : _ButtonsIdList)
 	{

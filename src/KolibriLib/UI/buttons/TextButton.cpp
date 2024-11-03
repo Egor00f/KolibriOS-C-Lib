@@ -5,40 +5,36 @@ using namespace UI;
 using namespace buttons;
 
 buttons::TextButton::TextButton(const UDim &coord, const UDim &size, unsigned Margin, const Colors::Color &ButtonColor)
-	:	Button	(coord, size, Margin, ButtonColor),
-		Txt("Button")
+	: Button(coord, size, Margin, ButtonColor),
+	  Txt("Button")
 {
 	logger << microlog::LogLevel::Debug << "TextButton constructor" << std::endl;
 }
 
 KolibriLib::UI::buttons::TextButton::TextButton(const Txt &text, const UDim &coord, const UDim &size, unsigned Margin, const Colors::Color &ButtonColor)
-	:	Button	(coord, size, Margin, ButtonColor),
-		Txt(text)
+	: Button(coord, size, Margin, ButtonColor),
+	  Txt(text)
 {
 	logger << microlog::LogLevel::Debug << "TextButton constructor" << std::endl;
-
-	SetMargin(Margin);
-
-	_MainColor	= ButtonColor;
 }
 
 KolibriLib::UI::buttons::TextButton::TextButton(const UDim &coord, const UDim &size, const std::string &text)
-	:	Button(coord, size),
-		Txt(text)
+	: Button(coord, size),
+	  Txt(text)
 {
-	logger << microlog::LogLevel::Debug << "TextButton constructor(copy)" << std::endl;
+	logger << microlog::LogLevel::Debug << "TextButton constructor" << std::endl;
 }
 
 bool KolibriLib::UI::buttons::TextButton::operator==(const TextButton &element) const
 {
-	return static_cast<Button>(*this) == static_cast<Button>(element)	&&
-	       static_cast<Txt>(*this) == static_cast<Txt>(element);
+	return static_cast<Button>(*this) == static_cast<Button>(element) &&
+		   static_cast<Txt>(*this) == static_cast<Txt>(element);
 }
 
 bool KolibriLib::UI::buttons::TextButton::operator!=(const TextButton &element) const
 {
-	return static_cast<Button>(*this) != static_cast<Button>(element)	||
-	       static_cast<Txt>(*this) != static_cast<Txt>(element);
+	return static_cast<Button>(*this) != static_cast<Button>(element) ||
+		   static_cast<Txt>(*this) != static_cast<Txt>(element);
 }
 
 bool buttons::TextButton::OnButtonEvent(ButtonID PressedButtonID)
@@ -49,7 +45,7 @@ bool buttons::TextButton::OnButtonEvent(ButtonID PressedButtonID)
 
 void buttons::TextButton::Render() const
 {
-	if(Visible)
+	if (Visible)
 	{
 		logger << microlog::LogLevel::Debug << "Render TextButton" << std::endl;
 

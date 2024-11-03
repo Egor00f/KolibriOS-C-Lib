@@ -104,7 +104,7 @@ namespace KolibriLib
 			UIElement(const UDim &coord = point(0), const UDim &size = point(0), const Colors::Color &MainColor = Globals::SystemColors.work_text, const unsigned &Margin = DefaultMargin);
 
 			/// @brief Конструктор копирования
-			/// @param cp То что юудет копирваться
+			/// @param cp То что будет копироваться
 			UIElement(const UIElement &cp);
 
 			/// @brief Изменить родительский элемент
@@ -168,7 +168,7 @@ namespace KolibriLib
 			 */
 			void SetButtonIDController(const buttons::ButtonsIDController *buttonsIDController) override;
 
-			/// @brief Получить осносной цвет элемента
+			/// @brief Получить основной цвет элемента
 			/// @return Функция возвращает _MainColor
 			Colors::Color GetColor() const;
 

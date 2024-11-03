@@ -216,7 +216,31 @@ namespace KolibriLib
 		bool operator!=(const UDim &obj) const;
 	};
 
-	//==================================================================================================
+	/**
+	 * @brief Просто область
+	 * @tparam T тип
+	 */
+	template <class T>
+	struct Area
+	{
+		T Coord;
+		T Size;
+
+		Area& operator = (const Area&) = default;
+
+		bool operator == (const Area& a) const
+		{
+			return Coord == a.Coord && Size != a.Size;
+		}
+
+		bool operator != (const Area& a) const
+		{
+			return Coord != a.Coord || Size != a.Size;
+		}
+	};
+
+	using UDimArea = Area<UDim>;
+	using AbsArea = Area<point>;
 
 } // namespace KolibriLib
 
@@ -234,5 +258,12 @@ inline std::ostream &operator<<(std::ostream &os, const KolibriLib::UDim &p)
 {
 	return os << "X: " << p.X << " Y: " << p.Y;
 }
+
+template <class T>
+inline std::ostream &operator<<(std::ostream &os, const KolibriLib::Area<T> &p)
+{
+	return os << "Coord " << p.Coord << std::endl << " Size: " << p.Size;
+}
+
 
 #endif // __TYPES_HPP__

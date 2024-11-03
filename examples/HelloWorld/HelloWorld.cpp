@@ -38,11 +38,11 @@ int main()
 			exit = true; 
 			break;
 
-		case Event::Button:
+		case Event::Button: // Была нажата какая-то кнопка
 
 			if(static_cast<BaseButton*>(wndw->GetPressedButton().get()) == static_cast<BaseButton*>(button))
 			{
-				_ksys_debug_puts("You Press Button");
+				logger << "You Press Button";
 				OS::Notify("You Press Buttons");
 
 				label->SetTextColor(Color(rand()));

@@ -29,7 +29,10 @@ namespace KolibriLib
 			/// @brief Нажата кнопка
 			Button = KSYS_EVENT_BUTTON,
 
-			/// @brief Ивент от экрана
+			/**
+			 * @brief перерисовывается фон рабочего стола 
+			 * @details сбрасывается автоматически после перерисовки, так что если во время перерисовки фона программа не ждёт и не проверяет события, то этого события она не заметит)
+			 */
 			Desktop = KSYS_EVENT_DESKTOP,
 
 			/// @brief Активность мыши
@@ -77,44 +80,55 @@ namespace KolibriLib
 		enum Mask
 		{
 			/**
-			 * @brief
+			 * @brief Ивенты перерисовки разрешёны
 			 */
 			RedrawEvent = KSYS_EVM_REDRAW,
 
 			/**
-			 * @brief
+			 * @brief Ивенты клавиатуры разрешёны
 			 */
 			KeyEvent = KSYS_EVM_KEY,
 
 			/**
-			 * @brief
+			 * @brief Ивенты кнопок разрешёны
 			 */
 			ButtonEvent = KSYS_EVM_BUTTON,
 
 			/**
-			 * @brief
+			 * @brief Ивенты мыши разрешёны
 			 */
 			MouseEvent = KSYS_EVM_MOUSE,
 
 			/**
-			 * @brief
+			 * @brief Ивенты перерисовки фона разрешёны
 			 */
-			DescktopEvent = KSYS_EVM_BACKGROUND,
-
-			/// @brief неактивное окно получает события от мыши
-			MouseEventInInactiveWindow = KSYS_EVM_MOUSE_FILTER,
-
-			/// @brief если курсор за пределами окна
-			MouseCursorInWindow = KSYS_EVM_CURSOR_FILTER,
+			DesktopEvent = KSYS_EVM_BACKGROUND,
 
 			/**
-			 * @brief
+			 * @brief Ивенты отладки разрешёны
 			 */
-			AllMouseEvents = (MouseEvent | MouseEventInInactiveWindow | MouseCursorInWindow),
+			DebugEvent = KSYS_EVM_DEBUG,
 
-			/// @brief маска по умолчанию
-			/// @details разрешены ивенты перерисовки, клавиатуры и кнопок
-			DefaultEventMask = 0b111
+			/**
+			 * @brief 
+			 */
+			IPCEvent = KSYS_EVM_IPC,
+
+			/**
+			 * @brief Неактивное окно не получает события от мыши
+			 */
+			NoMouseEventInInactiveWindow = KSYS_EVM_MOUSE_FILTER,
+
+			/**
+			 * @brief окно не принимает события мыши, если курсор за пределами окна
+			 */
+			NoMouseCursorInWindow = KSYS_EVM_CURSOR_FILTER,
+
+			/**
+			 * @brief маска по умолчанию
+			 * @details разрешены ивенты перерисовки, клавиатуры и кнопок
+			 */
+			DefaultEventMask = (RedrawEvent | KeyEvent | ButtonEvent)
 		};
 
 		/// @brief Версия ядра
@@ -166,7 +180,7 @@ namespace KolibriLib
 
 		/// @brief Изменить системные цвета
 		/// @param Указатель на таблицу системных цветов
-		inline void SetSystemColors(Colors::ColorsTable *table)
+		inline void SetSystemColors(Colors::ColorsTable &table)
 		{
 			asm_inline(
 				"int $0x40" ::"a"(48), "b"(2), "c"(table), "d"(sizeof(Colors::ColorsTable)));
@@ -182,7 +196,7 @@ namespace KolibriLib
 		/// \brief Ждать ивента
 		/// \param Таймаут (в 1/100 секунды), время сколько ждать
 		/// \return Ивент
-		inline Event WaitEvent(const uint32_t &TimeOut)
+		inline Event WaitEvent(const std::uint32_t &TimeOut)
 		{
 			return static_cast<Event>(_ksys_wait_event_timeout(TimeOut));
 		}
@@ -197,7 +211,7 @@ namespace KolibriLib
 		/// @brief Изменить маску ивентов
 		/// @param mask маска
 		/// @return прошлая маска
-		inline uint32_t SetEventMask(uint32_t mask)
+		inline uint32_t SetEventMask(std::uint32_t mask)
 		{
 			return _ksys_set_event_mask(mask);
 		}
@@ -215,7 +229,7 @@ namespace KolibriLib
 		 * \brief Запустить программу
 		 * \param AppName Полное имя исполняемого файла
 		 * \param args аргументы. Максимум 256 символов
-		 * @param ec ошибка файловой систмеы
+		 * @param ec ошибка файловой системы
 		 * @param debug режим дебага
 		 * \return PID запущенной программы
 		 * @return -1 если произошла ошибка
@@ -361,7 +375,7 @@ namespace KolibriLib
 		 * @brief получить значение высокоточного счётчика времени
 		 * @note функция использует счётчик HPET, если HPET не доступен используется счётчик PIT. В этом случае точность будет уменьшена до 10 000 00 наносекунд.
 		 * @return число наносекунд с момента загрузки ядра
-		 * @details Сомнительно использовать это. Используйте лучше функции из станартной библиотеки Си
+		 * @details Сомнительно использовать это. Используйте лучше функции из стандартной библиотеки Си
 		 */
 		inline std::uint64_t GetHighPrecisionTimerCount()
 		{

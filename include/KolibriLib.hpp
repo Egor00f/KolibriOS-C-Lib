@@ -54,7 +54,7 @@ namespace KolibriLib
 	using mouse::GetMouseButtons;
 	using mouse::GetMouseEvents;
 	using mouse::GetMousePositionInWindow;
-	using mouse::GetMousePositionOnSreen;
+	using mouse::GetMousePositionOnScreen;
 
 	using keyboard::CheckKeyboard;
 	using keyboard::KeyboardLayout;

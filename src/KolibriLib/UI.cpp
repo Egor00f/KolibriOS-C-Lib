@@ -30,22 +30,20 @@ void KolibriLib::UI::GuiObject::SetMargin(unsigned NewMargin)
 */
 
 KolibriLib::UI::UIElement::UIElement(const UDim &coord, const UDim &size, const Colors::Color &MainColor, const unsigned &Margin)
-	: GuiObject(),
-	  _coord(coord),
+	: _coord(coord),
 	  _size(size),
 	  _MainColor(MainColor)
 {
-	SetMargin(Margin);
+	_Margin = Margin;
 }
 
 KolibriLib::UI::UIElement::UIElement(const UIElement &cp)
-	: GuiObject(),
-	  _coord(cp._coord),
+	: _coord(cp._coord),
 	  _size(cp._size),
 	  _MainColor(cp._MainColor),
 	  Parent(cp.Parent)
 {
-	SetMargin(cp.GetMargin());
+	_Margin = cp._Margin;
 }
 
 UDim KolibriLib::UI::UIElement::GetSize() const
@@ -76,7 +74,9 @@ void KolibriLib::UI::UIElement::SetCoord(const UDim &NewCoord)
 Size KolibriLib::UI::UIElement::GetAbsoluteSize() const
 {
 	#ifndef NO_LOG
+	#ifdef VERBOSE
 	logger << microlog::LogLevel::Debug << "Get Absolute Size" << std::endl;
+	#endif
 	#endif
 
 	Size ret;

@@ -77,12 +77,14 @@ namespace KolibriLib
                 ButtonsIDController *_ButtonsIDController = nullptr;
 
                 /// @brief Состояние кнопки(Нажата/Не нажата)
-                mutable bool _status;
+                mutable bool _status = false;
 
             private:
-                /// @brief Тип кнопки
-                /// @details false - системная кнопка
-                /// true кастомная
+                /**
+                 * @brief Тип кнопки
+                 * @details false - системная кнопка, true кастомная
+                 * @warning Не завершено
+                 */
                 bool _type;
             };
 
@@ -92,10 +94,15 @@ namespace KolibriLib
 
 } // namespace KolibriLib
 
+/**
+ * @brief Оператор
+ * @param os поток
+ * @param element кнопка
+ * @return 
+ */
 inline std::ostream &operator<<(std::ostream &os, const KolibriLib::UI::buttons::BaseButton &element)
 {
-    return os << "BaseButton:" << std::endl
-              << "ID: " << element.GetId();
+    return os << "BaseButton:\nID: " << element.GetId() << std::endl;
 }
 
 #endif // __BUTTON_HPP__

@@ -19,6 +19,11 @@ BaseButton::BaseButton()
 
 		_id = KolibriLib::Globals::DefaultButtonsIDController->GetFreeButtonID(s_ptr);
 	}
+
+
+	#ifndef NO_LOGS
+	logger << microlog::LogLevel::Debug << "BaseButton Constructor: done" << std::endl;
+	#endif
 }
 
 BaseButton::BaseButton(ButtonID id)
@@ -33,6 +38,11 @@ BaseButton::BaseButton(ButtonID id)
 	}
 
 	SetId(id);
+
+
+	#ifndef NO_LOGS
+	logger << microlog::LogLevel::Debug << "BaseButton Constructor: done" << std::endl;
+	#endif
 }
 
 KolibriLib::UI::buttons::BaseButton::BaseButton(const BaseButton &button)
@@ -40,14 +50,22 @@ KolibriLib::UI::buttons::BaseButton::BaseButton(const BaseButton &button)
 	  _type(button._type)
 {
 	#ifndef NO_LOGS
-	logger << microlog::LogLevel::Debug << "BaseButton Constructor" << std::endl;
+	logger << microlog::LogLevel::Debug << "BaseButton Constructor(copy)" << std::endl;
 	#endif
 
 	SetId(button._id);
+
+	#ifndef NO_LOGS
+	logger << microlog::LogLevel::Debug << "BaseButton Constructor: done" << std::endl;
+	#endif
 }
 
 buttons::BaseButton::~BaseButton()
 {
+	#ifndef NO_LOGS
+	logger << microlog::LogLevel::Debug << "BaseButton destructor" << std::endl;
+	#endif
+
 	Deactivate();
 }
 
@@ -86,6 +104,19 @@ void BaseButton::BaseButton::Activate()
 
 bool KolibriLib::UI::buttons::BaseButton::IsActive() const
 {
+	#ifdef DEBUG
+	if(_id != ButtonIDNotSet)
+	{
+		logger << microlog::LogLevel::Debug << "Button is active";
+	}
+	else
+	{
+		logger << microlog::LogLevel::Debug << "Button is not active";
+	}
+
+	logger << std::endl;
+	#endif
+
 	return _id != ButtonIDNotSet;
 }
 

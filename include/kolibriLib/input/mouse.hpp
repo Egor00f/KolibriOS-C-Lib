@@ -57,13 +57,13 @@ namespace KolibriLib
 			/// @brief удерживается Центральная кнопка (та что под колёсиком)
 			PressedCenterButton = 0b10000000000,
 
-			/// @brief отпущенна ЛКМ
+			/// @brief отпущена ЛКМ
 			ReleasedLeftButton = 0b10000000000000000,
 
-			/// @brief отпущенна ПКМ
+			/// @brief отпущена ПКМ
 			ReleasedRightButton = 0b100000000000000000,
 
-			/// @brief отпущенна Центральная кнопка (та что под колёсиком)
+			/// @brief отпущена Центральная кнопка (та что под колёсиком)
 			ReleasedCenterButton = 0b1000000000000000000,
 
 			/// @brief используется вертикальная прокрутка
@@ -76,14 +76,14 @@ namespace KolibriLib
 			DoubleClickLeftButton = 0b1000000000000000000000000
 		} MouseEvents;
 
-		/// @brief Получить позицияю курсора на экране
+		/// @brief Получить позиция курсора на экране
         /// @return (point) позиция курсора абсолютно
-		inline Coord GetMousePositionOnSreen()
+		inline Coord GetMousePositionOnScreen()
 		{
 			return Coord(_ksys_get_mouse_pos(KSYS_MOUSE_SCREEN_POS));
 		}
 
-		/// @brief Получить позицияю курсора внутри окна
+		/// @brief Получить позиция курсора внутри окна
         /// @return (point) позиция курсора относительно окна
 		inline Coord GetMousePositionInWindow()
 		{

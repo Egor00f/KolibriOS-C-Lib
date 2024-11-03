@@ -92,6 +92,7 @@
         "rasterwoks",
         "Egor",
         "CMOS",
-        "fasm"
+        "fasm",
+        "tparam"
     ],
 }
