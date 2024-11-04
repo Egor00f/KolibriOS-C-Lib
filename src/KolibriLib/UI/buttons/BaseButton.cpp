@@ -8,7 +8,7 @@ using namespace buttons;
 BaseButton::BaseButton()
 {
 	#ifndef NO_LOGS
-	logger << microlog::LogLevel::Debug << "BaseButton Constructor" << std::endl;
+	logger << microlog::LogLevel::Debug << "BaseButton constructor" << std::endl;
 	#endif
 
 	if (KolibriLib::Globals::DefaultButtonsIDController != nullptr)
@@ -20,28 +20,25 @@ BaseButton::BaseButton()
 		_id = KolibriLib::Globals::DefaultButtonsIDController->GetFreeButtonID(s_ptr);
 	}
 
-
 	#ifndef NO_LOGS
-	logger << microlog::LogLevel::Debug << "BaseButton Constructor: done" << std::endl;
+	logger << microlog::LogLevel::Debug << "BaseButton constructor: done" << std::endl;
 	#endif
 }
 
 BaseButton::BaseButton(ButtonID id)
 {
 	#ifndef NO_LOGS
-	logger << microlog::LogLevel::Debug << "BaseButton Constructor" << std::endl;
+	logger << microlog::LogLevel::Debug << "BaseButton constructor" << std::endl;
 	#endif
 
 	if (KolibriLib::Globals::DefaultButtonsIDController != nullptr)
 	{
 		_ButtonsIDController = KolibriLib::Globals::DefaultButtonsIDController;
+		SetId(id);
 	}
 
-	SetId(id);
-
-
 	#ifndef NO_LOGS
-	logger << microlog::LogLevel::Debug << "BaseButton Constructor: done" << std::endl;
+	logger << microlog::LogLevel::Debug << "BaseButton constructor: done" << std::endl;
 	#endif
 }
 
@@ -50,13 +47,13 @@ KolibriLib::UI::buttons::BaseButton::BaseButton(const BaseButton &button)
 	  _type(button._type)
 {
 	#ifndef NO_LOGS
-	logger << microlog::LogLevel::Debug << "BaseButton Constructor(copy)" << std::endl;
+	logger << microlog::LogLevel::Debug << "BaseButton constructor(copy)" << std::endl;
 	#endif
 
 	SetId(button._id);
 
 	#ifndef NO_LOGS
-	logger << microlog::LogLevel::Debug << "BaseButton Constructor: done" << std::endl;
+	logger << microlog::LogLevel::Debug << "BaseButton constructor: done" << std::endl;
 	#endif
 }
 
@@ -67,6 +64,10 @@ buttons::BaseButton::~BaseButton()
 	#endif
 
 	Deactivate();
+
+	#ifndef NO_LOGS
+	logger << microlog::LogLevel::Debug << "BaseButton destructor: done" << std::endl;
+	#endif
 }
 
 void BaseButton::BaseButton::Deactivate()
@@ -105,16 +106,11 @@ void BaseButton::BaseButton::Activate()
 bool KolibriLib::UI::buttons::BaseButton::IsActive() const
 {
 	#ifdef DEBUG
-	if(_id != ButtonIDNotSet)
-	{
-		logger << microlog::LogLevel::Debug << "Button is active";
-	}
-	else
-	{
-		logger << microlog::LogLevel::Debug << "Button is not active";
-	}
+	logger << microlog::LogLevel::Debug << "Button is ";
+	if(_id == ButtonIDNotSet)
+		logger << "not";
 
-	logger << std::endl;
+	logger << " active" << std::endl;
 	#endif
 
 	return _id != ButtonIDNotSet;

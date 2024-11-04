@@ -296,19 +296,22 @@ OS::Event Window::Handler()
 
 		std::shared_ptr<UI::buttons::BaseButton> s_ptr;
 
-		try
+		if (PressedButton.value != 1)
 		{
-			s_ptr = _buttonsController.GetPointerToButton(PressedButton).at(0).lock();
-		}
-		catch (...)
-		{
+			try
+			{
+				s_ptr = _buttonsController.GetPointerToButton(PressedButton).at(0).lock();
+			}
+			catch (...)
+			{
 
 #ifndef NO_LOGS
-			logger << microlog::LogLevel::Error << "Error Get s_ptr" << std::endl;
+				logger << microlog::LogLevel::Error << "Error Get s_ptr" << std::endl;
 #endif
-		}
+			}
 
-		_PressedButton = s_ptr;
+			_PressedButton = s_ptr;
+		}
 	}
 
 	break;

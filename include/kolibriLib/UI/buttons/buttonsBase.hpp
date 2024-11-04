@@ -141,12 +141,12 @@ namespace KolibriLib
 			 * \brief Создать кнопку, вручную
 			 * \param coords координаты
 			 * \param size размер
-			 * \param id idшник кнопки
+			 * \param id id кнопки
 			 * \param color цвет
 			 */
 			inline void DefineButton(const Coord &coord, const Size &size, const ButtonID &id, Colors::Color color = Globals::SystemColors.work_button)
 			{
-				assert(id == ButtonIDNotSet || id >= ButtonIDEnd && "Wrong button id!");
+				assert((id == ButtonIDNotSet || id >= ButtonIDEnd) && "Wrong button id!");
 
 				_ksys_define_button(
 					static_cast<std::uint32_t>(coord.x),

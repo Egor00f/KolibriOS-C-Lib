@@ -21,7 +21,7 @@ namespace KolibriLib
 				/// \param Margin отступы текста от границ
 				/// \param ButtonColor цвет кнопки
 				/// \param TextColor цвет текста
-				TextButton(const UDim &coord = point(0), const UDim &size = DefaultSize, unsigned Margin = UI::DefaultMargin, const Colors::Color &ButtonColor = Globals::SystemColors.work_button);
+				TextButton(const UDim &coord = point(0), const UDim &size = DefaultSize, unsigned Margin = UI::DefaultMargin, Colors::Color ButtonColor = Globals::SystemColors.work_button);
 
 				/// \brief Это конструктор
 				/// \param coord координата
@@ -30,7 +30,7 @@ namespace KolibriLib
 				/// \param Margin отступы текста от границ
 				/// \param ButtonColor цвет кнопки
 				/// \param TextColor цвет текста
-				TextButton(const Txt &text, const UDim &coord = point(0), const UDim &size = DefaultSize, unsigned Margin = UI::DefaultMargin, const Colors::Color &ButtonColor = Globals::SystemColors.work_button);
+				TextButton(const Txt &text, const UDim &coord = point(0), const UDim &size = DefaultSize, unsigned Margin = UI::DefaultMargin, Colors::Color ButtonColor = Globals::SystemColors.work_button);
 
 				/**
 				 * @brief Конструктор
@@ -41,21 +41,11 @@ namespace KolibriLib
 				TextButton(const UDim &coord, const UDim &size, const std::string &text);
 
 				/// @brief Конструктор копирования
-				/// @param copy Кнопка которую будут копировать
-				TextButton(const TextButton &) = default;
+				/// @param textButton Кнопка которую будут копировать
+				TextButton(const TextButton &textButton);
 
 				/// @brief Отрисовать кнопку
 				void Render() const override;
-
-				/// @brief Обработчик кнопки
-				/// @return Состояние кнопки(Нажата/Ненажата)
-				/// @details устанавливает переменную _status в true если эта кнопка нажата, иначе false
-				/// @note Эту функцию нужно вызывать в цикле, чтобы кнопка работала
-				bool OnButtonEvent(ButtonID PressedButtonID);
-
-				buttons::ButtonsIDController *GetButtonIDController() const;
-
-				void SetButtonIDController(const buttons::ButtonsIDController *buttonsIDController);
 
 				TextButton &operator=(const TextButton &element) = default;
 
@@ -73,6 +63,10 @@ namespace KolibriLib
 				 */
 				bool operator!=(const TextButton &element) const;
 
+				/**
+				 * @brief
+				 * @param a
+				 */
 				void swap(TextButton &a);
 
 			private:
@@ -80,6 +74,7 @@ namespace KolibriLib
 		}
 	}
 }
+
 inline std::ostream &operator<<(std::ostream &os, const KolibriLib::UI::buttons::TextButton &element)
 {
 	return os << "TextButton:" << std::endl

@@ -4,14 +4,18 @@ using namespace KolibriLib;
 using namespace UI;
 using namespace buttons;
 
-buttons::TextButton::TextButton(const UDim &coord, const UDim &size, unsigned Margin, const Colors::Color &ButtonColor)
+/*
+	Constructors
+*/
+
+buttons::TextButton::TextButton(const UDim &coord, const UDim &size, unsigned Margin, Colors::Color ButtonColor)
 	: Button(coord, size, Margin, ButtonColor),
 	  Txt("Button")
 {
 	logger << microlog::LogLevel::Debug << "TextButton constructor" << std::endl;
 }
 
-KolibriLib::UI::buttons::TextButton::TextButton(const Txt &text, const UDim &coord, const UDim &size, unsigned Margin, const Colors::Color &ButtonColor)
+KolibriLib::UI::buttons::TextButton::TextButton(const Txt &text, const UDim &coord, const UDim &size, unsigned Margin, Colors::Color ButtonColor)
 	: Button(coord, size, Margin, ButtonColor),
 	  Txt(text)
 {
@@ -25,23 +29,16 @@ KolibriLib::UI::buttons::TextButton::TextButton(const UDim &coord, const UDim &s
 	logger << microlog::LogLevel::Debug << "TextButton constructor" << std::endl;
 }
 
-bool KolibriLib::UI::buttons::TextButton::operator==(const TextButton &element) const
+KolibriLib::UI::buttons::TextButton::TextButton(const TextButton &textButton)
+	: Button(textButton),
+	  Txt(textButton)
 {
-	return static_cast<Button>(*this) == static_cast<Button>(element) &&
-		   static_cast<Txt>(*this) == static_cast<Txt>(element);
+	logger << microlog::LogLevel::Debug << "TextButton constructor(copy)" << std::endl;
 }
 
-bool KolibriLib::UI::buttons::TextButton::operator!=(const TextButton &element) const
-{
-	return static_cast<Button>(*this) != static_cast<Button>(element) ||
-		   static_cast<Txt>(*this) != static_cast<Txt>(element);
-}
-
-bool buttons::TextButton::OnButtonEvent(ButtonID PressedButtonID)
-{
-	_status = (PressedButtonID == _id); // Если id нажатой кнопки совпадает к id этой кнопки
-	return _status;
-}
+/*
+	Functions
+*/
 
 void buttons::TextButton::Render() const
 {
@@ -56,24 +53,9 @@ void buttons::TextButton::Render() const
 		}
 		else
 		{
-			logger << microlog::LogLevel::Warning << ": Button Is not Active";
+			logger << microlog::LogLevel::Warning << ": Button is not Active";
 		}
 	}
-}
-
-buttons::ButtonsIDController *KolibriLib::UI::buttons::TextButton::GetButtonIDController() const
-{
-	if (_ButtonsIDController != nullptr)
-		return _ButtonsIDController;
-	else if (std::shared_ptr<GuiObject> s_ptr = Parent.lock())
-		return s_ptr->GetButtonIDController();
-	else
-		return nullptr;
-}
-
-void KolibriLib::UI::buttons::TextButton::SetButtonIDController(const buttons::ButtonsIDController *buttonsIDController)
-{
-	_ButtonsIDController = const_cast<buttons::ButtonsIDController *>(buttonsIDController);
 }
 
 void KolibriLib::UI::buttons::TextButton::swap(TextButton &a)
@@ -82,4 +64,20 @@ void KolibriLib::UI::buttons::TextButton::swap(TextButton &a)
 
 	*this = a;
 	a = buff;
+}
+
+/*
+	Operators
+*/
+
+bool KolibriLib::UI::buttons::TextButton::operator==(const TextButton &element) const
+{
+	return static_cast<Button>(*this) == static_cast<Button>(element) &&
+		   static_cast<Txt>(*this) == static_cast<Txt>(element);
+}
+
+bool KolibriLib::UI::buttons::TextButton::operator!=(const TextButton &element) const
+{
+	return static_cast<Button>(*this) != static_cast<Button>(element) ||
+		   static_cast<Txt>(*this) != static_cast<Txt>(element);
 }

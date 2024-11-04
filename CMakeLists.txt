@@ -3,7 +3,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.14)
 
 project(
 	KolibriLib
-	VERSION 0.0.3
+	VERSION 0.0.4
 	DESCRIPTION "C++ Library for KolibriOS"
 	LANGUAGES CXX C
 )

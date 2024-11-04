@@ -21,6 +21,10 @@ KolibriLib::UI::CheckBox::CheckBox(const CheckBox &a)
 	logger << microlog::LogLevel::Debug << "CheckBox constructor(copy)" << std::endl;
 }
 
+/*
+	Functions
+*/
+
 void KolibriLib::UI::CheckBox::DrawBorder() const
 {
 	const Coord absCoord = GetAbsoluteCoord();
@@ -39,6 +43,7 @@ void KolibriLib::UI::CheckBox::DrawBorder() const
 		break;
 
 	default:
+		logger << microlog::LogLevel::Error << "Unknown style" << std::endl;
 		break;
 	}
 }
@@ -71,7 +76,7 @@ void CheckBox::Render() const
 
 		if (checked)
 		{
-			logger << microlog::LogLevel::Debug << "CHECKOBOS IS CHECKED" << std::endl;
+			logger << microlog::LogLevel::Debug << "CHECKBOX IS CHECKED" << std::endl;
 
 			switch (_style)
 			{
@@ -85,10 +90,11 @@ void CheckBox::Render() const
 									static_cast<unsigned int>(absoluteSize.x / 2) - GetMargin(),
 									_BorderColor);
 				break;
-			case CheckBox::style::Smoth:
-				logger << microlog::LogLevel::Warning << "KolibriLib::UI::Checkbox smath style now not support :(" << std::endl;
+			case CheckBox::style::Smooth:
+				logger << microlog::LogLevel::Warning << "KolibriLib::UI::Checkbox smooth style now not support :(" << std::endl;
 				break;
 			default:
+				logger << microlog::LogLevel::Error << "Unknown style" << std::endl;
 				break;
 			}
 		}
@@ -119,6 +125,10 @@ void KolibriLib::UI::CheckBox::swap(CheckBox &a)
 	*this = a;
 	a = buff;
 }
+
+/*
+	Operators
+*/
 
 bool KolibriLib::UI::CheckBox::operator==(const CheckBox &c) const
 {

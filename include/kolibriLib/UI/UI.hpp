@@ -255,7 +255,7 @@ namespace KolibriLib
 			/// @brief Список элементов для которых этот элемент указан как Parent
 			mutable std::vector<std::weak_ptr<UIElement>> _childs;
 
-			/// @brief отображется ли элемент при отрисовке
+			/// @brief отображается ли элемент при отрисовке
 			bool Visible = true;
 
 			/// @brief указатель на то что Parent указывает на окно

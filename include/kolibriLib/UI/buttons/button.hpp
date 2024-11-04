@@ -10,7 +10,9 @@ namespace KolibriLib
     {
         namespace buttons
         {
-            /// @brief просто кнопка
+            /**
+             * @brief Просто кнопка
+             */
             class Button : public UIElement, public BaseButton
             {
             public:
@@ -18,17 +20,37 @@ namespace KolibriLib
                 Button();
 
                 /// @brief Конструктор
-                /// @param coord координаты
-                /// @param size ра-змер
+                /// @param coord координаты кнопки
+                /// @param size размер кнопки
                 /// @param Margin
-                /// @param backgrouncolor цвет фона
-                Button(UDim coord, UDim size, unsigned Margin = DefaultMargin, Colors::Color backgrouncolor = Globals::SystemColors.work_button);
+                /// @param backgroundColor цвет фона
+                Button(UDim coord, UDim size, unsigned Margin = DefaultMargin, Colors::Color backgroundColor = Globals::SystemColors.work_button);
+
+                /**
+                 * @brief Конструктор копирования
+                 * @param button 
+                 */
+                Button(const Button& button);
 
                 /// @brief отрисовать кнопку
                 void Render() const override;
 
                 bool OnButtonEvent(ButtonID PressedButtonID) override;
 
+                /// @brief
+			    /// @return
+			    buttons::ButtonsIDController *GetButtonIDController() const override;
+
+			    /**
+			    * @brief
+			    * @param buttonsIDController
+			    */
+			    void SetButtonIDController(const buttons::ButtonsIDController *buttonsIDController) override;
+
+                /**
+                 * @brief 
+                 * @param a 
+                 */
                 void swap(Button &a);
 
                 /// @brief оператор

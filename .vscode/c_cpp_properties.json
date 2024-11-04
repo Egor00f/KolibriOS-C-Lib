@@ -64,7 +64,8 @@
             ],
             "defines": [
                 "__MakeStaticLib__",
-                "DEBUG"
+                "DEBUG",
+                "VERBOSE"
             ],
             "cStandard": "c11",
             "cppStandard": "c++11",
@@ -201,7 +202,8 @@
             ],
             "defines": [
                 "__MakeStaticLib__",
-                "DEBUG"
+                "DEBUG",
+                "VERBOSE"
             ],
             "cStandard": "c11",
             "cppStandard": "c++11",
