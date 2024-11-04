@@ -31,7 +31,7 @@ namespace KolibriLib
 					/**
 					 * @brief Указатели на кнопки, использующие этот ID
 					 */
-					std::vector<std::weak_ptr<BaseButton>> pointers;
+					std::vector<std::shared_ptr<BaseButton>> pointers;
 
 					/**
 					 * @brief Конструктор
@@ -41,10 +41,10 @@ namespace KolibriLib
 
 					/**
 					 * @brief Конструктор
-					 * @param Id
-					 * @param p
+					 * @param Id IS кнопки
+					 * @param p указатель на кнопку
 					 */
-					node(ButtonID Id, std::weak_ptr<BaseButton> p);
+					node(ButtonID Id, std::shared_ptr<BaseButton> p);
 
 					node &operator=(const node &) = default;
 
@@ -75,20 +75,20 @@ namespace KolibriLib
 				 */
 				static ButtonIDList ListToButtonIDList(const List &list);
 
-								/**
+				/**
 				 * @brief Получить свободный ID кнопки из списка
 				 * @param ptr Указатель на кнопку, которая получает ID. Можно nullptr
 				 * @return ID кнопки, который не занят
 				 * @todo Надо оптимизировать алгоритм поиска, а то он кривой и медленный
 				 */
-				ButtonID GetFreeButtonID(std::weak_ptr<BaseButton> ptr);
+				ButtonID GetFreeButtonID(std::shared_ptr<BaseButton> ptr);
 
 				/**
 				 * @brief Занять ID кнопки
 				 * @param id ID кнопки
 				 * @param ptr указатель на кнопку
 				 */
-				void TakeUpButtonID(const ButtonID &id, std::weak_ptr<BaseButton> ptr);
+				void TakeUpButtonID(const ButtonID &id, std::shared_ptr<BaseButton> ptr);
 
 				/**
 				 * @brief Освободить ID
@@ -116,7 +116,7 @@ namespace KolibriLib
 				 * @param ID ID кнопки
 				 * @return указатель на ту самую кнопку
 				 */
-				std::vector<std::weak_ptr<BaseButton>> GetPointerToButton(const ButtonID &ID) const;
+				std::vector<std::shared_ptr<BaseButton>> GetPointerToButton(const ButtonID &ID) const;
 
 				/**
 				 * @brief Убрать лишнее
@@ -155,6 +155,7 @@ namespace KolibriLib
 		 * Устанавливается классом window::Window
 		 */
 		extern UI::buttons::ButtonsIDController *DefaultButtonsIDController;
+
 	} // namespace Globals
 
 } // namespace KolibriLib
