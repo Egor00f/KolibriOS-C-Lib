@@ -100,7 +100,7 @@ namespace KolibriLib
 			/// @param size размер
 			/// @param MainColor основной цвет
 			/// @param Margin отступы
-			/// @param relative отностельность
+			/// @param relative относительность
 			UIElement(const UDim &coord = point(0), const UDim &size = point(0), const Colors::Color &MainColor = Globals::SystemColors.work_text, const unsigned &Margin = DefaultMargin);
 
 			/// @brief Конструктор копирования
@@ -195,7 +195,7 @@ namespace KolibriLib
 			/**
 			 * @brief Действие на ивент
 			 * @param ID нажатой кнопки
-			 * @return true если объект кнопка, и она нажата
+			 * @return true если объект кнопка, и она нажата. Иначе false.
 			 * @note Вызывается только если элемент был добавлен в окно (Вызывается в Window::Handler)
 			 */
 			virtual bool OnButtonEvent(buttons::ButtonID PressedButtonID);

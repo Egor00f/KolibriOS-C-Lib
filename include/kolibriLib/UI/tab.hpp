@@ -2,6 +2,7 @@
 #define __TAB_HPP__
 
 #include <kolibriLib/UI/text/textlabel.hpp>
+#include <kolibriLib/UI/buttons/button.hpp>
 
 namespace KolibriLib
 {
@@ -11,31 +12,45 @@ namespace KolibriLib
 		 * @brief Вкладки
 		 * @warning Не готово вообще
 		 */
-		class Tabs
+		class Tabs : public Frame
 		{
 		public:
-			using tab = std::shared_ptr<Frame>;
-			using label = std::shared_ptr<text::TextLabel>;
-			using node = std::pair<tab, label>;
+			/**
+			 * @brief Пара из указателя на вкладку(first) и на её содержимое(second)
+			 */
+			using node = std::pair<std::shared_ptr<buttons::Button>, std::shared_ptr<Frame>>;
 
 
-			Tabs(UDimArea labelsArea, UDimArea tabsArea)
-				: _labelsArea(labelsArea),
-				  _tabsArea(tabsArea)
-			{
-				
-			}
+			Tabs(const Frame& frame, UDimArea tabsArea);
 
 			Tabs(const Tabs&) = default;
 
-			
+			void Render() const override;
+
+			bool OnButtonEvent(buttons::ButtonID PressedButtonID) override;
+
+			node GetNode(std::size_t index) const;
 
 		private:
+			/**
+			 * @brief Список пар вкладка и её содержимое
+			 */
+			std::vector<node> _tabs;
 
-			UDimArea _labelsArea;
+			/**
+			 * @brief Область в которую вписывается содержимое вкладок
+			 */
 			UDimArea _tabsArea;
 
-			std::vector<node> tabs;
+			/**
+			 * @brief Цвет выбранной вкладки
+			 */
+			Colors::Color _selectedTabColor;
+
+			/**
+			 * @brief Индекс выбранной сейчас вкладки
+			 */
+			std::size_t _activeTab;
 		};
 	} // namespace UI
 	
