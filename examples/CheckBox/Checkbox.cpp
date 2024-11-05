@@ -6,22 +6,22 @@ int main()
 {
 	Window window("Checkbox example");
 
-	auto frame = window.AddElement(Frame(
+	std::shared_ptr<Frame> frame(window.AddElement(Frame(
 		UDim(0.2f, 0.2f), 
-		UDim(0.6f, 0.4f)));
+		UDim(0.6f, 0.4f))));
 	frame->SetColor(Globals::SystemColors.work_area);
 
-	auto checkbox = window.AddElement(CheckBox(
+	std::shared_ptr<CheckBox> checkbox(window.AddElement(CheckBox(
 		UDim(0.1f, 0.25f),		
 		UDim(0.2f, 0.5f)
-	));
+	)));
 	checkbox->SetParent(frame);
 	
-	auto textLabel = window.AddElement(TextLabel(
+	std::shared_ptr<TextLabel> textLabel(window.AddElement(TextLabel(
 		UDim(0.3f, 0.0f),
 		UDim(0.7f, 1.0f),
 		"<- checkbox"
-	));
+	)));
 	textLabel->SetParent(frame);
 
 	window.RenderAllElements();
@@ -51,6 +51,5 @@ int main()
 		}
 	}
 	
-
 	return 0;
 }

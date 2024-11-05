@@ -8,13 +8,13 @@ using namespace text;
 	Constructors
 */
 
-TextLabel::TextLabel(const UDim &coord, const UDim &size, const std::string &text, const Size &CharSize, bool TextScale, Colors::Color TextColor,  unsigned Margin)
+TextLabel::TextLabel(const UDim &coord, const UDim &size, const std::string &text, const Size &CharSize, bool TextScale, Colors::Color TextColor, unsigned Margin)
 	: Txt(text, TextColor),
 	  UIElement(coord, size, Globals::SystemColors.work_area, Margin)
 {
-	#ifdef VERBOSE
+#ifdef VERBOSE
 	logger << microlog::LogLevel::Debug << "TextLabel constructor" << std::endl;
-	#endif
+#endif
 
 	SetTextSize(CharSize);
 	// SetFont(Fonts::Font(Fonts::DefaultFont.font_file, FontSize));
@@ -24,18 +24,18 @@ KolibriLib::UI::text::TextLabel::TextLabel(const UDim &coord, const UDim &size, 
 	: Txt(text),
 	  UIElement(coord, size, Globals::SystemColors.work_area)
 {
-	#ifdef VERBOSE
+#ifdef VERBOSE
 	logger << microlog::LogLevel::Debug << "TextLabel constructor" << std::endl;
-	#endif
+#endif
 }
 
 TextLabel::TextLabel(const TextLabel &copy)
 	: Txt(copy),
 	  UIElement(copy)
 {
-	#ifdef VERBOSE
+#ifdef VERBOSE
 	logger << microlog::LogLevel::Debug << "TextLabel constructor(copy)" << std::endl;
-	#endif
+#endif
 }
 
 /*

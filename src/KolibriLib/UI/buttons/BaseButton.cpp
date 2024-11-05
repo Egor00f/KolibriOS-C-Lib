@@ -7,29 +7,33 @@ using namespace buttons;
 
 BaseButton::BaseButton()
 {
-	#ifndef NO_LOGS
+#ifndef NO_LOGS
+#ifdef VERBOSE
 	logger << microlog::LogLevel::Debug << "BaseButton constructor" << std::endl;
-	#endif
+#endif
+#endif
 
 	if (KolibriLib::Globals::DefaultButtonsIDController != nullptr)
 	{
 		_ButtonsIDController = KolibriLib::Globals::DefaultButtonsIDController;
 
-		std::shared_ptr<BaseButton> s_ptr(this);
-
-		_id = KolibriLib::Globals::DefaultButtonsIDController->GetFreeButtonID(s_ptr);
+		_id = KolibriLib::Globals::DefaultButtonsIDController->GetFreeButtonID(this);
 	}
 
-	#ifndef NO_LOGS
+#ifndef NO_LOGS
+#ifdef VERBOSE
 	logger << microlog::LogLevel::Debug << "BaseButton constructor: done" << std::endl;
-	#endif
+#endif
+#endif
 }
 
 BaseButton::BaseButton(ButtonID id)
 {
-	#ifndef NO_LOGS
+#ifndef NO_LOGS
+#ifdef VERBOSE
 	logger << microlog::LogLevel::Debug << "BaseButton constructor" << std::endl;
-	#endif
+#endif
+#endif
 
 	if (KolibriLib::Globals::DefaultButtonsIDController != nullptr)
 	{
@@ -37,37 +41,47 @@ BaseButton::BaseButton(ButtonID id)
 		SetId(id);
 	}
 
-	#ifndef NO_LOGS
+#ifndef NO_LOGS
+#ifdef VERBOSE
 	logger << microlog::LogLevel::Debug << "BaseButton constructor: done" << std::endl;
-	#endif
+#endif
+#endif
 }
 
 KolibriLib::UI::buttons::BaseButton::BaseButton(const BaseButton &button)
 	: _ButtonsIDController(button._ButtonsIDController),
 	  _type(button._type)
 {
-	#ifndef NO_LOGS
+#ifndef NO_LOGS
+#ifdef VERBOSE
 	logger << microlog::LogLevel::Debug << "BaseButton constructor(copy)" << std::endl;
-	#endif
+#endif
+#endif
 
 	SetId(button._id);
 
-	#ifndef NO_LOGS
+#ifndef NO_LOGS
+#ifdef VERBOSE
 	logger << microlog::LogLevel::Debug << "BaseButton constructor: done" << std::endl;
-	#endif
+#endif
+#endif
 }
 
 buttons::BaseButton::~BaseButton()
 {
-	#ifndef NO_LOGS
+#ifndef NO_LOGS
+#ifdef VERBOSE
 	logger << microlog::LogLevel::Debug << "BaseButton destructor" << std::endl;
-	#endif
+#endif
+#endif
 
 	Deactivate();
 
-	#ifndef NO_LOGS
+#ifndef NO_LOGS
+#ifdef VERBOSE
 	logger << microlog::LogLevel::Debug << "BaseButton destructor: done" << std::endl;
-	#endif
+#endif
+#endif
 }
 
 void BaseButton::BaseButton::Deactivate()
@@ -76,16 +90,16 @@ void BaseButton::BaseButton::Deactivate()
 	{
 		if (_ButtonsIDController != nullptr)
 		{
-			_ButtonsIDController->FreeButtonID(_id);
+			_ButtonsIDController->FreeButtonID(_id, this);
 		}
 
 		_id = buttons::ButtonIDNotSet;
 	}
 	else
 	{
-		#ifndef NO_LOGS
+#ifndef NO_LOGS
 		logger << microlog::LogLevel::Warning << "BaseButton already not active" << std::endl;
-		#endif
+#endif
 	}
 }
 
@@ -97,21 +111,23 @@ void BaseButton::BaseButton::Activate()
 	}
 	else
 	{
-		#ifndef NO_LOGS
+#ifndef NO_LOGS
 		logger << microlog::LogLevel::Warning << "BaseButton already active" << std::endl;
-		#endif
+#endif
 	}
 }
 
 bool KolibriLib::UI::buttons::BaseButton::IsActive() const
 {
-	#ifdef DEBUG
+#ifdef DEBUG
+#ifdef VERBOSE
 	logger << microlog::LogLevel::Debug << "Button is ";
-	if(_id == ButtonIDNotSet)
+	if (_id == ButtonIDNotSet)
 		logger << "not";
 
 	logger << " active" << std::endl;
-	#endif
+#endif
+#endif
 
 	return _id != ButtonIDNotSet;
 }
@@ -128,33 +144,30 @@ buttons::ButtonID buttons::BaseButton::GetId() const
 
 void KolibriLib::UI::buttons::BaseButton::SetId(const ButtonID &NewID)
 {
-	#ifndef NO_LOGS
+#ifndef NO_LOGS
 	logger << microlog::LogLevel::Debug << "SetId(ButtonID)" << std::endl;
-	#endif
+#endif
 
 	_id = NewID;
 
 	if (_ButtonsIDController != nullptr)
 	{
-		std::shared_ptr<BaseButton> s_ptr(this);
-		_ButtonsIDController->TakeUpButtonID(NewID, s_ptr);
+		_ButtonsIDController->TakeUpButtonID(NewID, this);
 	}
 }
 
 void KolibriLib::UI::buttons::BaseButton::SetId()
 {
-	#ifndef NO_LOGS
+#ifndef NO_LOGS
 	logger << microlog::LogLevel::Debug << "SetId()" << std::endl;
-	#endif
+#endif
 
-	
 	if (_ButtonsIDController != nullptr)
 	{
 		if (IsActive())
-			_ButtonsIDController->FreeButtonID(_id);
+			_ButtonsIDController->FreeButtonID(_id, this);
 
-		std::shared_ptr<BaseButton> s_ptr(this);
-		_id = _ButtonsIDController->GetFreeButtonID(s_ptr);
+		_id = _ButtonsIDController->GetFreeButtonID(this);
 	}
 	else
 	{

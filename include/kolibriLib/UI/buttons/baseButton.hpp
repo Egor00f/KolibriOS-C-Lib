@@ -80,6 +80,7 @@ namespace KolibriLib
                 mutable bool _status = false;
 
             private:
+
                 /**
                  * @brief Тип кнопки
                  * @details false - системная кнопка, true кастомная

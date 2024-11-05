@@ -7,7 +7,7 @@ using namespace buttons;
 
 UI::buttons::ButtonsIDController *Globals::DefaultButtonsIDController = nullptr;
 
-ButtonID buttons::ButtonsIDController::GetFreeButtonID(std::weak_ptr<BaseButton> ptr)
+ButtonID buttons::ButtonsIDController::GetFreeButtonID(BaseButton *ptr)
 {
 #ifndef NO_LOGS
 	logger << microlog::LogLevel::Debug << "ButtonsController::GetFreeButtonID";
@@ -26,7 +26,7 @@ ButtonID buttons::ButtonsIDController::GetFreeButtonID(std::weak_ptr<BaseButton>
 	{
 		for (ButtonID i = _top; i < ButtonIDEnd; i.value++)
 		{
-			for (auto j : _ButtonsIdList)
+			for (const node& j : _ButtonsIdList)
 			{
 				if (j.id != i)
 				{
@@ -34,7 +34,7 @@ ButtonID buttons::ButtonsIDController::GetFreeButtonID(std::weak_ptr<BaseButton>
 
 #ifndef NO_LOGS
 #ifdef VERBOSE
-					logger << ": OK";
+					logger << ": id is " << i;
 #endif
 					logger << std::endl;
 #endif
@@ -52,19 +52,31 @@ ButtonID buttons::ButtonsIDController::GetFreeButtonID(std::weak_ptr<BaseButton>
 	return ret;
 }
 
-void buttons::ButtonsIDController::FreeButtonID(const ButtonID &id)
+void buttons::ButtonsIDController::FreeButtonID(const ButtonID &id, BaseButton *ptr)
 {
-	if (id.CheckIsValid())
-	{
 #ifndef NO_LOGS
-		logger << microlog::LogLevel::Debug << "ButtonsController::FreeButtonID";
+	logger << microlog::LogLevel::Debug << "ButtonsController::FreeButtonID, ID: " << id;
 #endif
 
+	if (id.CheckIsValid())
+	{
 		for (std::size_t i = 0; i < _ButtonsIdList.size(); i++)
 		{
 			if (_ButtonsIdList[i].id == id)
 			{
-				_ButtonsIdList.erase(std::next(_ButtonsIdList.begin(), i));
+				if (_ButtonsIdList[i].pointers.size() > 1)
+				{
+					auto iter = std::find(_ButtonsIdList[i].pointers.begin(), _ButtonsIdList[i].pointers.end(), ptr);
+
+					if (iter != _ButtonsIdList[i].pointers.end())
+					{
+						_ButtonsIdList[i].pointers.erase(iter);
+					}
+				}
+				else // Если в ID заняла только 1 кнопка(или никто не занял), то можно удалить ноду с эти ID
+				{
+					_ButtonsIdList.erase(_ButtonsIdList.begin() + i);
+				}
 
 #ifndef NO_LOGS
 #ifdef VERBOSE
@@ -96,9 +108,13 @@ const ButtonsIDController::List &buttons::ButtonsIDController::GetButtonsIDList(
 	return _ButtonsIdList;
 }
 
-std::vector<std::weak_ptr<BaseButton>> KolibriLib::UI::buttons::ButtonsIDController::GetPointerToButton(const ButtonID &ID) const
+std::vector<BaseButton *> KolibriLib::UI::buttons::ButtonsIDController::GetPointerToButton(const ButtonID &ID) const
 {
-	std::vector<std::weak_ptr<BaseButton>> ret;
+#ifndef NO_LOGS
+	logger << microlog::LogLevel::Debug << "ButtonsController::GetPointerToButton, ID: " << ID << std::endl;
+#endif
+
+	std::vector<BaseButton *> ret;
 
 	std::find_if(_ButtonsIdList.begin(), _ButtonsIdList.end(),
 				 [&ID, &ret](const ButtonsIDController::node &n)
@@ -119,7 +135,7 @@ ButtonIDList KolibriLib::UI::buttons::ButtonsIDController::ListToButtonIDList(co
 	ButtonIDList ret;
 	ret.reserve(list.size());
 
-	for (ButtonsIDController::node i : list)
+	for (const ButtonsIDController::node& i : list)
 	{
 		ret.push_back(i.id);
 	}
@@ -127,20 +143,27 @@ ButtonIDList KolibriLib::UI::buttons::ButtonsIDController::ListToButtonIDList(co
 	return ret;
 }
 
-void KolibriLib::UI::buttons::ButtonsIDController::TakeUpButtonID(const ButtonID &id, std::weak_ptr<BaseButton> ptr)
+void KolibriLib::UI::buttons::ButtonsIDController::TakeUpButtonID(const ButtonID &id, BaseButton *ptr)
 {
 #ifndef NO_LOGS
-	logger << microlog::LogLevel::Debug << "TakeUpButtonID" << std::endl;
+	logger << microlog::LogLevel::Debug << "ButtonsIDController::TakeUpButtonID, ID: " << id << std::endl;
 #endif
 
-	for (auto i : _ButtonsIdList)
+	for (node& i : _ButtonsIdList)
 	{
 		if (i.id == id)
 		{
+#ifndef NO_LOGS
+			logger << microlog::LogLevel::Debug << "Add to exist node" << std::endl;
+#endif
 			i.pointers.push_back(ptr);
 			return;
 		}
 	}
+
+#ifndef NO_LOGS
+	logger << microlog::LogLevel::Debug << "Create new node" << std::endl;
+#endif
 
 	_ButtonsIdList.push_back(node(id, ptr));
 }
@@ -148,7 +171,7 @@ void KolibriLib::UI::buttons::ButtonsIDController::TakeUpButtonID(const ButtonID
 void KolibriLib::UI::buttons::ButtonsIDController::Sort()
 {
 	std::sort(_ButtonsIdList.begin(), _ButtonsIdList.end(),
-			  [](node a, node b)
+			  [](const node &a, const node &b)
 			  {
 				  return a.id > b.id;
 			  });
@@ -163,7 +186,7 @@ KolibriLib::UI::buttons::ButtonsIDController::node::node(ButtonID Id)
 {
 }
 
-KolibriLib::UI::buttons::ButtonsIDController::node::node(ButtonID Id, std::weak_ptr<BaseButton> p)
+KolibriLib::UI::buttons::ButtonsIDController::node::node(ButtonID Id, BaseButton *p)
 	: id(Id),
 	  pointers({p})
 {

@@ -2,8 +2,8 @@
 
 using namespace KolibriLib;
 
-TextLabel *MousePosAbs;
-TextLabel *MousePosRelative;
+std::shared_ptr<TextLabel> MousePosAbs;
+std::shared_ptr<TextLabel> MousePosRelative;
 
 void update()
 {
@@ -24,17 +24,16 @@ int main()
 
 	Window wnd("Mouse Pos");
 
-	MousePosAbs = wnd.AddElement(TextLabel(
+	MousePosAbs.reset(wnd.AddElement(TextLabel(
 		UDim(0.2f, 0.2f),
 		UDim(0.6f, 0.2f),
-		"idk"));
+		"idk")));
 	MousePosAbs->SetAlign(TextLabel::Align::Left);
-	
 
-	MousePosRelative = wnd.AddElement(TextLabel(
+	MousePosRelative.reset(wnd.AddElement(TextLabel(
 		UDim(0.2f, 0.4f),
 		UDim(0.6f, 0.2f),
-		"idk"));
+		"idk")));
 
 	wnd.RenderAllElements();
 

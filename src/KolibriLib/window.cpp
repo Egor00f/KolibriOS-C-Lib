@@ -281,6 +281,9 @@ OS::Event Window::Handler()
 
 	{
 		UI::buttons::ButtonID PressedButton = UI::buttons::GetPressedButton();
+#ifdef VERBOSE
+		logger << microlog::LogLevel::Debug << "Pressed Button ID: " << PressedButton << std::endl;
+#endif
 
 		if (PressedButton == UI::buttons::CloseButton) // Если нажата кнопка X
 		{
@@ -288,29 +291,33 @@ OS::Event Window::Handler()
 		}
 		else
 		{
-			for (auto it : _Elements)
+			for (auto& it : _Elements)
 			{
 				it->OnButtonEvent(PressedButton);
 			}
 		}
 
-		std::shared_ptr<UI::buttons::BaseButton> s_ptr;
-
 		if (PressedButton.value != 1)
 		{
-			try
-			{
-				s_ptr = _buttonsController.GetPointerToButton(PressedButton).at(0).lock();
-			}
-			catch (...)
-			{
 
-#ifndef NO_LOGS
-				logger << microlog::LogLevel::Error << "Error Get s_ptr" << std::endl;
-#endif
-			}
+			auto buttons = _buttonsController.GetPointerToButton(PressedButton);
 
-			_PressedButton = s_ptr;
+			if (buttons.size() > 0)
+			{
+				for (auto i : buttons)
+				{
+					if (i != nullptr)
+					{
+						std::shared_ptr<BaseButton>s_ptr(i);
+						_PressedButton = s_ptr;
+						break;
+					}
+				}
+			}
+			else
+			{
+				logger << microlog::LogLevel::Error << "Array of pointer to buttons is empty" << std::endl;
+			}
 		}
 	}
 

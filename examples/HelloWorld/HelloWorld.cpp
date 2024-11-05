@@ -14,16 +14,18 @@ int main()
 	);
 
 	// Добавление текстовой метки
-	TextLabel* label = wndw->AddElement(TextLabel(
+	std::shared_ptr<TextLabel> label(wndw->AddElement(TextLabel(
 		                            UDim(0.0f, 0, 0.0f, 0), 	// Координаты текстовой метки (самый левый верхний угол окна)
 									UDim(0.6f, 0, 1.0f, 0), 	// Рамер текстовой метки (3/5 ширины окна и в полную высоту окна)
 									"Hello World",
 									{32, 36}           	// Размер символов 32x36
 								)
-					);
+					));
 
 	// Добавление кнопки
-	TextButton* button = wndw->AddElement(TextButton(UDim(0.6f, 0, 0.4f, 0), UDim(0.2f, 0, 0.2f, 0)));
+	std::shared_ptr<TextButton> button(wndw->AddElement(TextButton(UDim(0.6f, 0, 0.4f, 0), UDim(0.2f, 0, 0.2f, 0))));
+
+	logger << microlog::LogLevel::Info << "Button ID: " << button->GetId() << std::endl;
 
 	// Отрисовка всех элементов, чтоб они были видны
 	wndw->RenderAllElements();
@@ -40,12 +42,12 @@ int main()
 
 		case Event::Button: // Была нажата какая-то кнопка
 
-			if(static_cast<BaseButton*>(wndw->GetPressedButton().get()) == static_cast<BaseButton*>(button))
+			if(wndw->GetPressedButton().get() == static_cast<BaseButton*>(button.get()))
 			{
-				logger << "You Press Button";
+				logger << "You Press Button" << std::endl;
 				OS::Notify("You Press Buttons");
 
-				label->SetTextColor(Color(rand()));
+				label->SetTextColor(Color(std::rand()));
 			}
 			
 			break;

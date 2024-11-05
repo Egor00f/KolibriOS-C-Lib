@@ -9,7 +9,8 @@ using namespace buttons;
 */
 
 Button::Button()
-	: UIElement()
+	: UIElement(),
+	  BaseButton()
 {
 #ifdef VERBOSE
 	logger << microlog::LogLevel::Debug << "Button constructor" << std::endl;
@@ -17,7 +18,8 @@ Button::Button()
 }
 
 Button::Button(UDim coord, UDim size, unsigned Margin, Colors::Color backGroundColor)
-	: UIElement(coord, size, backGroundColor, Margin)
+	: UIElement(coord, size, backGroundColor, Margin),
+	  BaseButton()
 {
 #ifdef VERBOSE
 	logger << microlog::LogLevel::Debug << "Button constructor" << std::endl;

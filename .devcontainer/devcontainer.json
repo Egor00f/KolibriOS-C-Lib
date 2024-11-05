@@ -23,12 +23,7 @@
 		}
 	},
 
-	"postCreateCommand": 
-	{
-		"Install programs": "apt update && apt install fasm p7zip-full wget cmake",
-		"Install toolchain": "cd /workspaces && git clone https://github.com/Egor00f/kolibrios-gcc-toolchain.git && kolibrios-gcc-toolchain/./install",
-		"Clone kolibrios repo": "cd /workspaces && git clone https://git.kolibrios.org/KolibriOS/kolibrios.git"
-	}
+	"postCreateCommand": "bash .devcontainer/postCreateCommand.sh"
 
 
 }

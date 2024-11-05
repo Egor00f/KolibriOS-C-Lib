@@ -38,7 +38,7 @@ namespace KolibriLib
 			/// @brief Активность мыши
 			Mouse = KSYS_EVENT_MOUSE,
 
-			/// @brief Программу открыли в дебагере
+			/// @brief Программу открыли в отладчике
 			Debug = KSYS_EVENT_DEBUG,
 
 			/// @brief Выход
@@ -229,10 +229,11 @@ namespace KolibriLib
 		 * \brief Запустить программу
 		 * \param AppName Полное имя исполняемого файла
 		 * \param args аргументы. Максимум 256 символов
-		 * @param ec ошибка файловой системы
-		 * @param debug режим дебага
+		 * @param ec код ошибки файловой системы 
+		 * @param debug Запустить в режиме отладки
 		 * \return PID запущенной программы
 		 * @return -1 если произошла ошибка
+		 * @note Если процесс запускается как отлаживаемый, он создаётся в замороженном состоянии
 		 */
 		Thread::PID Exec(const filesystem::Path &AppName, const std::string &args, filesystem::FilesystemErrors &ec, bool debug = false) noexcept;
 
@@ -240,10 +241,11 @@ namespace KolibriLib
 		 * @brief Запустить программу
 		 * @param AppName Полное имя исполняемого файла
 		 * @param args аргументы. Максимум 256 символов
-		 * @param debug режим дебага
+		 * @param debug Запустить в режиме отладки
 		 * \return PID запущенной программы
 		 * @return -1 если произошла ошибка
-		 * @throw Код ошибки файловой системы
+		 * @throw Код ошибки файловой системы (filesystem::FilesystemErrors)
+		 * @note Если процесс запускается как отлаживаемый, он создаётся в замороженном состоянии
 		 */
 		Thread::PID Exec(const filesystem::Path &AppName, const std::string &args, bool debug = false);
 

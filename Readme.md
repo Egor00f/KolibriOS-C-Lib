@@ -47,12 +47,13 @@ kolibrios-gcc-toolchain/./install
 Остальные зависимости:
 ```
 apt update
-apt install fasm cmake make
+apt install fasm cmake
 ```
 
 ### Сама сборка
 
 Сборка:
+
 ```
 mkdir build
 cd build

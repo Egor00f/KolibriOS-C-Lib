@@ -1,7 +1,6 @@
 #include <kolibriLib/system/os.hpp>
 #include <cstdlib>
 #include <cstring>
-#include <stdexcept>
 
 using namespace KolibriLib;
 using namespace OS;
@@ -10,14 +9,14 @@ Thread::PID KolibriLib::OS::Exec(const filesystem::Path &AppName, const std::str
 {
 	int ret = _ksys_exec(AppName.c_str(), const_cast<char *>(args.c_str()), debug);
 
-	if (ret < 0)
+	if (ret > 0)
 	{
 		ec = filesystem::FilesystemErrors::Successfully;
 		return ret;
 	}
-	else
+	else if(ret < 0)
 	{
-		ec = static_cast<filesystem::FilesystemErrors>(ret);
+		ec = static_cast<filesystem::FilesystemErrors>(-ret);
 		return -1;
 	}
 }
@@ -76,7 +75,7 @@ CoreVersion KolibriLib::OS::GetCoreVersion()
 
 /*
 	=== CoreVersion ===
-	Opearators
+	Operators
 */
 
 bool KolibriLib::OS::CoreVersion::operator==(const CoreVersion &ver) const

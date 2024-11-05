@@ -31,7 +31,12 @@ namespace KolibriLib
 					/**
 					 * @brief Указатели на кнопки, использующие этот ID
 					 */
-					std::vector<std::shared_ptr<BaseButton>> pointers;
+					std::vector<BaseButton*> pointers;
+
+					/**
+					 * @brief Конструктор по умолчанию
+					 */
+					node() = default;
 
 					/**
 					 * @brief Конструктор
@@ -44,7 +49,7 @@ namespace KolibriLib
 					 * @param Id IS кнопки
 					 * @param p указатель на кнопку
 					 */
-					node(ButtonID Id, std::shared_ptr<BaseButton> p);
+					node(ButtonID Id, BaseButton* p);
 
 					node &operator=(const node &) = default;
 
@@ -81,21 +86,22 @@ namespace KolibriLib
 				 * @return ID кнопки, который не занят
 				 * @todo Надо оптимизировать алгоритм поиска, а то он кривой и медленный
 				 */
-				ButtonID GetFreeButtonID(std::shared_ptr<BaseButton> ptr);
+				ButtonID GetFreeButtonID(BaseButton* ptr);
 
 				/**
 				 * @brief Занять ID кнопки
 				 * @param id ID кнопки
 				 * @param ptr указатель на кнопку
 				 */
-				void TakeUpButtonID(const ButtonID &id, std::shared_ptr<BaseButton> ptr);
+				void TakeUpButtonID(const ButtonID &id, BaseButton* ptr);
 
 				/**
 				 * @brief Освободить ID
 				 * @param id ID который нужно освободить
+				 * @param ptr указатель на кнопку, которая занимала этот ID
 				 * @todo Надо оптимизировать алгоритм поиска, а то он кривой и медленный
 				 */
-				void FreeButtonID(const ButtonID &id);
+				void FreeButtonID(const ButtonID &id, BaseButton* ptr);
 
 				/**
 				 * @brief Получить список всех занятых ID кнопок
@@ -116,7 +122,7 @@ namespace KolibriLib
 				 * @param ID ID кнопки
 				 * @return указатель на ту самую кнопку
 				 */
-				std::vector<std::shared_ptr<BaseButton>> GetPointerToButton(const ButtonID &ID) const;
+				std::vector<BaseButton*> GetPointerToButton(const ButtonID &ID) const;
 
 				/**
 				 * @brief Убрать лишнее

@@ -144,9 +144,9 @@ namespace KolibriLib
 			 * \param id id кнопки
 			 * \param color цвет
 			 */
-			inline void DefineButton(const Coord &coord, const Size &size, const ButtonID &id, Colors::Color color = Globals::SystemColors.work_button)
+			inline void DefineButton(const Coord &coord, const Size &size, ButtonID id, Colors::Color color = Globals::SystemColors.work_button)
 			{
-				assert((id == ButtonIDNotSet || id >= ButtonIDEnd) && "Wrong button id!");
+				assert((id != ButtonIDNotSet || id < ButtonIDEnd));
 
 				_ksys_define_button(
 					static_cast<std::uint32_t>(coord.x),
