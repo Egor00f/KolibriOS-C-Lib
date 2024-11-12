@@ -81,6 +81,7 @@ SET(SOURCES
 	${SRC_PATH}/UI/buttons/Button.cpp
 	${SRC_PATH}/UI/buttons/TextButton.cpp
 	${SRC_PATH}/UI/buttons/ImageButton.cpp
+	${SRC_PATH}/UI/tab.cpp
 	${SRC_PATH}/checkbox.cpp
 	${SRC_PATH}/BaseEditor.cpp
 	#${SRC_PATH}/menu.cpp

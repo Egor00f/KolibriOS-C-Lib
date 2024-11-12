@@ -1,4 +1,5 @@
 
+project(KolibriLib-Examples)
 
 add_subdirectory(MousePosition)
 add_subdirectory(HelloWorld)

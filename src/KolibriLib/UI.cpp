@@ -34,6 +34,9 @@ KolibriLib::UI::UIElement::UIElement(const UDim &coord, const UDim &size, const 
 	  _size(size),
 	  _MainColor(MainColor)
 {
+#ifdef VERBOSE
+	logger << microlog::LogLevel::Debug << "UIElement constructor" << std::endl;
+#endif
 	_Margin = Margin;
 }
 
@@ -41,9 +44,57 @@ KolibriLib::UI::UIElement::UIElement(const UIElement &cp)
 	: _coord(cp._coord),
 	  _size(cp._size),
 	  _MainColor(cp._MainColor),
-	  Parent(cp.Parent)
+	  Parent(cp.Parent),
+	  Visible(cp.Visible),
+	  _childs(cp._childs),
+	  ParentIsWindow(cp.ParentIsWindow)
 {
+#ifdef VERBOSE
+	logger << microlog::LogLevel::Debug << "UIElement constructor(copy)" << std::endl;
+#endif
+
 	_Margin = cp._Margin;
+}
+
+KolibriLib::UI::UIElement::~UIElement()
+{
+#ifdef VERBOSE
+	logger << microlog::LogLevel::Debug << "UIElement destructor" << std::endl;
+#endif
+
+	DeleteFromParentChilds();
+}
+
+/*
+	UIElement::Functions
+*/
+
+void KolibriLib::UI::UIElement::DeleteFromParentChilds()
+{
+	if (!Parent.expired() && !ParentIsWindow)
+	{
+#ifdef VERBOSE
+		logger << microlog::LogLevel::Debug << "Delete From Parent childs";
+#endif
+		std::shared_ptr<UIElement> s_ptr;
+		std::shared_ptr<UIElement> THIS(this);
+
+		((UIElement *)Parent.lock().get())->DeleteChildren(THIS);
+
+		Parent.reset();
+	}
+	else if (ParentIsWindow)
+	{
+#ifdef VERBOSE
+		logger << microlog::LogLevel::Debug << "Parent Is window";
+#endif
+	}
+	else
+	{
+#ifdef VERBOSE
+		logger << microlog::LogLevel::Debug << "Parent is expired";
+#endif
+	}
 }
 
 UDim KolibriLib::UI::UIElement::GetSize() const
@@ -73,11 +124,11 @@ void KolibriLib::UI::UIElement::SetCoord(const UDim &NewCoord)
 
 Size KolibriLib::UI::UIElement::GetAbsoluteSize() const
 {
-	#ifndef NO_LOG
-	#ifdef VERBOSE
+#ifndef NO_LOG
+#ifdef VERBOSE
 	logger << microlog::LogLevel::Debug << "Get Absolute Size" << std::endl;
-	#endif
-	#endif
+#endif
+#endif
 
 	Size ret;
 
@@ -93,6 +144,12 @@ Size KolibriLib::UI::UIElement::GetAbsoluteSize() const
 
 Coord KolibriLib::UI::UIElement::GetAbsoluteCoord() const
 {
+#ifndef NO_LOG
+#ifdef VERBOSE
+	logger << microlog::LogLevel::Debug << "Get Absolute Coord" << std::endl;
+#endif
+#endif
+
 	Coord ret;
 
 	if (std::shared_ptr<GuiObject> s_ptr = Parent.lock())
@@ -117,31 +174,16 @@ UDim KolibriLib::UI::UIElement::GetCoord() const
 	return _coord;
 }
 
-void KolibriLib::UI::UIElement::Rotate(unsigned NewAngle)
-{
-	_rotation = NewAngle;
-}
-
-unsigned KolibriLib::UI::UIElement::GetRotate() const
-{
-	return _rotation;
-}
-
 bool KolibriLib::UI::UIElement::Hover() const
 {
-	if (Parent.lock())
-	{
-		const Coord Mouse = mouse::GetMousePositionInWindow();
-		const point coord = GetAbsoluteSize();
-		const Size size = GetAbsoluteSize();
+	const Coord Mouse = mouse::GetMousePositionInWindow();
+	const point coord = GetAbsoluteSize();
+	const Size size = GetAbsoluteSize();
 
-		return ((coord < Mouse) &&
-				(Mouse.x < (coord.x + size.x)) &&
-				(Mouse.y < (coord.x + size.y)) &&
-				(ScreenPointAffiliation(Mouse) == Thread::GetThreadSlot()));
-	}
-
-	return false;
+	return ((coord < Mouse) &&
+			(Mouse.x < (coord.x + size.x)) &&
+			(Mouse.y < (coord.x + size.y)) &&
+			(ScreenPointAffiliation(Mouse) == Thread::GetThreadSlot()));
 }
 
 int KolibriLib::UI::UIElement::Handler(OS::Event)
@@ -165,48 +207,42 @@ bool KolibriLib::UI::UIElement::OnMouseEvent()
 	return false;
 }
 
-void KolibriLib::UI::UIElement::SetParent(const UIElement *NewParent) const
+void KolibriLib::UI::UIElement::WindowAsParent(std::weak_ptr<GuiObject> window)
 {
-	logger << microlog::LogLevel::Debug << "SetParent" << std::endl;
+	DeleteFromParentChilds();
 
-	std::shared_ptr<GuiObject> s_ptr = Parent.lock();
-
-	if (!ParentIsWindow && s_ptr)
-	{
-		((UIElement *)s_ptr.get())->DeleteChildren(this);
-	}
-
-	std::shared_ptr<GuiObject> ptr(const_cast<GuiObject *>(static_cast<const GuiObject *>(NewParent)));
-
-	s_ptr.swap(ptr);
-
-	((UIElement *)s_ptr.get())->AddChildren(this);
-
-	ParentIsWindow = false;
-}
-
-void KolibriLib::UI::UIElement::SetParent(std::weak_ptr<UIElement> ptr) const
-{
-	SetParent(ptr.lock().get());
-}
-
-void KolibriLib::UI::UIElement::WindowAsParent(const GuiObject *window) const
-{
-	std::shared_ptr<GuiObject> s_ptr = Parent.lock();
-
-	if (!ParentIsWindow && s_ptr)
-	{
-		((UIElement *)s_ptr.get())->DeleteChildren(this);
-	}
-
-	s_ptr = std::shared_ptr<GuiObject>(const_cast<GuiObject *>(window));
+	Parent = window;
 
 	ParentIsWindow = true;
+
+	if(window.expired())
+		logger << microlog::LogLevel::Warning << "child is expired" << std::endl;
+
+	logger << microlog::LogLevel::Debug << "done WindowAsParent" << std::endl;
 }
 
-const GuiObject *KolibriLib::UI::UIElement::GetParent() const
+void KolibriLib::UI::UIElement::SetParent(std::weak_ptr<UIElement> ptr)
 {
-	return Parent.lock().get();
+	DeleteFromParentChilds();
+
+	Parent = ptr;
+
+	ParentIsWindow = false;
+
+	if(ptr.expired())
+		logger << microlog::LogLevel::Warning << "child is expired" << std::endl;
+
+	logger << microlog::LogLevel::Debug << "done SetParent" << std::endl;
+}
+
+const std::weak_ptr<GuiObject> KolibriLib::UI::UIElement::GetParent() const
+{
+	return Parent;
+}
+
+std::weak_ptr<GuiObject> KolibriLib::UI::UIElement::GetParent()
+{
+	return Parent;
 }
 
 UIElement &KolibriLib::UI::UIElement::operator=(const UIElement &Element)
@@ -278,43 +314,53 @@ std::vector<std::weak_ptr<UIElement>> &KolibriLib::UI::UIElement::GetChildren()
 	return _childs;
 }
 
-void KolibriLib::UI::UIElement::AddChildren(const UIElement *child) const
+void KolibriLib::UI::UIElement::AddChildren(std::weak_ptr<UIElement> child) const
 {
-	logger << microlog::LogLevel::Debug << "Add Children" << std::endl;
+	if (!child.expired())
+	{
+		logger << microlog::LogLevel::Debug << "Add Children" << std::endl;
 
-	std::shared_ptr<UIElement> s_ptr(const_cast<UIElement *>(child));
-
-	_childs.push_back(s_ptr);
+		_childs.push_back(child);
+	}
+	else
+	{
+		logger << microlog::LogLevel::Error << "child is expired" << std::endl;
+	}
 }
 
-void KolibriLib::UI::UIElement::DeleteChildren(const UIElement *child) const
+void KolibriLib::UI::UIElement::DeleteChildren(const std::weak_ptr<UIElement> &child) const
 {
-	logger << microlog::LogLevel::Debug << "Delete Children" << std::endl;
-
-	std::shared_ptr<UIElement> ptr(const_cast<UIElement *>(child));
-	std::weak_ptr<UIElement> v = ptr;
-
-	auto n = std::find_if(
-		_childs.begin(), _childs.end(),
-		[&v](const std::weak_ptr<UIElement> &our_obj)
-		{
-			return v.lock() == our_obj.lock();
-		});
-
-	if (n != _childs.end())
+	if (!child.expired())
 	{
-		_childs.erase(n);
+		logger << microlog::LogLevel::Debug << "Delete Children" << std::endl;
+
+		auto n = std::find_if(_childs.begin(), _childs.end(),
+							  [&child](std::weak_ptr<UIElement> &obj)
+							  {
+								  return child.lock() == obj.lock();
+							  });
+
+		if (n != _childs.end())
+			_childs.erase(n);
+		else
+			logger << microlog::LogLevel::Warning << "child not found" << std::endl;
+	}
+	else
+	{
+		logger << microlog::LogLevel::Error << "child is expired" << std::endl;
 	}
 }
 
 buttons::ButtonsIDController *KolibriLib::UI::UIElement::GetButtonIDController() const
 {
-	auto s_ptr = Parent.lock();
-
-	if (s_ptr)
+	if (auto s_ptr = Parent.lock())
+	{
 		return s_ptr.get()->GetButtonIDController();
+	}
 	else
+	{
 		return nullptr;
+	}
 }
 
 void KolibriLib::UI::UIElement::SetButtonIDController(const buttons::ButtonsIDController *)

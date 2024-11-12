@@ -4,32 +4,36 @@ using namespace KolibriLib;
 
 int main()
 {
-	Window window("Checkbox example");
+	std::shared_ptr<Window> window(new Window("Checkbox example"));
 
-	std::shared_ptr<Frame> frame(window.AddElement(Frame(
+	std::shared_ptr<Frame> frame(new Frame(
 		UDim(0.2f, 0.2f), 
-		UDim(0.6f, 0.4f))));
+		UDim(0.6f, 0.4f)));
 	frame->SetColor(Globals::SystemColors.work_area);
 
-	std::shared_ptr<CheckBox> checkbox(window.AddElement(CheckBox(
+	std::shared_ptr<CheckBox> checkbox(new CheckBox(
 		UDim(0.1f, 0.25f),		
 		UDim(0.2f, 0.5f)
-	)));
+	));
 	checkbox->SetParent(frame);
 	
-	std::shared_ptr<TextLabel> textLabel(window.AddElement(TextLabel(
+	std::shared_ptr<TextLabel> textLabel(new TextLabel(
 		UDim(0.3f, 0.0f),
 		UDim(0.7f, 1.0f),
 		"<- checkbox"
-	)));
+	));
 	textLabel->SetParent(frame);
 
-	window.RenderAllElements();
+	window->AddElement(frame);
+	window->AddElement(checkbox);
+	window->AddElement(textLabel);
+
+	window->RenderAllElements();
 
 	bool exit = false;
 	while (!exit)
 	{
-		switch (window.Handler())
+		switch (window->Handler())
 		{
 		case Event::Exit:
 			exit = true;

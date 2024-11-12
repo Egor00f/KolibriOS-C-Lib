@@ -291,7 +291,7 @@ OS::Event Window::Handler()
 		}
 		else
 		{
-			for (auto& it : _Elements)
+			for (auto &it : _Elements)
 			{
 				it->OnButtonEvent(PressedButton);
 			}
@@ -308,7 +308,7 @@ OS::Event Window::Handler()
 				{
 					if (i != nullptr)
 					{
-						std::shared_ptr<BaseButton>s_ptr(i);
+						std::shared_ptr<BaseButton> s_ptr(i);
 						_PressedButton = s_ptr;
 						break;
 					}
@@ -351,23 +351,14 @@ OS::Event Window::Handler()
 		}
 
 		break;
-
-	case OS::Event::Desktop:
-		break;
-	case OS::Event::None:
-		break;
-	case OS::Event::Exit:
-		break;
-	case OS::Event::Debug:
-		break;
 	default:
 		break;
 	}
 
-	for (auto it : _Elements) // Запуск обработчиков всех используемых элементов
+	/*for (auto it : _Elements) // Запуск обработчиков всех используемых элементов
 	{
 		it->Handler(_lastEvent);
-	}
+	}*/
 
 	if (_RealtimeRedraw)
 	{
@@ -429,18 +420,6 @@ void KolibriLib::window::Window::SetButtonIDController(const UI::buttons::Button
 {
 }
 
-void KolibriLib::window::Window::AddElementNoCopy(UI::UIElement *element)
-{
-	logger << microlog::LogLevel::Debug << "Add element" << std::endl;
-
-	if (element->GetParent() == nullptr)
-		element->WindowAsParent(this);
-
-	element->SetButtonIDController(&_buttonsController);
-
-	_Elements.push_back(std::shared_ptr<UI::UIElement>(element));
-}
-
 void KolibriLib::window::Window::Update() const
 {
 	if (!_updated)
@@ -457,4 +436,26 @@ void KolibriLib::window::Window::Update() const
 OS::Event KolibriLib::window::Window::GetLastEvent() const
 {
 	return _lastEvent;
+}
+
+void KolibriLib::window::Window::AddElement(std::shared_ptr<UI::UIElement> element)
+{
+	logger << microlog::LogLevel::Debug << "Window::AddElement" << std::endl;
+
+	if (element->GetButtonIDController() == nullptr)
+	{
+		logger << "SetButtonIDController ";
+		element->SetButtonIDController(&_buttonsController);
+	}
+
+	if (element->GetParent().expired())
+	{
+		logger << "SetParent ";
+		std::shared_ptr<Window> s_ptr(this);
+		element->WindowAsParent(s_ptr);
+	}
+
+	_Elements.push_back(element);
+
+	logger << "done AddElement" << std::endl;
 }

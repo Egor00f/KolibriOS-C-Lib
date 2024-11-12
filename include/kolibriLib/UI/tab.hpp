@@ -25,6 +25,14 @@ namespace KolibriLib
 
 			Tabs(const Tabs&) = default;
 
+			/**
+			 * @brief 
+			 * @param newTab 
+			 */
+			void AddTab(const node& newTab);
+
+			bool DeleteTab(const node& removableTab);
+
 			void Render() const override;
 
 			bool OnButtonEvent(buttons::ButtonID PressedButtonID) override;

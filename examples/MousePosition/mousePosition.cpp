@@ -2,11 +2,19 @@
 
 using namespace KolibriLib;
 
-std::shared_ptr<TextLabel> MousePosAbs;
-std::shared_ptr<TextLabel> MousePosRelative;
+std::shared_ptr<TextLabel> MousePosAbs(new TextLabel(
+	UDim(0.2f, 0.2f),
+	UDim(0.6f, 0.2f),
+	"idk"));
+std::shared_ptr<TextLabel> MousePosRelative(new TextLabel(
+	UDim(0.2f, 0.4f),
+	UDim(0.6f, 0.2f),
+	"idk"));
 
 void update()
 {
+	logger << microlog::LogLevel::Info << "Update";
+
 	char buff[64];
 
 	Coord mouseCoord = GetMousePositionOnScreen();
@@ -20,29 +28,24 @@ void update()
 
 int main()
 {
+	// Включаем ивенты мыши
 	SetEventMask(OS::Mask::DefaultEventMask | OS::Mask::MouseEvent);
 
-	Window wnd("Mouse Pos");
+	std::shared_ptr<Window> wnd(new Window("Mouse Pos"));
 
-	MousePosAbs.reset(wnd.AddElement(TextLabel(
-		UDim(0.2f, 0.2f),
-		UDim(0.6f, 0.2f),
-		"idk")));
 	MousePosAbs->SetAlign(TextLabel::Align::Left);
 
-	MousePosRelative.reset(wnd.AddElement(TextLabel(
-		UDim(0.2f, 0.4f),
-		UDim(0.6f, 0.2f),
-		"idk")));
-
-	wnd.RenderAllElements();
+	wnd->AddElement(MousePosAbs);
+	wnd->AddElement(MousePosRelative);
 
 	update();
+
+	wnd->RenderAllElements();
 
 	bool exit = false;
 	while (!exit)
 	{
-		switch (wnd.Handler())
+		switch (wnd->Handler())
 		{
 		case Event::Exit:
 
@@ -63,7 +66,7 @@ int main()
 				MousePosRelative->GetAbsoluteSize(),
 				MousePosRelative->GetColor());
 
-			wnd.RenderAllElements();
+			wnd->RenderAllElements();
 
 			break;
 		default:

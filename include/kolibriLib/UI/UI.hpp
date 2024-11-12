@@ -90,8 +90,12 @@ namespace KolibriLib
 			unsigned _Margin;
 		};
 
-		///@brief Элемент интерфейса
-		/// @note Используется как шаблон для других классов
+		/**
+		 * @brief (почти) базовый Элемент интерфейса
+		 * @details При отрисовке выводит прямоугольник
+		 * @warning ВСЕГДА создавайте std::shared_ptr указывающий на этот объект
+		 * @note Используется как шаблон для других классов
+		 */
 		class UIElement : public GuiObject
 		{
 		public:
@@ -107,24 +111,31 @@ namespace KolibriLib
 			/// @param cp То что будет копироваться
 			UIElement(const UIElement &cp);
 
-			/// @brief Изменить родительский элемент
-			/// @param Parent Указатель на родительский элемент
-			/// @details почему этот метод константный? Да потому что по сути не изменяет состояние класса, элементы не очень то и зависят от родительского элемента
-			void SetParent(const UIElement *NewParent) const;
+			/**
+			 * @brief Деструктор
+			 */
+			~UIElement();
 
 			/**
-			 * @brief
+			 * @brief Изменить родительский элемент
 			 * @param ptr Указатель на родительский элемент
 			 */
-			void SetParent(std::weak_ptr<UIElement> ptr) const;
+			void SetParent(std::weak_ptr<UIElement> ptr);
 
 			/// @brief Сделать окно родительским элементом
 			/// @param Указатель на окно
-			void WindowAsParent(const GuiObject *window) const;
+			void WindowAsParent(std::weak_ptr<GuiObject> window);
+
+			/**
+			 * @brief Получить указатель на родительский элемент
+			 * @details Константная версия
+			 * @return Указатель на родительский элемент
+			 */
+			const std::weak_ptr<GuiObject> GetParent() const;
 
 			/// @brief Получить указатель на родительский элемент
 			/// @return Указатель на родительский элемент
-			const GuiObject *GetParent() const;
+			std::weak_ptr<GuiObject> GetParent();
 
 			/// @brief Получить размер элемента
 			/// @return Функция возвращает _size
@@ -176,14 +187,6 @@ namespace KolibriLib
 			/// @param NewColor новый цвет
 			void SetColor(const Colors::Color &NewColor);
 
-			/// @brief Повернуть элемент
-			/// @param NewAngle Новый угол наклона
-			void Rotate(unsigned NewAngle);
-
-			/// @brief Получить угол наклона элемента
-			/// @return Функция возвращает _angle
-			unsigned GetRotate() const;
-
 			/// @brief Проверить лежит ли курсор мыши над элементом
 			/// @return true если курсор мыши находится в этом элементе, иначе false
 			bool Hover() const;
@@ -218,6 +221,11 @@ namespace KolibriLib
 			/// @return вектор указателей
 			std::vector<std::weak_ptr<UIElement>> GetChildren() const;
 
+			/**
+			 * @brief Удалить элемент из списка 
+			 */
+			void DeleteFromParentChilds();
+
 			/// @brief
 			/// @param Element
 			/// @return
@@ -247,9 +255,7 @@ namespace KolibriLib
 			/// @brief Основной цвет элемента
 			Colors::Color _MainColor;
 
-			int _rotation;
-
-			/// @brief Элемент gui относительно которого просиходят расчёты относительного размера
+			/// @brief Элемент gui относительно которого происходят расчёты относительного размера
 			mutable std::weak_ptr<GuiObject> Parent;
 
 			/// @brief Список элементов для которых этот элемент указан как Parent
@@ -258,15 +264,21 @@ namespace KolibriLib
 			/// @brief отображается ли элемент при отрисовке
 			bool Visible = true;
 
-			/// @brief указатель на то что Parent указывает на окно
+			/**
+			 * @brief указатель на то что Parent указывает на окно
+			 * @details true - Parent является окном, иначе false
+			 */
 			mutable bool ParentIsWindow = false;
 
 		private:
-			/// @brief Добавить
-			void AddChildren(const UIElement *child) const;
+			/**
+			 * @brief Добавить
+			 * @param child указатель на добавляемый объект
+			 */
+			void AddChildren(std::weak_ptr<UIElement> child) const;
 
 			/// @brief Удалить
-			void DeleteChildren(const UIElement *child) const;
+			void DeleteChildren(const std::weak_ptr<UIElement> &child) const;
 		};
 
 
@@ -282,7 +294,8 @@ inline std::ostream &operator<<(std::ostream &os, const KolibriLib::UI::UIElemen
 	return os << "UIElement" << std::endl
 			  << "Coord: " << element.GetCoord() << std::endl
 			  << "Size: " << element.GetSize() << std::endl
-			  << "MainColor" << element.GetColor() << std::endl;
+			  << "MainColor" << element.GetColor() << std::endl
+			  << "Num of childs:" << element.GetChildren().size() << std::endl;
 }
 
 #endif // __UI_HPP__

@@ -184,22 +184,14 @@ namespace KolibriLib
 			 */
 			std::shared_ptr<UI::buttons::BaseButton> GetPressedButton() const;
 
-			/// @brief Добавить UI элемент напрямую
-			/// @param element указатель на элемент
-			/// @details Зачем добавлять в окно элементы ui? Да чтоб при перерисовке окна не нужнобыло отрисовывать все ручками
-			/// Отличается от AddElement только тем что не создаёт указатель и копирует, а сразу использует указатель из аргумента
-			/// @return указатель на элемент(новый)
-			void AddElementNoCopy(UI::UIElement *element);
-
-			template <class T>
+			
 			/// @brief Добавить UI элемент
-			/// @param element сам элемент
-			/// @details Зачем добавлять в окно элементы ui? Да чтоб при перерисовке окна не нужнобыло отрисовывать все ручками
+			/// @param element указатель на добавляемый элемент
+			/// @details Зачем добавлять в окно элементы ui? Да чтоб при перерисовке окна не нужно было отрисовывать все ручками
 			/// @return указатель на элемент(новый)
-			T* AddElement(const T &element);
+			void AddElement(std::shared_ptr<UI::UIElement> element);
 
 			/// @brief Удалить элемент из окна
-			template <class T >
 			bool DeleteElement (std::shared_ptr<UI::UIElement> element);
 
 			/// @brief Снять фокус с этого окна
@@ -251,50 +243,6 @@ namespace KolibriLib
 			 */
 			mutable bool _updated = false;
 		};
-
-		//=============================================================================================================================================================
-
-		#ifndef __MakeStaticLib__
-
-		template <class T>
-		T* KolibriLib::window::Window::AddElement(const T &element)
-		{
-			static_assert(std::is_base_of<UI::UIElement, T>::value, "Ты че сюда пихаешь!?! думаешь раз шаблон то можно любой тип сюда запихнуть, а вот и нет! Иди кури документацию");
-
-			logger << microlog::LogLevel::Debug << "Add element" << std::endl;
-
-			T *p = new T(element);
-
-			if (p->GetParent())
-				p->WindowAsParent(this);
-
-			p->SetButtonIDController(&_buttonsController);
-
-			std::shared_ptr<UI::UIElement> s_ptr(static_cast<UI::UIElement*>(p));
-
-			_Elements.push_back(s_ptr);
-
-			return static_cast<T*>(_Elements.back().get());
-		}
-
-		template <class T>
-		bool KolibriLib::window::Window::DeleteElement(std::shared_ptr<UI::UIElement> element)
-		{
-			auto i = std::find(_Elements.begin(), _Elements.end(), element);
-
-			if(i != _Elements.end())
-			{
-				_Elements.erase(i);
-
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-
-		#endif
 	} // namespace window
 
 } // namespace KolibriLib
