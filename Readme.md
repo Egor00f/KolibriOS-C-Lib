@@ -16,12 +16,12 @@
 
 ## Сборка
 
-Клонирует репозиторий
+Клонируем репозиторий
 ```
 git clone https://github.com/Egor00f/KooibriOS-Cpp-Lib.git
 ```
 
-По умолчанию предполагается что репозиторий kolibrios лежит в той же папке что и папка этого проекта, но вы можете отредактировать CMakeLists.txt, чтобы изменить путь до репозитория. Если у вас нет репозитория, то вот ссылка [https://github.com/KolibriOS/kolibrios](https://git.kolibrios.org/KolibriOS/kolibrios.git). 
+По умолчанию предполагается что репозиторий kolibrios лежит в той же папке что и папка этого проекта, но вы можете отредактировать CMakeLists.txt, чтобы изменить путь дорепозитория. Если у вас нет репозитория, то вот ссылка [https://github.com/KolibriOS/kolibrios](https://git.kolibrios.org/KolibriOS/kolibrios.git). 
 Короче просто запускаете в той же папке что и этот проект:
 ```
 git clone https://git.kolibrios.org/KolibriOS/kolibrios.git
@@ -40,8 +40,8 @@ git clone https://git.kolibrios.org/KolibriOS/kolibrios.git
 
 Устанавливаем тулчейн
 ```
-git clone https://github.com/Egor00f/kolibrios-gcc-toolchain.git
-kolibrios-gcc-toolchain/./install
+git clone https://github.com/Egor00f/kolibrios-gcc-toolchahin.git
+kolibrios-gcc-toolchain/./install.sh
 ```
 
 Остальные зависимости:
