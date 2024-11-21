@@ -16,6 +16,13 @@
 
 ## Сборка
 
+Для сборки требуются:
++ `cmake`
++ `make`
++ тулчейн gcc для KolibriOS
++ `fasm` 
++ репозиторий KolibriOS
+
 Клонируем репозиторий
 ```
 git clone https://github.com/Egor00f/KooibriOS-Cpp-Lib.git
@@ -28,13 +35,14 @@ git clone https://git.kolibrios.org/KolibriOS/kolibrios.git
 ```
 
 
+
 ### Windows
 
-Для сборки требуются:
-+ `cmake` https://cmake.org/
-+ `make` https://gnuwin32.sourceforge.net/packages/make.htm
-+ `kos32-gcc` http://wiki.kolibrios.org/wiki/%D0%9F%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5_%D0%BD%D0%B0_%D0%A1/C%2B%2B#GCC.2FG.2B.2B
-+ `fasm` https://flatassembler.net/download.php
+Устанавливаем тулчейн
+```
+git clone https://github.com/Egor00f/kolibrios-gcc-toolchahin.git
+kolibrios-gcc-toolchain/./install.bat
+```
 
 ### Linux
 
@@ -44,12 +52,6 @@ git clone https://github.com/Egor00f/kolibrios-gcc-toolchahin.git
 kolibrios-gcc-toolchain/./install.sh
 ```
 
-Остальные зависимости:
-```
-apt update
-apt install fasm cmake
-```
-
 ### Сама сборка
 
 Сборка:
@@ -57,7 +59,7 @@ apt install fasm cmake
 ```
 mkdir build
 cd build
-cmake .. -DCMAKE_TOOLCHAIN_FILE=../KolibriOS-toolchain-file/toolchain.cmake -DKOLIBRIOS_REPO=../kolibrios -DCMAKE_BUILD_TYPE=Release
+cmake .. -DCMAKE_TOOLCHAIN_FILE=../KolibriOS-toolchain-file/toolchain.cmake -DKOLIBRIOS_REPO=<Путь до реопзитория KolibriOS> -DCMAKE_BUILD_TYPE=Release
 cmake --build .
 ```
 
@@ -76,7 +78,7 @@ cmake --build .
    ```
    И При сборке вашего проекта используйте toolchain файл:
    ```
-   cmake .. -DCMAKE_TOOLCHAIN_FILE=KolibriOS-Cpp-Lib/KolibriOS-toolchain-file/toolchain.cmake -DKOLIBRIOS_REPO=../kolibrios
+   cmake .. -DCMAKE_TOOLCHAIN_FILE=KolibriOS-Cpp-Lib/KolibriOS-toolchain-file/toolchain.cmake -DKOLIBRIOS_REPO=<Путь до реопзитория KolibriOS>
    ```
 4. Подключите заголовочный файл:
    ```
@@ -88,7 +90,7 @@ cmake --build .
 
 Логи выводятся на доску отладки в файл debug.log на рам-диске
 
-### Флаги
+#### Флаги
 
 Флаги влияют на уровни логов
 
