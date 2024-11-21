@@ -66,14 +66,16 @@ namespace KolibriLib
 			virtual Coord GetAbsoluteCoord() const = 0;
 
 			/**
-			 * @brief
-			 * @return
+			 * @brief Получить указатель на контроллер кнопок
+			 * @return указатель на контроллер кнопок
+			 * @details нужно для кнопок.
 			 */
 			virtual buttons::ButtonsIDController *GetButtonIDController() const = 0;
 
 			/**
-			 * @brief
-			 * @param buttonsIDController
+			 * @brief Получить указатель на контроллер кнопок
+			 * @param buttonsIDController указатель на контроллер кнопок
+			 * @details нужно для кнопок.
 			 */
 			virtual void SetButtonIDController(const buttons::ButtonsIDController *buttonsIDController) = 0;
 
@@ -86,6 +88,7 @@ namespace KolibriLib
 			void SetMargin(unsigned NewMargin);
 
 		protected:
+		
 			/// @brief Отступы
 			unsigned _Margin;
 		};

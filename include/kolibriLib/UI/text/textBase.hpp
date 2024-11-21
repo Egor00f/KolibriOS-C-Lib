@@ -112,7 +112,7 @@ namespace KolibriLib
 			inline void DrawText(const std::string &text, const Coord &coord, Colors::Color color = Globals::SystemColors.work_text, TextEncoding encoding = TextEncoding::UTF8, std::uint8_t scale = 0)
 			{
 				color._a = 0;
-				color._a = static_cast<std::uint8_t>(encoding) << 4 | scale;
+				color._a = static_cast<std::uint8_t>(static_cast<std::uint8_t>(encoding) << 4 | scale);
 
 				asm_inline(
 					"int $0x40" ::
@@ -136,7 +136,7 @@ namespace KolibriLib
 			inline void DrawText(const std::string &text, const Coord &coord, Colors::Color BackgroundColor, Colors::Color color = Globals::SystemColors.work_text, TextEncoding encoding = TextEncoding::UTF8, std::uint8_t scale = 0)
 			{
 				color._a = 0;
-				color._a = (true << 6) | static_cast<std::uint8_t>(encoding) << 4 | scale;
+				color._a = static_cast<std::uint8_t>((true << 6) | static_cast<std::uint8_t>(encoding) << 4 | scale);
 
 				asm_inline(
 					"int $0x40" ::
@@ -161,7 +161,7 @@ namespace KolibriLib
 			inline void DrawText(Buffer *buff, const std::string &text, const Coord &coord, Colors::Color color = Globals::SystemColors.work_text, TextEncoding encoding = TextEncoding::UTF8, std::uint8_t scale = 0)
 			{
 				color._a = 0;
-				color._a = static_cast<std::uint8_t>(encoding) << 4 | true << 3 | scale;
+				color._a = static_cast<std::uint8_t>(static_cast<std::uint8_t>(encoding) << 4 | true << 3 | scale);
 
 				asm_inline(
 					"int $0x40" ::

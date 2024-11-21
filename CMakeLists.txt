@@ -29,7 +29,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_subdirectory(microlog)
 
 
-set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/cmake;${CMAKE_CURRENT_SOURCE_DIR}/KolibriOS-toolchain-file/cmake")
 
 #enable FASM
 include(CMakeDetermineASM_FASMCompiler)
@@ -37,6 +37,7 @@ include(CMakeASM_FASMInformation)
 include(CMakeTestASM_FASMCompiler)
 
 enable_language("ASM_FASM")
+
 
 
 get_filename_component(REPO ${KOLIBRIOS_REPO} REALPATH)

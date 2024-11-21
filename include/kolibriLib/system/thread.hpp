@@ -30,7 +30,7 @@ namespace KolibriLib
     {
         /// @brief Слот окна
         /// @details Слоты нумеруются с 1.
-        using Slot = std::int16_t;
+        using Slot = int;
 
         /// @brief ID процесса
         using PID = int;
@@ -54,7 +54,7 @@ namespace KolibriLib
                 Term = 3,
 
                 /// @brief поток завершается в результате исключения
-                ExeptionTerm = 4,
+                ExceptionTerm = 4,
 
                 /// @brief поток ожидает события
                 Waitevent = 5,
@@ -67,7 +67,7 @@ namespace KolibriLib
             /// @details Битовое поле
             enum class WindowStatus : std::uint8_t
             {
-                /// @brief Окно маскимизированно
+                /// @brief Окно маскимизировано
                 Maximized = 1,
 
                 /// @brief Окно минимизировано в панель задач
@@ -99,10 +99,10 @@ namespace KolibriLib
             /// @brief Размер окна
             Size WindowSize;
 
-            /// @brief Координаты клиенской области
+            /// @brief Координаты клиентской области
             Coord ClientCoord;
 
-            /// @brief Размер клиенской области
+            /// @brief Размер клиентской области
             Size ClientSize;
 
             /// @brief Использование Процессора
@@ -185,26 +185,26 @@ namespace KolibriLib
             return false; // 'no return statement in function returning non-void [-Wreturn-type]' очень бесит
         }
 
-        /// @brief Поличть информацию о потоке
+        /// @brief Получить информацию о потоке
         /// @param thread слот потока
         /// @return информация о потоке
         /// @details по умолчанию возвращается информация о текущем потоке
         ThreadInfo GetThreadInfo(const Slot &thread = ThisThread);
 
-        /// @brief Поличть информацию о потоке
+        /// @brief Получить информацию о потоке
         /// @param thread слот потока
         /// @return информация о потоке
         /// @details по умолчанию возвращается информация о текущем потоке
         ThreadInfo GetThreadInfo(const Slot &thread, int &ec);
 
-        /// @brief Поличть информацию о потоке
+        /// @brief Получить информацию о потоке
         /// @param info Ссылка на структуру для данных
         /// @param thread слот потока
         void GetThreadInfo(ThreadInfo &info, Slot thread = ThisThread);
 
-        /// @brief Получить PID текущего процесса(тот в котором была вызваенна эта функция)
+        /// @brief Получить PID текущего процесса(тот в котором была вызвана эта функция)
         /// @details Обычно бесполезно ведь вы можете использовать ThisThread
-        /// @return PID текщего процесса
+        /// @return PID текущего процесса
         inline PID GetThisThreadPID()
         {
             return GetThreadInfo().pid;
@@ -235,16 +235,16 @@ namespace KolibriLib
             {
                 _locked = true;
             }
+
             void unlock()
             {
                 _locked = false;
             }
+
             void waitPoint()
             {
                 while (_locked)
-                {
                     Wait();
-                }
             }
 
         private:

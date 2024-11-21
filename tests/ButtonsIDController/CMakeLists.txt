@@ -1,0 +1,5 @@
+
+include(kolibriexe)
+
+add_kolibri_executable(KolibriLib-ButtonsIDController-test ButtonsIDController_test.cpp)
+target_link_libraries(KolibriLib-ButtonsIDController-test PRIVATE KolibriLib)

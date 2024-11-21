@@ -61,10 +61,6 @@ buf2d::buffer::~buffer()
 	Delete(this);
 }
 
-buf2d::buffer::operator buf2d_struct *()
-{
-	return this;
-}
 
 void buf2d::buffer::swap(buffer &buff)
 {

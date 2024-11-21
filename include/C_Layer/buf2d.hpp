@@ -82,9 +82,10 @@ namespace buf2d
 	 * @param bpp бит на пиксель
 	 * @return указатель на созданный буфер
 	 */
-	inline void Create(buf2d_struct* buff, const KolibriLib::Size& size, KolibriLib::Colors::Color color, BPP bpp)
+	inline buf2d_struct* Create(buf2d_struct* buff, const KolibriLib::Size& size, KolibriLib::Colors::Color color, BPP bpp)
 	{
 		buff = Create(size, color, bpp);
+		return buff;
 	}
 
 	/**
@@ -229,7 +230,7 @@ namespace buf2d
 	 * @param dst буфер на котором рисуется (RGB)
 	 * @param src буфер на который рисуется (RGB или RGBA)
 	 * @param coord Координаты src на dst. Координаты для вывода изображения, определяют положение рисуемой картинки в buf_0
-	 * @details Рисует в буфере изображение из другого буфера в указанных координатах. Буфер в котором рисуют (приемник) должен быть 24 битным, а тот который рисуется (источник) 24 или 32 битным. Если буфер источник 32 битный, то его прозрачность при рисовании не учитывается, для учета прозрачности используется функция ApplyTrasparency
+	 * @details Рисует в буфере изображение из другого буфера в указанных координатах. Буфер в котором рисуют (приемник) должен быть 24 битным, а тот который рисуется (источник) 24 или 32 битным. Если буфер источник 32 битный, то его прозрачность при рисовании не учитывается, для учета прозрачности используется функция ApplyTransparency
 	 */
 	inline void BitBlt(buf2d_struct* dst, const buf2d_struct* src, const KolibriLib::Coord& coord = {0,0})
 	{
@@ -262,7 +263,7 @@ namespace buf2d
 
 	/**
 	 * @brief Нарисовать кривую бизье
-	 * @param buff буффер
+	 * @param buff буфер
 	 * @param points точки по которым строится кривая
 	 * @param color цвет прямой
 	 */
@@ -296,7 +297,7 @@ namespace buf2d
 	 * @param p2 точка
 	 * @param color цвет линии
 	 */
-	inline void DrawSmothLine(buf2d_struct* buff, const KolibriLib::Coord& p1, const KolibriLib::Coord&p2, KolibriLib::Colors::Color color)
+	inline void DrawSmoothLine(buf2d_struct* buff, const KolibriLib::Coord& p1, const KolibriLib::Coord&p2, KolibriLib::Colors::Color color)
 	{
 		buf2d_line(
 			buff, 
@@ -366,7 +367,10 @@ namespace buf2d
 		 * @brief Оператор
 		 * @details по сути эта структура та же что и buf2d_struct, только с конструктором и деструктором
 		 */
-		operator buf2d_struct* ();
+		operator buf2d_struct* ()
+		{
+			return this;
+		}
 
 		/**
 		 * @brief Поменять значения местами

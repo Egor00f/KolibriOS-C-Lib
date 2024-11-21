@@ -24,8 +24,8 @@ int main()
 	// Добавление кнопки
 	std::shared_ptr<TextButton> button(new TextButton(UDim(0.6f, 0, 0.4f, 0), UDim(0.2f, 0, 0.2f, 0)));
 
-	window->AddElement(button); // при добавлении кнопки падает добавлении кнопки падает
-	window->AddElement(label); 
+	window->AddElement(label);
+	window->AddElement(button); // при добавлении кнопки падает добавлении кнопки падает 
 
 	// здесь
 

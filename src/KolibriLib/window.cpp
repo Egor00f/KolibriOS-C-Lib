@@ -444,13 +444,13 @@ void KolibriLib::window::Window::AddElement(std::shared_ptr<UI::UIElement> eleme
 
 	if (element->GetButtonIDController() == nullptr)
 	{
-		logger << "SetButtonIDController ";
+		logger << "- SetButtonIDController ";
 		element->SetButtonIDController(&_buttonsController);
 	}
 
 	if (element->GetParent().expired())
 	{
-		logger << "SetParent ";
+		logger << "- SetParent ";
 		std::shared_ptr<Window> s_ptr(this);
 		element->WindowAsParent(s_ptr);
 	}

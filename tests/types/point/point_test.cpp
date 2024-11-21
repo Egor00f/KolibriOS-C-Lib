@@ -3,8 +3,6 @@
 #include <assert.h>
 
 
-
-
 int main()
 {
 	assert(KolibriLib::point(4) == KolibriLib::point(4, 4));

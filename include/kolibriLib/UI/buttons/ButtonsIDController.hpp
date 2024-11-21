@@ -20,6 +20,7 @@ namespace KolibriLib
 			public:
 				/**
 				 * @brief Нода
+				 * @details Содержит ID кнопки и указатель на кнопку, получившую этот ID
 				 */
 				struct node
 				{
@@ -31,7 +32,7 @@ namespace KolibriLib
 					/**
 					 * @brief Указатели на кнопки, использующие этот ID
 					 */
-					std::vector<BaseButton*> pointers;
+					std::vector<BaseButton *> pointers;
 
 					/**
 					 * @brief Конструктор по умолчанию
@@ -49,12 +50,18 @@ namespace KolibriLib
 					 * @param Id IS кнопки
 					 * @param p указатель на кнопку
 					 */
-					node(ButtonID Id, BaseButton* p);
+					node(ButtonID Id, BaseButton *p);
 
+					/**
+					 * @brief Оператор присваивания
+					 * @param  
+					 * @return 
+					 */
 					node &operator=(const node &) = default;
 
 					/**
 					 * @brief оператор равенства
+					 * @details сравнивает только по id
 					 * @param val с чем сравнивать
 					 * @return
 					 */
@@ -62,6 +69,7 @@ namespace KolibriLib
 
 					/**
 					 * @brief Оператор не равенства
+					 * @details сравнивает только по id
 					 * @param val с чем сравнивать
 					 * @return
 					 */
@@ -69,13 +77,14 @@ namespace KolibriLib
 				};
 
 				/**
-				 * @brief Алиас для вектора с нодами
+				 * @brief Список нод
 				 */
 				using List = std::vector<node>;
 
 				/**
 				 * @brief Конвертировать List в список кнопок
 				 * @param list
+				 * @details Нахуй оно тут?
 				 * @return
 				 */
 				static ButtonIDList ListToButtonIDList(const List &list);
@@ -86,22 +95,24 @@ namespace KolibriLib
 				 * @return ID кнопки, который не занят
 				 * @todo Надо оптимизировать алгоритм поиска, а то он кривой и медленный
 				 */
-				ButtonID GetFreeButtonID(BaseButton* ptr);
+				ButtonID GetFreeButtonID(BaseButton *ptr);
 
 				/**
 				 * @brief Занять ID кнопки
 				 * @param id ID кнопки
 				 * @param ptr указатель на кнопку
+				 * @details Нужно если необходимо повесить более одной кнопки на 1 и тот же ID
 				 */
-				void TakeUpButtonID(const ButtonID &id, BaseButton* ptr);
+				void TakeUpButtonID(const ButtonID &id, BaseButton *ptr);
 
 				/**
 				 * @brief Освободить ID
 				 * @param id ID который нужно освободить
 				 * @param ptr указатель на кнопку, которая занимала этот ID
+				 * @throw если ID найден, а указатель  нет.
 				 * @todo Надо оптимизировать алгоритм поиска, а то он кривой и медленный
 				 */
-				void FreeButtonID(const ButtonID &id, BaseButton* ptr);
+				void FreeButtonID(const ButtonID &id, BaseButton *ptr);
 
 				/**
 				 * @brief Получить список всех занятых ID кнопок
@@ -122,15 +133,17 @@ namespace KolibriLib
 				 * @param ID ID кнопки
 				 * @return указатель на ту самую кнопку
 				 */
-				std::vector<BaseButton*> GetPointerToButton(const ButtonID &ID) const;
+				std::vector<BaseButton *> GetPointerToButton(const ButtonID &ID) const;
 
 				/**
-				 * @brief Убрать лишнее
-				 * @details Убирает лишние ID если они повторяются, и если нет ни одного действующего указателя
+				 * @brief Отсортировать список ID
+				 * @details c отсортированным списком функция GetFreeButtonID работает быстрее
+				 * есть смысл вызывать эту функцию только если ваша программа постоянно создаёт и удаляет кнопки
 				 */
 				void Sort();
 
 			private:
+
 				/**
 				 * @brief Список использованных id кнопок
 				 * @details По идее CloseButton тоже входить должна в этот список, но не входит так как сразу начинаем со второго ID. Чисто немного оптимизация
@@ -146,8 +159,9 @@ namespace KolibriLib
 				 * @brief Типа вершина
 				 * @details чтобы по всему вектору не проходиться, отсчёт начинаем с top
 				 */
-				unsigned _top = _StartTop;
+				ButtonID _top = _StartTop;
 			};
+
 		} // namespace buttons
 
 	} // namespace UI

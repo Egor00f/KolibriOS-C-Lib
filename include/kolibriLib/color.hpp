@@ -182,6 +182,8 @@ inline std::ostream &operator<<(std::ostream &os, const KolibriLib::Colors::Colo
     {
         os << ((KolibriLib::Colors::Color *)&colorTable)[i] << std::endl;
     }
+    
+    return os;
 }
 
 #endif // __COLOR_HPP__
