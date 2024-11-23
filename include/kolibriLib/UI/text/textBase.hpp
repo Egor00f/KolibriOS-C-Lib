@@ -43,6 +43,27 @@ namespace KolibriLib
 				UTF8 = 3
 			};
 
+			/**
+			 * @brief сглаживание текста
+			 */
+			enum class FontSmoothing
+			{
+				/**
+				 * @brief Выключить сглаживание текста
+				 */
+				Disable = 0,
+
+				/**
+				 * @brief Нормальное сглаживание текста
+				 */
+				Normal = 1,
+
+				/**
+				 * @brief Субпиксельное сглаживание текста
+				 */
+				SubPixel = 2
+			};
+
 			struct Buffer
 			{
 				/**
@@ -172,8 +193,34 @@ namespace KolibriLib
 					"S"(text.length()),
 					"D"(buff));
 			}
-		}
-	}
-}
+
+			/**
+			 * @brief Получить настройку сглаживания шрифтов
+			 * @return
+			 */
+			inline FontSmoothing GetFontSmoothing()
+			{
+				FontSmoothing ret;
+
+				asm_inline(
+					"int $0x40"
+					: "=a"(ret)
+					: "a"(48), "b"(9));
+
+				return ret;
+			}
+
+			/**
+			 * @brief Изменить настройку сглаживания шрифтов
+			 * @param NewFontSmoothing
+			 */
+			inline void SetFontSmoothing(FontSmoothing NewFontSmoothing)
+			{
+				asm_inline(
+					"int $0x40" ::"a"(48), "b"(10), "c"(NewFontSmoothing));
+			}
+		} // namespace text
+	} // namespace UI
+} // namespace KolibriLib
 
 #endif // __TEXTBASE_HPP__

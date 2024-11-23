@@ -39,6 +39,5 @@
 
 build/
 /Docs/html/
-.vscode/c_cpp_properties.json
-.vscode/kits.json
-.vscode/tasks.json
+/.vscode/tasks.json
+/.vscode/kits.json

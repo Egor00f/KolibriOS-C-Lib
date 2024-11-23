@@ -9,7 +9,7 @@
 #include <ostream>
 
 /**
- * @brief 
+ * @brief
  */
 #define X_Y(x, y) (((x) << 16) | (y))
 
@@ -127,7 +127,10 @@ namespace KolibriLib
 	/// @brief Координаты
 	using Coord = point;
 
-	/// @brief Координаты/Размеры для элементов UI
+	/**
+	 * @brief Координаты/Размеры для элементов UI
+	 * @details Относительные координаты/размер
+	 */
 	struct UDim
 	{
 		/// @brief Ось
@@ -226,20 +229,29 @@ namespace KolibriLib
 		T Coord;
 		T Size;
 
-		Area& operator = (const Area&) = default;
+		Area &operator=(const Area &) = default;
 
-		bool operator == (const Area& a) const
+		Area(T coord, T size) : Coord(coord), Size(size) {}
+
+		bool operator==(const Area &a) const
 		{
 			return Coord == a.Coord && Size != a.Size;
 		}
 
-		bool operator != (const Area& a) const
+		bool operator!=(const Area &a) const
 		{
 			return Coord != a.Coord || Size != a.Size;
 		}
 	};
 
+	/**
+	 * @brief Область, относительные координаты и размер
+	 */
 	using UDimArea = Area<UDim>;
+
+	/**
+	 * @brief Область, абсолютные координаты и размер
+	 */
 	using AbsArea = Area<point>;
 
 } // namespace KolibriLib
@@ -262,8 +274,8 @@ inline std::ostream &operator<<(std::ostream &os, const KolibriLib::UDim &p)
 template <class T>
 inline std::ostream &operator<<(std::ostream &os, const KolibriLib::Area<T> &p)
 {
-	return os << "Coord " << p.Coord << std::endl << " Size: " << p.Size;
+	return os << "Coord " << p.Coord << std::endl
+			  << " Size: " << p.Size;
 }
-
 
 #endif // __TYPES_HPP__

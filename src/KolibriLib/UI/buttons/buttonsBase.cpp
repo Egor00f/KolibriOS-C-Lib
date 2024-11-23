@@ -6,12 +6,11 @@ using namespace KolibriLib;
 using namespace UI;
 using namespace buttons;
 
-
 ButtonID buttons::GetFreeButtonId(ButtonIDList &ButtonsIdList, std::uint32_t startID)
 {
-	#ifndef NO_LOGS
+#ifndef NO_LOGS
 	logger << microlog::LogLevel::Debug << "GetFreeButtonID";
-	#endif
+#endif
 
 	for (ButtonID i = startID; i < buttons::ButtonIDEnd; i.value++) // в wiki сказано что id в промежутке (0, 0x8000)
 	{																// CloseButton = 1, поэтому пропускаем и начинаем сразу с 2
@@ -19,46 +18,47 @@ ButtonID buttons::GetFreeButtonId(ButtonIDList &ButtonsIdList, std::uint32_t sta
 		{
 			ButtonsIdList.push_back(i);
 
-			#ifndef NO_LOGS
+#ifndef NO_LOGS
 
-			#ifdef VERBOSE
+#ifdef VERBOSE
 			logger << "OK";
-			#endif
-			
+#endif
+
 			logger << std::endl;
-			#endif
+#endif
 
 			return i;
 		}
 	}
 
-	#ifndef NO_LOGS
+#ifndef NO_LOGS
 	logger << microlog::LogLevel::Warning << "Free ID not found" << std::endl;
-	#endif
+#endif
 
 	return ButtonIDNotSet;
 }
 
 bool KolibriLib::UI::buttons::FreeButtonId(ButtonIDList &ButtonsIdList, const ButtonID &id)
 {
-	#ifndef NO_LOGS
+	assert(id.operator bool());
+#ifndef NO_LOGS
 	logger << microlog::LogLevel::Debug << "GetFreeButtonID";
-	#endif
+#endif
 
 	auto iter = std::find(ButtonsIdList.begin(), ButtonsIdList.end(), id);
 
 	if (iter != ButtonsIdList.end())
 	{
 		ButtonsIdList.erase(iter);
-		
+
 		return true;
 	}
 	else
 	{
 
-		#ifndef NO_LOGS
+#ifndef NO_LOGS
 		logger << microlog::LogLevel::Warning << "ID not found in ButtonsIDList" << std::endl;
-		#endif
+#endif
 
 		return false;
 	}
@@ -90,11 +90,6 @@ bool KolibriLib::UI::buttons::ButtonID::CheckIsValid() const
 ButtonID KolibriLib::UI::buttons::ButtonID::operator=(const unsigned &val)
 {
 	return ButtonID(val);
-}
-
-KolibriLib::UI::buttons::ButtonID::operator std::uint32_t() const
-{
-	return value;
 }
 
 bool KolibriLib::UI::buttons::ButtonID::operator==(const ButtonID &val) const

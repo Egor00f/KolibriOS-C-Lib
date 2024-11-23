@@ -23,8 +23,10 @@ namespace KolibriLib
 			/// @brief ID кнопки
 			struct ButtonID
 			{
-				/// @brief Значение
-				std::uint32_t value;
+				/**
+				 * @brief Значение
+				 */
+				std::uint32_t value = 0;
 
 				/**
 				 * @brief Конструктор по умолчанию
@@ -76,8 +78,13 @@ namespace KolibriLib
 				 */
 				bool operator!=(const ButtonID &val) const;
 
-				/// @brief
-				operator std::uint32_t() const;
+				/**
+				 * @brief Оператор
+				 */
+				operator bool() const
+				{
+					return CheckIsValid();
+				}
 
 				void swap(ButtonID &val);
 			};
@@ -107,7 +114,9 @@ namespace KolibriLib
 
 			class BaseButton;
 
-			/// @brief Стиль кнопок
+			/**
+			 * @brief Стиль кнопок
+			 */
 			enum class ButtonStyle
 			{
 				/// @brief Плоские кнопки
@@ -146,14 +155,14 @@ namespace KolibriLib
 			 */
 			inline void DefineButton(const Coord &coord, const Size &size, ButtonID id, Colors::Color color = Globals::SystemColors.work_button)
 			{
-				assert((id != ButtonIDNotSet || id < ButtonIDEnd));
+				assert(id.operator bool());
 
 				_ksys_define_button(
 					static_cast<std::uint32_t>(coord.x),
 					static_cast<std::uint32_t>(coord.y),
 					static_cast<std::uint32_t>(size.x),
 					static_cast<std::uint32_t>(size.y),
-					static_cast<std::uint32_t>(id),
+					id.value,
 					static_cast<ksys_color_t>(color));
 			}
 
@@ -175,14 +184,18 @@ namespace KolibriLib
 			/// \param id id удаляемой кнопки
 			inline void DeleteButton(ButtonID id)
 			{
-				_ksys_delete_button(static_cast<std::uint32_t>(id));
+				assert(id.operator bool());
+
+				_ksys_delete_button(id.value);
 			}
 
 			/// \brief Удалить кнопу
 			/// \param id id удаляемой кнопки
 			inline void DeleteButton(ButtonIDList &ButtonsIdList, ButtonID id)
 			{
-				_ksys_delete_button(id);
+				assert(id.operator bool());
+
+				_ksys_delete_button(id.value);
 				FreeButtonId(ButtonsIdList, id); // Кнопка удалена, теперь этот id не используется
 			}
 
@@ -193,8 +206,11 @@ namespace KolibriLib
 				return ButtonID(_ksys_get_button());
 			}
 
-			/// @brief Изменить стиль кнопок
-			/// @param новый стиль кнопок
+			/**
+			 * @brief Изменить стиль кнопок
+			 * @param новый стиль кнопок
+			 * @details После изменения стиля кнопок необходимо перерисовать экран функцией
+			 */
 			inline void SetButtonStyle(ButtonStyle style)
 			{
 				asm_inline(

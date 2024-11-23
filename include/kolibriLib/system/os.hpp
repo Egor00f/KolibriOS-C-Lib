@@ -30,7 +30,7 @@ namespace KolibriLib
 			Button = KSYS_EVENT_BUTTON,
 
 			/**
-			 * @brief перерисовывается фон рабочего стола 
+			 * @brief перерисовывается фон рабочего стола
 			 * @details сбрасывается автоматически после перерисовки, так что если во время перерисовки фона программа не ждёт и не проверяет события, то этого события она не заметит)
 			 */
 			Desktop = KSYS_EVENT_DESKTOP,
@@ -110,7 +110,7 @@ namespace KolibriLib
 			DebugEvent = KSYS_EVM_DEBUG,
 
 			/**
-			 * @brief 
+			 * @brief
 			 */
 			IPCEvent = KSYS_EVM_IPC,
 
@@ -229,7 +229,7 @@ namespace KolibriLib
 		 * \brief Запустить программу
 		 * \param AppName Полное имя исполняемого файла
 		 * \param args аргументы. Максимум 256 символов
-		 * @param ec код ошибки файловой системы 
+		 * @param ec код ошибки файловой системы
 		 * @param debug Запустить в режиме отладки
 		 * \return PID запущенной программы
 		 * @return -1 если произошла ошибка

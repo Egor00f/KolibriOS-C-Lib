@@ -179,6 +179,19 @@ namespace KolibriLib
 			return Size(a.y - a.x + 1, b.y - b.x + 1);
 		}
 
+		inline AbsArea GetSkinTitleArea()
+		{
+			ksys_pos_t coord, topAndBottom;
+
+			asm_inline(
+				"int $0x40"
+				: "=a"(coord), "=b"(topAndBottom)
+				: "a"(48), "b"(7)
+			);
+
+			return AbsArea(coord, Coord(topAndBottom) - coord);
+		}
+
 	} // namespace window
 
 } // namespace KolibriLib

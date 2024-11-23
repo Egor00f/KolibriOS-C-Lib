@@ -12,13 +12,13 @@ project(
 ################### CONFIG ######################
 #################################################
 #
-set(CUSTOM_TOOCLAIN_PATH	OFF)
-
 option(KolibriLib_BUILD_EXAMPLES "Build KolibriLib examples"      ON)
 option(KolibriLib_BUILD_DOCS     "Build KolibriLib documantation" ON)
 option(KolibriLib_BUILD_TESTS    "Build KolibriLib test"          ON)
 #
 #################################################
+
+
 
 get_directory_property(IS_SUBPROJECT PARENT_DIRECTORY)
 
@@ -59,6 +59,7 @@ SET(HEADERS_PATH ${KolibriLib_INCLUDE_PATH}/kolibriLib)
 SET(C_LAYER_HEADERS ${KolibriLib_INCLUDE_PATH}/C_Layer/INCLUDE)
 
 SET(SOURCES
+	${SRC_PATH}/debug.cpp # Объявляет логгер, поэтому первый
 	${SRC_PATH}/C_Layer/rasterworks.cpp
 	${SRC_PATH}/C_Layer/buf2d.cpp
 	${SRC_PATH}/C_Layer/libimg.cpp
@@ -88,7 +89,6 @@ SET(SOURCES
 	#${SRC_PATH}/menu.cpp
 	${SRC_PATH}/window.cpp
 	${SRC_PATH}/windowAttached.cpp
-	${SRC_PATH}/debug.cpp
 	${SRC_PATH}/globals.cpp
 	#${SRC_PATH}/freetype.cpp
 	${SRC_PATH}/keyboard.cpp

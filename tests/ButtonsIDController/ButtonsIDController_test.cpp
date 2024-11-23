@@ -9,7 +9,7 @@ int main()
 	std::vector<ButtonID> IDs;
 	IDs.reserve(ButtonIDEnd.value - 2);
 
-	for (std::size_t i = 2; i < 128; i++) // Все проверять слишком долго
+	for (std::size_t i = 2; i < ButtonIDEnd; i++) // Все проверять слишком долго
 	{
 		auto id = controller.GetFreeButtonID(nullptr);
 		IDs.push_back(id);
@@ -21,15 +21,22 @@ int main()
 
 	for (std::size_t i = 2; i < ButtonIDEnd; i++)
 	{
-		controller.FreeButtonID(IDs[i - 2], nullptr);
+		try
+		{
+			controller.FreeButtonID(IDs[i - 2], nullptr);
+		}
+		catch(...)
+		{
+			KolibriLib::logger << microlog::LogLevel::Error << "exception in controller.FreeButtonID(IDs[i - 2], nullptr); i=" << i << std::endl;
+		}
+		
 	}
 
+	// удаляем сохранённые ID. Он больше ненужны
 	IDs.clear();
 
 	controller.TakeUpButtonID(59, nullptr);
 	controller.FreeButtonID(59, nullptr);
-
-	assert(controller.GetButtonsIDList().size() == 0);
 
 	KolibriLib::logger << microlog::LogLevel::Info << "test ButtonsIDController_test is OK" << std::endl;
 

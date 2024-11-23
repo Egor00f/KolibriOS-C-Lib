@@ -55,8 +55,8 @@ namespace KolibriLib
 			_ksys_bg_redraw();
 		}
 
-		/// @brief Перересовать область фона
-		/// @param coord координаты верхненго левого угла области
+		/// @brief Перерисовать область фона
+		/// @param coord координаты верхнего левого угла области
 		/// @param size размеры 
 		inline void RedrawBackground(const Coord& coord, const Size& size)
 		{
@@ -64,7 +64,7 @@ namespace KolibriLib
 		}
 
 		/// @brief установить размер фонового изображения.
-		/// @param size размеры фоного изображения
+		/// @param size размеры фонового изображения
 		inline void SetSize(const Size &size)
 		{
 			_ksys_bg_set_size (
@@ -73,7 +73,7 @@ namespace KolibriLib
 			);
 		}
 
-		/// @brief Постовить точку на фоне
+		/// @brief Поставить точку на фоне
 		/// @param coord координаты точки
 		/// @param color цвет точки
 		inline void DrawPoint(const Coord &coord, const Colors::rgb &color = Globals::SystemColors.work_graph)
@@ -86,38 +86,38 @@ namespace KolibriLib
 			);
 		}
 
-		template <std::size_t N>
-		/// @brief
-		/// @param coord
-		/// @param rgb
-		inline void DrawImage(const Coord coord, rgb_t (&rgb)[N])
+		/**
+		 * @brief Нарисовать изображение на фоне
+		 * @param coord Координаты изображения
+		 * @param rgb Указатель на массив
+		 * @param len Длинна массива(кол-во элементов в массиве)
+		 */
+		inline void DrawImage(const Coord &coord, rgb_t *rgb, std::size_t len)
 		{
 			_ksys_bg_put_bitmap (
 				rgb,
-				sizeof(rgb_t) * N,
+				sizeof(rgb_t) * len,
 				static_cast<std::uint32_t>(coord.x),
 				static_cast<std::uint32_t>(coord.y),
 				static_cast<std::uint32_t>(GetSize().x)
 			);
 		}
 
-		/// @brief Вывести изображение(rgb)
-		/// @param coord координаты
-		/// @param rgb массив
-		/// @param N длинна массива rgb
-		inline void DrawImage(const Coord &coord, rgb_t *rgb, std::size_t N)
+		/**
+		 * @brief Нарисовать изображение на фоне
+		 * @tparam N длинна массива rgb
+		 * @param coord Координаты изображения
+		 * @param rgb Указатель на массив
+		 * @details Лучше используйте DrawImage(const Coord&, rgb_t*, std::size_t), но если вам настолько лень... то ладно
+		 */
+		template <std::size_t N>
+		inline void DrawImage(const Coord &coord, rgb_t (&rgb)[N])
 		{
-			_ksys_bg_put_bitmap (
-				rgb,
-				sizeof(rgb_t) * N,
-				static_cast<std::uint32_t>(coord.x),
-				static_cast<std::uint32_t>(coord.y),
-				static_cast<std::uint32_t>(GetSize().x)
-			);
+			DrawImage(coord, rgb, N);
 		}
 
 		/// @brief Нарисовать линию на фоне
-		/// @param p1 точка перавая
+		/// @param p1 точка первая
 		/// @param p2 точка вторая
 		/// @param color цвет линии
 		inline void DrawLine(const Coord& p1, const Coord& p2, const Colors::Color &color = Globals::SystemColors.work_graph)
@@ -126,7 +126,7 @@ namespace KolibriLib
 			{
 				for (int j = 0; j < abs(p1.y - p2.y) / abs(p1.x - p2.x); j++)
 				{
-					DrawPoint(Coord(p1.x + i, p1.y + j), color);
+					Background::DrawPoint(Coord(p1.x + i, p1.y + j), color);
 				}
 			}
 		}

@@ -19,62 +19,9 @@ namespace KolibriLib
 			{
 			public:
 				/**
-				 * @brief Нода
-				 * @details Содержит ID кнопки и указатель на кнопку, получившую этот ID
-				 */
-				struct node
-				{
-					/**
-					 * @brief ID кнопок
-					 */
-					ButtonID id;
-
-					/**
-					 * @brief Указатели на кнопки, использующие этот ID
-					 */
-					std::vector<BaseButton *> pointers;
-
-					/**
-					 * @brief Конструктор по умолчанию
-					 */
-					node() = default;
-
-					/**
-					 * @brief Конструктор
-					 * @param Id
-					 */
-					node(ButtonID Id);
-
-					/**
-					 * @brief Конструктор
-					 * @param Id IS кнопки
-					 * @param p указатель на кнопку
-					 */
-					node(ButtonID Id, BaseButton *p);
-
-					/**
-					 * @brief Оператор присваивания
-					 * @param  
-					 * @return 
-					 */
-					node &operator=(const node &) = default;
-
-					/**
-					 * @brief оператор равенства
-					 * @details сравнивает только по id
-					 * @param val с чем сравнивать
-					 * @return
-					 */
-					bool operator==(const node &val) const;
-
-					/**
-					 * @brief Оператор не равенства
-					 * @details сравнивает только по id
-					 * @param val с чем сравнивать
-					 * @return
-					 */
-					bool operator!=(const node &val) const;
-				};
+			 	* @brief Нода
+			 	*/
+				using node = std::pair<ButtonID, std::vector<BaseButton *>>;
 
 				/**
 				 * @brief Список нод
@@ -131,14 +78,14 @@ namespace KolibriLib
 				/**
 				 * @brief Получить указатель на кнопку, которая запросила ID
 				 * @param ID ID кнопки
-				 * @return указатель на ту самую кнопку
+				 * @return массив указателей на ту самую кнопку
 				 */
-				std::vector<BaseButton *> GetPointerToButton(const ButtonID &ID) const;
+				const std::vector<BaseButton *>& GetPointerToButton(const ButtonID &ID) const;
 
 				/**
 				 * @brief Отсортировать список ID
 				 * @details c отсортированным списком функция GetFreeButtonID работает быстрее
-				 * есть смысл вызывать эту функцию только если ваша программа постоянно создаёт и удаляет кнопки
+				 * есть смысл вызывать эту функцию только если ваша программа постоянно создаёт и удаляет кнопки 
 				 */
 				void Sort();
 
@@ -148,7 +95,7 @@ namespace KolibriLib
 				 * @brief Список использованных id кнопок
 				 * @details По идее CloseButton тоже входить должна в этот список, но не входит так как сразу начинаем со второго ID. Чисто немного оптимизация
 				 */
-				ButtonsIDController::List _ButtonsIdList{/*CloseButton,*/ node(MinimizeButton)};
+				ButtonsIDController::List _ButtonsIdList{/*CloseButton,*/ {MinimizeButton, {nullptr}}};
 
 				/**
 				 * @brief Стартовое значение ButtonsIDController::_top

@@ -1,7 +1,6 @@
 {
 	"name": "Egor00fs config",
-  
-	"description": "idk",
+
 	"image": "mcr.microsoft.com/devcontainers/cpp:debian-12",
 	
 	"features": {
@@ -23,7 +22,5 @@
 		}
 	},
 
-	"postCreateCommand": "bash .devcontainer/postCreateCommand.sh"
-
-
+	"postCreateCommand": "./.devcontainer/postCreateCommand.sh"
 }

@@ -65,15 +65,20 @@
         "stdlib.h": "c",
         "bitset": "cpp",
         "include_ksys.h": "c",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "bit": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "string_view": "cpp",
+        "numbers": "cpp"
     },
     "editor.insertSpaces": false,
+    "editor.tabSize": 4,
+
     "C_Cpp.default.compilerPath": "/home/autobuild/tools/win32/bin/kos32-g++",
     "C_Cpp.formatting": "clangFormat",
-
-    "cSpell.language": "en,en-US,ru",
-
-    
+    "C_Cpp.default.intelliSenseMode": "gcc-x86",
+    "C_Cpp.doxygen.generatedStyle": "/**",
 
     "cmake.configureSettings": {
         "CMAKE_TOOLCHAIN_FILE": "${workspaceFolder}/KolibriOS-toolchain-file/toolchain.cmake",
@@ -82,6 +87,9 @@
         "microlog_BUILD_DOCS":false,
         "KOLIBRIOS_REPO":"${workspaceFolder}/../kolibrios"
     },
+
+
+    "cSpell.language": "en,en-US,ru",
     "cSpell.words": [
         "kolibrios",
         "ksys",
@@ -95,4 +103,8 @@
         "fasm",
         "tparam"
     ],
+    "cSpell.ignorePaths": [
+        ".devcontainer",
+        ".vscode",
+    ]
 }

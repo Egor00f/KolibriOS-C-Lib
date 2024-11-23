@@ -14,17 +14,35 @@ namespace KolibriLib
         /// @details крутая оболочка для rgb_t из sys/ksys.h
         struct rgb : public rgb_t
         {
+            /**
+             * @brief 
+             * @param val 
+             */
             rgb(rgb_t val);
 
+            /**
+             * @brief 
+             * @param val 
+             */
             rgb(ksys_color_t val);
 
-            /// @brief Конструктор
-            /// @param r красная состовляющаяя
-            /// @param g зелёная
+            /**
+             * @brief Конструктор
+             * @param r красная составляющая цвета
+             * @param g зелёная составляющая цвета
+             * @param b Синяя составляющая цвета
+             */
             rgb(std::uint8_t r, std::uint8_t g, std::uint8_t b);
 
-            /// @brief конструктор по умолчанию
+            /**
+             * @brief Конструктор по умолчанию
+             */
             rgb() = default;
+
+            /**
+             * @brief Конструктор копирования
+             * @param  
+             */
             rgb(const rgb &) = default;
 
             rgb &operator=(const rgb &) = default;
@@ -72,9 +90,9 @@ namespace KolibriLib
             Color(const rgb_t &color);
 
             /// @brief Конструктор
-            /// @param R Красная составляющяя цвета
-            /// @param G Красная составляющяя цвета
-            /// @param B Красная состовляющяя цвета
+            /// @param R Красная составляющая цвета
+            /// @param G Зелёная составляющая цвета
+            /// @param B Синяя составляющая цвета
             /// @param A Прозрачность
             Color(std::uint8_t R, std::uint8_t G, std::uint8_t B, std::uint8_t A = 0xFF);
 
@@ -180,7 +198,7 @@ inline std::ostream &operator<<(std::ostream &os, const KolibriLib::Colors::Colo
 {
     for (std::size_t i = 0; i < sizeof(KolibriLib::Colors::ColorsTable) / sizeof(ksys_color_t); i++)
     {
-        os << ((KolibriLib::Colors::Color *)&colorTable)[i] << std::endl;
+        os << reinterpret_cast<const KolibriLib::Colors::Color *>(&colorTable)[i] << std::endl;
     }
     
     return os;

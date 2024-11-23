@@ -230,7 +230,6 @@ void KolibriLib::window::Window::Redraw()
 
 void Window::Render()
 {
-
 	StartRedraw();
 	window::CreateWindow({0, 0}, {0, 0}, _title, _colors.work_area, _colors.grab_text, _style, _settings);
 
@@ -292,9 +291,7 @@ OS::Event Window::Handler()
 		else
 		{
 			for (auto &it : _Elements)
-			{
 				it->OnButtonEvent(PressedButton);
-			}
 		}
 
 		if (PressedButton.value != 1)
@@ -444,13 +441,13 @@ void KolibriLib::window::Window::AddElement(std::shared_ptr<UI::UIElement> eleme
 
 	if (element->GetButtonIDController() == nullptr)
 	{
-		logger << "- SetButtonIDController ";
+		logger << "- SetButtonIDController " << std::endl;
 		element->SetButtonIDController(&_buttonsController);
 	}
 
 	if (element->GetParent().expired())
 	{
-		logger << "- SetParent ";
+		logger << "- SetParent " << std::endl;
 		std::shared_ptr<Window> s_ptr(this);
 		element->WindowAsParent(s_ptr);
 	}

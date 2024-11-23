@@ -15,47 +15,50 @@ ButtonID buttons::ButtonsIDController::GetFreeButtonID(BaseButton *ptr)
 
 	/*
 		В общем че происходит:
-		проходимся по всем возможным ID кнопок с _top до конца. Если находим соответствие, то возвращаем id
+		проходимся по всем возможным ID кнопок с _top до конца. Если находим несоответствие, то возвращаем id
 		иначе повторяем всё ещё раз, но начиная с начала списка.
 		можно оптимизировать чтобы полностью по всем элементам _ButtonsIdList не проходиться
 	*/
 
-	auto find = [](ButtonID &top, List &ButtonsIdList, BaseButton *Pointer)
+	auto find = [&ptr](ButtonID &top, List &ButtonsIdList)
 	{
 		for (ButtonID i = top; i < ButtonIDEnd; i.value++)
 		{
-			for (const node &j : ButtonsIdList)
+			if (std::find_if(
+					ButtonsIdList.begin(), ButtonsIdList.end(),
+					[&i](const node &n)
+					{
+						return n.first == i;
+					}) == ButtonsIdList.end())
 			{
-				if (j.id != i)
-				{
-					ButtonsIdList.push_back(node(i, Pointer));
+				ButtonsIdList.push_back({i, {ptr}});
 
-					top = i + 1;
+				top = i + 1U;
 
-#ifndef NO_LOGS
-#ifdef VERBOSE
-					logger << ": return ID: " << i;
-#endif
-					logger << std::endl;
-#endif
-
-					return i;
-				}
+				return i;
 			}
 		}
 
 		return ButtonIDNotSet;
 	};
 
-	ButtonID ret = find(_top, _ButtonsIdList, ptr);
+	ButtonID ret = find(_top, _ButtonsIdList);
 
 	if (ret == ButtonIDNotSet) // Пытаемся получить ID ещё раз
 	{
 		_top = _StartTop; // Но уже с самого начала
-		ret = find(_top, _ButtonsIdList, ptr);
+		ret = find(_top, _ButtonsIdList);
 	}
 
-	logger << microlog::LogLevel::Warning << "Free ID not found in ButtonsIDList" << std::endl;
+#ifndef NO_LOGS
+#ifdef VERBOSE
+	logger << ": return ID: " << ret;
+#endif
+	logger << std::endl;
+#endif
+
+	if (ret == ButtonIDNotSet)
+		logger << microlog::LogLevel::Warning << "Free ID not found in ButtonsIDList" << std::endl;
 
 	return ret;
 }
@@ -70,12 +73,12 @@ void buttons::ButtonsIDController::FreeButtonID(const ButtonID &id, BaseButton *
 
 	for (std::size_t i = 0; i < _ButtonsIdList.size(); i++)
 	{
-		if (_ButtonsIdList[i].id == id) // ID кнопки найден
+		if (_ButtonsIdList[i].first == id) // ID кнопки найден
 		{
-			auto iter = std::find(_ButtonsIdList[i].pointers.begin(), _ButtonsIdList[i].pointers.end(), ptr);
+			auto iter = std::find(_ButtonsIdList[i].second.begin(), _ButtonsIdList[i].second.end(), ptr);
 
-			if (iter != _ButtonsIdList[i].pointers.end())
-				_ButtonsIdList[i].pointers.erase(iter);
+			if (iter != _ButtonsIdList[i].second.end()) // указатель на кнопку найден
+				_ButtonsIdList[i].second.erase(iter);
 			else
 			{
 				logger << microlog::LogLevel::Warning << "pointer Not found!";
@@ -107,8 +110,10 @@ const ButtonsIDController::List &buttons::ButtonsIDController::GetButtonsIDList(
 	return _ButtonsIdList;
 }
 
-std::vector<BaseButton *> KolibriLib::UI::buttons::ButtonsIDController::GetPointerToButton(const ButtonID &ID) const
+const std::vector<BaseButton *>& KolibriLib::UI::buttons::ButtonsIDController::GetPointerToButton(const ButtonID &ID) const
 {
+	assert(ID.CheckIsValid());
+
 #ifndef NO_LOGS
 	logger << microlog::LogLevel::Debug << "ButtonsController::GetPointerToButton, ID: " << ID << std::endl;
 #endif
@@ -116,9 +121,9 @@ std::vector<BaseButton *> KolibriLib::UI::buttons::ButtonsIDController::GetPoint
 	return std::find_if(_ButtonsIdList.begin(), _ButtonsIdList.end(),
 						[&ID](const ButtonsIDController::node &n)
 						{
-							return n.id == ID;
+							return n.first == ID;
 						})
-		->pointers;
+		->second;
 }
 
 ButtonIDList KolibriLib::UI::buttons::ButtonsIDController::ListToButtonIDList(const List &list)
@@ -127,25 +132,27 @@ ButtonIDList KolibriLib::UI::buttons::ButtonsIDController::ListToButtonIDList(co
 	ret.reserve(list.size());
 
 	for (const ButtonsIDController::node &i : list)
-		ret.push_back(i.id);
+		ret.push_back(i.first);
 
 	return ret;
 }
 
 void KolibriLib::UI::buttons::ButtonsIDController::TakeUpButtonID(const ButtonID &id, BaseButton *ptr)
 {
+	assert(id.CheckIsValid());
+
 #ifndef NO_LOGS
 	logger << microlog::LogLevel::Debug << "ButtonsIDController::TakeUpButtonID, ID: " << id << std::endl;
 #endif
 
 	for (node &i : _ButtonsIdList)
 	{
-		if (i.id == id)
+		if (i.first == id)
 		{
 #ifndef NO_LOGS
 			logger << microlog::LogLevel::Debug << "Add to exist node" << std::endl;
 #endif
-			i.pointers.push_back(ptr);
+			i.second.push_back(ptr);
 			return;
 		}
 	}
@@ -154,7 +161,7 @@ void KolibriLib::UI::buttons::ButtonsIDController::TakeUpButtonID(const ButtonID
 	logger << microlog::LogLevel::Debug << "Create new node" << std::endl;
 #endif
 
-	_ButtonsIdList.push_back(node(id, ptr));
+	_ButtonsIdList.push_back({id, {ptr}});
 }
 
 void KolibriLib::UI::buttons::ButtonsIDController::Sort()
@@ -162,31 +169,6 @@ void KolibriLib::UI::buttons::ButtonsIDController::Sort()
 	std::sort(_ButtonsIdList.begin(), _ButtonsIdList.end(),
 			  [](const node &a, const node &b)
 			  {
-				  return a.id > b.id;
+				  return a.first > b.first;
 			  });
-}
-
-/*
-	ButtonsIDController::node
-*/
-
-KolibriLib::UI::buttons::ButtonsIDController::node::node(ButtonID Id)
-	: id(Id)
-{
-}
-
-KolibriLib::UI::buttons::ButtonsIDController::node::node(ButtonID Id, BaseButton *p)
-	: id(Id),
-	  pointers({p})
-{
-}
-
-bool KolibriLib::UI::buttons::ButtonsIDController::node::operator==(const node &val) const
-{
-	return id == val.id;
-}
-
-bool KolibriLib::UI::buttons::ButtonsIDController::node::operator!=(const node &val) const
-{
-	return id != val.id;
 }
