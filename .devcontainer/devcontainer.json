@@ -11,8 +11,7 @@
 		"vscode": {
 			"extensions": [
 				"ms-vscode.cmake-tools",
-				"ms-vscode.cpptools-themes",
-				"ms-vscode.cpptools",
+				"ms-vscode.cpptools-extension-pack",
 				"usernamehw.errorlens",
 				"streetsidesoftware.code-spell-checker",
 				"streetsidesoftware.code-spell-checker-russian",
